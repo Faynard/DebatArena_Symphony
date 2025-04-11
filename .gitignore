@@ -1,6 +1,6 @@
 # PhpStorm
 /.idea/
-.env*
+.env
 
 ###> symfony/framework-bundle ###
 /.env.local
