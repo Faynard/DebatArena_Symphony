@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Camp{% endblock %}
+
+{% block body %}
+    <h1>Create new Camp</h1>
+
+    {{ include('camp/_form.html.twig') }}
+
+    <a href="{{ path('app_camp_index') }}">back to list</a>
+{% endblock %}

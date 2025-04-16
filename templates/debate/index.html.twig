@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Debate index{% endblock %}
+
+{% block body %}
+    <h1>Debate index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>NameDebate</th>
+                <th>DescriptionDebate</th>
+                <th>IsValid</th>
+                <th>CreationDate</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for debate in debates %}
+            <tr>
+                <td>{{ debate.id }}</td>
+                <td>{{ debate.nameDebate }}</td>
+                <td>{{ debate.descriptionDebate }}</td>
+                <td>{{ debate.isValid ? 'Yes' : 'No' }}</td>
+                <td>{{ debate.creationDate ? debate.creationDate|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_debate_show', {'id': debate.id}) }}">show</a>
+                    <a href="{{ path('app_debate_edit', {'id': debate.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_debate_new') }}">Create new</a>
+{% endblock %}

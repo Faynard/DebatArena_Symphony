@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Camp{% endblock %}
+
+{% block body %}
+    <h1>Edit Camp</h1>
+
+    {{ include('camp/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_camp_index') }}">back to list</a>
+
+    {{ include('camp/_delete_form.html.twig') }}
+{% endblock %}

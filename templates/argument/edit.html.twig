@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Argument{% endblock %}
+
+{% block body %}
+    <h1>Edit Argument</h1>
+
+    {{ include('argument/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_argument_index') }}">back to list</a>
+
+    {{ include('argument/_delete_form.html.twig') }}
+{% endblock %}

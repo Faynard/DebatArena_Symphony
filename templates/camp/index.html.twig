@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Camp index{% endblock %}
+
+{% block body %}
+    <h1>Camp index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>NameCamp</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for camp in camps %}
+            <tr>
+                <td>{{ camp.id }}</td>
+                <td>{{ camp.nameCamp }}</td>
+                <td>
+                    <a href="{{ path('app_camp_show', {'id': camp.id}) }}">show</a>
+                    <a href="{{ path('app_camp_edit', {'id': camp.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_camp_new') }}">Create new</a>
+{% endblock %}
