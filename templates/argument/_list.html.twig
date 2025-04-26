@@ -1,0 +1,27 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Text</th>
+            <th>ValidationDate</th>
+            <th>actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for argument in arguments %}
+        <tr>
+            <td>{{ argument.id }}</td>
+            <td>{{ argument.text }}</td>
+            <td>{{ argument.validationDate ? argument.validationDate|date('Y-m-d') : '' }}</td>
+            <td>
+                <a href="{{ path('app_argument_show', {'id': argument.id}) }}">show</a>
+                <a href="{{ path('app_argument_edit', {'id': argument.id}) }}">edit</a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="4">no records found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ArgumentRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Argument
 {
     #[ORM\Id]
@@ -54,12 +55,20 @@ class Argument
     #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'mainArgument')]
     private Collection $subArguments;
 
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $creationDate = null;
+
     public function __construct()
     {
-        $this->users = new ArrayCollection();
         $this->votes = new ArrayCollection();
         $this->reports = new ArrayCollection();
         $this->subArguments = new ArrayCollection();
+    }
+
+    #[ORM\PrePersist]
+    public function prePersist(): void
+    {
+        $this->creationDate = new \DateTime();
     }
 
     public function getId(): ?int
@@ -77,14 +86,6 @@ class Argument
         $this->text = $text;
 
         return $this;
-    }
-
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
     }
 
     /**
@@ -233,6 +234,18 @@ class Argument
                 $subArgument->setMainArgument(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreationDate(): ?\DateTimeInterface
+    {
+        return $this->creationDate;
+    }
+
+    public function setCreationDate(\DateTimeInterface $creationDate): static
+    {
+        $this->creationDate = $creationDate;
 
         return $this;
     }
