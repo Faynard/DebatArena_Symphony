@@ -31,6 +31,16 @@
                 <th>IsBanned</th>
                 <td>{{ user.isBanned ? 'Yes' : 'No' }}</td>
             </tr>
+            <tr>
+                <th>Roles</th>
+                <td>
+                    {% for role in user.roles %}
+                        <span class="badge bg-secondary">{{ role }}</span>
+                    {% else %}
+                        <em>Aucun rôle</em>
+                    {% endfor %}
+                </td>
+            </tr>
         </tbody>
     </table>
 
