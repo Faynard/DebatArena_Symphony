@@ -1,0 +1,26 @@
+<link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
+<nav class="navbar">
+    <div class="navbar__logo">
+        <a href="{{ path('app_debate_index') }}">
+            <img src="{{ asset('image/logo.png') }}" alt="Debate Arena Logo" class="navbar__logo-img">
+            <span>Debate Arena</span>
+        </a>
+    </div>
+
+    <div class="navbar__search">
+        <input type="text" placeholder="Rechercher un débat..." />
+        <button>
+            <img src="{{ asset('image/loupe.png') }}" alt="Loupe" class="search-icon" />
+        </button>
+    </div>
+
+    <div class="navbar__actions">
+        <a href="{{ is_granted('IS_AUTHENTICATED_REMEMBERED') ? path('app_debate_new') : path('app_user_index') }}" class="btn-create-debate">
+            Ajouter un débat
+        </a>
+
+        <a href="{{ path('app_user_index') }}" class="login-button">
+            <img src="{{ asset('image/profil.svg') }}">
+        </a>
+    </div>
+</nav>
