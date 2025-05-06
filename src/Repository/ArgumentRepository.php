@@ -16,6 +16,21 @@ class ArgumentRepository extends ServiceEntityRepository
         parent::__construct($registry, Argument::class);
     }
 
+    /**
+     * @return Argument[] Returns an array of Argument objects
+     */
+    public function findMainValidatedArgumentByCamp($camp): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.camp = :camp')
+            ->andWhere('a.validationDate <= :date')
+            ->setParameter('camp', $camp)
+            ->setParameter('date', new \DateTime())
+            ->orderBy('a.validationDate', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
     //    /**
     //     * @return Argument[] Returns an array of Argument objects
     //     */

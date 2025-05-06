@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Argument;
 use App\Entity\Debate;
 use App\Form\DebateType;
 use App\Repository\DebateRepository;
@@ -110,10 +111,16 @@ final class DebateController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_debate_show', methods: ['GET'])]
-    public function show(Debate $debate): Response
+    public function show(Debate $debate, EntityManagerInterface $entityManager): Response
     {
+        $arguments = [];
+        $argumentRepository = $entityManager->getRepository(Argument::class);
+        foreach ($debate->getCamps() as $camp) {
+            $arguments[$camp->getId()] = $argumentRepository->findMainValidatedArgumentByCamp($camp->getId());
+        }
         return $this->render('debate/show.html.twig', [
             'debate' => $debate,
+            'arguments' => $arguments,
         ]);
     }
 
