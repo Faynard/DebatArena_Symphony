@@ -12,8 +12,10 @@
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
+        <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
     </head>
     <body>
+    {% include 'partials/_navbar.html.twig' %}
         {% block body %}{% endblock %}
     </body>
 </html>

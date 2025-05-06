@@ -34,7 +34,6 @@ class DebateRepository extends ServiceEntityRepository
     {
         $em = $this->getEntityManager();
 
-        // Récupération des deux camps du débat
         $camps = $em->createQuery(
             'SELECT c.id FROM App\Entity\Camp c WHERE c.debate = :debatId ORDER BY c.id ASC'
         )
@@ -53,24 +52,23 @@ class DebateRepository extends ServiceEntityRepository
         $camp1Id = $camps[0]['id'];
         $camp2Id = $camps[1]['id'];
 
-        // Votes camp 1 (uniquement sur des arguments validés)
+        // Votes camp 1 (sur des arguments avec creationDate renseignée)
         $camp1Votes = (int) $em->createQuery(
             'SELECT COUNT(v.id)
         FROM App\Entity\Votes v
         JOIN v.argument a
         JOIN a.camp c
-        WHERE c.id = :campId AND a.validationDate IS NOT NULL'
+        WHERE c.id = :campId AND a.creationDate IS NOT NULL'
         )
             ->setParameter('campId', $camp1Id)
             ->getSingleScalarResult();
 
-        // Votes camp 2 (idem)
         $camp2Votes = (int) $em->createQuery(
             'SELECT COUNT(v.id)
         FROM App\Entity\Votes v
         JOIN v.argument a
         JOIN a.camp c
-        WHERE c.id = :campId AND a.validationDate IS NOT NULL'
+        WHERE c.id = :campId AND a.creationDate IS NOT NULL'
         )
             ->setParameter('campId', $camp2Id)
             ->getSingleScalarResult();
@@ -79,13 +77,11 @@ class DebateRepository extends ServiceEntityRepository
         $pourcentageCamp1 = $totalVotes > 0 ? round(($camp1Votes / $totalVotes) * 100, 1) : 50;
         $pourcentageCamp2 = $totalVotes > 0 ? round(($camp2Votes / $totalVotes) * 100, 1) : 50;
 
-
-        // Participants = utilisateurs distincts ayant posté un argument validé OU voté
         $argUsers = $em->createQuery(
             'SELECT DISTINCT u.id FROM App\Entity\Argument a
         JOIN a.user u
         JOIN a.camp c
-        WHERE c.debate = :debatId AND a.validationDate IS NOT NULL'
+        WHERE c.debate = :debatId AND a.creationDate IS NOT NULL'
         )
             ->setParameter('debatId', $debatId)
             ->getArrayResult();
@@ -100,7 +96,6 @@ class DebateRepository extends ServiceEntityRepository
             ->setParameter('debatId', $debatId)
             ->getArrayResult();
 
-        // Fusionner les deux listes d’ID et retirer les doublons
         $userIds = array_unique(array_merge(
             array_column($argUsers, 'id'),
             array_column($voteUsers, 'id')
@@ -115,7 +110,6 @@ class DebateRepository extends ServiceEntityRepository
             'pourcentage_camp_2' => $pourcentageCamp2,
         ];
     }
-
 
 
 
@@ -147,9 +141,9 @@ class DebateRepository extends ServiceEntityRepository
             'SELECT d
          FROM App\Entity\Debate d
          LEFT JOIN d.camps c
-         LEFT JOIN c.arguments a WITH a.validationDate IS NOT NULL
+         LEFT JOIN c.arguments a WITH a.creationDate IS NOT NULL
          GROUP BY d.id
-         ORDER BY MAX(a.validationDate) DESC'
+         ORDER BY MAX(a.creationDate) DESC'
         )
             ->setFirstResult($offset)
             ->setMaxResults($limit)

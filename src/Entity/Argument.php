@@ -39,7 +39,7 @@ class Argument
     private ?User $userValidate = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $validationDate = null;
+    private ?\DateTimeInterface $creationDate  = null;
 
     #[ORM\ManyToOne(inversedBy: 'arguments')]
     #[ORM\JoinColumn(nullable: false)]
@@ -162,17 +162,17 @@ class Argument
         return $this;
     }
 
-    public function getValidationDate(): ?\DateTimeInterface
+    public function getCreationDate(): ?\DateTimeInterface
     {
-        return $this->validationDate;
+        return $this->creationDate;
     }
 
-    public function setValidationDate(?\DateTimeInterface $validationDate): static
+    public function setCreationDate(?\DateTimeInterface $creationDate): static
     {
-        $this->validationDate = $validationDate;
-
+        $this->creationDate = $creationDate;
         return $this;
     }
+
 
     public function getCamp(): ?Camp
     {
