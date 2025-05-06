@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Argument;
+use App\Entity\Camp;
+use App\Entity\User;
 use App\Form\ArgumentType;
 use App\Repository\ArgumentRepository;
+use App\Repository\CampRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,8 +28,14 @@ final class ArgumentController extends AbstractController
     #[Route('/new', name: 'app_argument_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $ID_DEBATE = 1; /* TODO Ne pas mettre l'id en dur */
+        $USER = $entityManager->getRepository(User::class)->find(1); /* TODO Ne pas mettre l'id en dur */
+
         $argument = new Argument();
-        $form = $this->createForm(ArgumentType::class, $argument);
+        $argument->setUser($USER); /* TODO Mettre le current user */
+
+        $campRepository = $entityManager->getRepository(Camp::class);
+        $form = $this->createForm(ArgumentType::class, $argument, ['camps' => $campRepository->findByDebate($ID_DEBATE)]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
