@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250416173410 extends AbstractMigration
+final class Version20250506062435 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -21,7 +21,7 @@ final class Version20250416173410 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql(<<<'SQL'
-            CREATE TABLE argument (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, user_validate_id INT DEFAULT NULL, camp_id INT NOT NULL, main_argument_id INT DEFAULT NULL, text VARCHAR(800) NOT NULL, validation_date DATE DEFAULT NULL, INDEX IDX_D113B0AA76ED395 (user_id), INDEX IDX_D113B0ABA26AFB2 (user_validate_id), INDEX IDX_D113B0A77075ABB (camp_id), INDEX IDX_D113B0AE95747B7 (main_argument_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
+            CREATE TABLE argument (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, user_validate_id INT DEFAULT NULL, camp_id INT NOT NULL, main_argument_id INT DEFAULT NULL, text VARCHAR(800) NOT NULL, validation_date DATE DEFAULT NULL, creation_date DATE NOT NULL, INDEX IDX_D113B0AA76ED395 (user_id), INDEX IDX_D113B0ABA26AFB2 (user_validate_id), INDEX IDX_D113B0A77075ABB (camp_id), INDEX IDX_D113B0AE95747B7 (main_argument_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE camp (id INT AUTO_INCREMENT NOT NULL, debate_id INT NOT NULL, name_camp VARCHAR(255) NOT NULL, INDEX IDX_C194423039A6B6F6 (debate_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
@@ -42,7 +42,7 @@ final class Version20250416173410 extends AbstractMigration
             CREATE TABLE sanction (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, argument_id INT NOT NULL, sanction_date DATE NOT NULL, reason VARCHAR(800) NOT NULL, INDEX IDX_6D6491AFA76ED395 (user_id), INDEX IDX_6D6491AF3DD48F21 (argument_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, email VARCHAR(320) NOT NULL, pseudo VARCHAR(20) NOT NULL, password VARCHAR(150) NOT NULL, created_date DATE NOT NULL, is_banned TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
+            CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, email VARCHAR(320) NOT NULL, pseudo VARCHAR(20) NOT NULL, password VARCHAR(150) NOT NULL, created_date DATE NOT NULL, is_banned TINYINT(1) NOT NULL, roles LONGTEXT NOT NULL COMMENT '(DC2Type:array)', PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE votes (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, argument_id INT NOT NULL, vote_date DATE NOT NULL, INDEX IDX_518B7ACFA76ED395 (user_id), INDEX IDX_518B7ACF3DD48F21 (argument_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
