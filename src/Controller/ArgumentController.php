@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Argument;
 use App\Entity\Camp;
 use App\Entity\User;
+use App\Entity\Votes;
 use App\Form\ArgumentType;
 use App\Repository\ArgumentRepository;
 use App\Repository\CampRepository;
@@ -22,6 +23,26 @@ final class ArgumentController extends AbstractController
     {
         return $this->render('argument/index.html.twig', [
             'arguments' => $argumentRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/vote', name: 'app_argument_vote', methods: ['POST'])]
+    public function vote(EntityManagerInterface $entityManager): Response
+    {
+        $argumentId = $_POST['argumentId'];
+
+        $vote = new Votes();
+        $vote->setUser($this->getUser());
+        $vote->setArgument($argumentId);
+
+        $entityManager->persist($vote);
+        $entityManager->flush();
+
+        $argumentRepository = $entityManager->getRepository(ArgumentRepository::class);
+        $argument = $argumentRepository->findOneBy(['id' => $argumentId]);
+
+        return $this->redirectToRoute('app_debate_show', [
+            'id' => $argument->getCamp()->getDebate()->getId(),
         ]);
     }
 
