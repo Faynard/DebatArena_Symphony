@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VotesRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Votes
 {
     #[ORM\Id]
@@ -24,6 +25,12 @@ class Votes
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $voteDate = null;
+
+    #[ORM\PrePersist]
+    public function prePersist(): void
+    {
+        $this->voteDate = new \DateTime();
+    }
 
     public function getId(): ?int
     {

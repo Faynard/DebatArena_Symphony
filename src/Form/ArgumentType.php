@@ -16,11 +16,7 @@ class ArgumentType extends AbstractType
     {
         $builder
             ->add('text')
-            ->add('camp', EntityType::class, [
-                'class' => Camp::class,
-                'choice_label' => 'nameCamp',
-                'choices' => $options['camps'],
-            ])
+            ->add('validationDate')
         ;
     }
 
@@ -28,9 +24,7 @@ class ArgumentType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Argument::class,
-            'camps' => ["Camp 1", "Camp 2"],
         ]);
 
-        $resolver->setRequired(['camps']);
     }
 }

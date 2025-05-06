@@ -30,15 +30,20 @@
         </tbody>
     </table>
 
-    {% for camp in debate.camps %}
-        <h2>{{ camp.nameCamp }}</h2>
-        {% set arguments = camp.arguments %}
-        {{ include('argument/_list.html.twig', {name: 'arguments'}) }}
-    {% endfor %}
-
+    <div class="d-flex justify-content-around">
+        {% for camp in debate.camps %}
+            <div>
+                <h2>{{ camp.nameCamp }}</h2>
+                <div>
+                    {% for argument in arguments[camp.id] %}
+                        {{ include('argument/show.html.twig', {name: 'argument'}) }}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
     <a href="{{ path('app_debate_index') }}">back to list</a>
 
     <a href="{{ path('app_debate_edit', {'id': debate.id}) }}">edit</a>
-
     {{ include('debate/_delete_form.html.twig') }}
 {% endblock %}
