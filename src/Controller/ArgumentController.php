@@ -31,15 +31,17 @@ final class ArgumentController extends AbstractController
     {
         $argumentId = $_POST['argumentId'];
 
+        $argumentRepository = $entityManager->getRepository(ArgumentRepository::class);
+        $argument = $argumentRepository->findOneBy(['id' => $argumentId]);
+
         $vote = new Votes();
         $vote->setUser($this->getUser());
-        $vote->setArgument($argumentId);
+        $vote->setArgument($argument);
 
         $entityManager->persist($vote);
         $entityManager->flush();
 
-        $argumentRepository = $entityManager->getRepository(ArgumentRepository::class);
-        $argument = $argumentRepository->findOneBy(['id' => $argumentId]);
+
 
         return $this->redirectToRoute('app_debate_show', [
             'id' => $argument->getCamp()->getDebate()->getId(),
@@ -56,7 +58,7 @@ final class ArgumentController extends AbstractController
         $argument->setUser($USER); /* TODO Mettre le current user */
 
         $campRepository = $entityManager->getRepository(Camp::class);
-        $form = $this->createForm(ArgumentType::class, $argument, ['camps' => $campRepository->findByDebate($ID_DEBATE)]);
+        $form = $this->createForm(ArgumentType::class, $argument);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -23,10 +23,8 @@ class ArgumentRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.camp = :camp')
-            ->andWhere('a.validationDate <= :date')
             ->setParameter('camp', $camp)
-            ->setParameter('date', new \DateTime())
-            ->orderBy('a.validationDate', 'ASC')
+            ->orderBy('a.creationDate', 'ASC')
             ->getQuery()
             ->getResult()
             ;
