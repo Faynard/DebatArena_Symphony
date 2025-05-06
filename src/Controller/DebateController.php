@@ -68,8 +68,8 @@ final class DebateController extends AbstractController
     {
         $debate = new Debate();
 
-        // Attribuer automatiquement les champs cachés
-        $debate->setIsValid(false); // ou true selon la logique métier
+        // Champs automatiques
+        $debate->setIsValid(false);
         $debate->setUserCreated($this->getUser());
         $debate->setCreationDate(new \DateTimeImmutable());
 
@@ -77,6 +77,26 @@ final class DebateController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Récupérer les données non mappées
+            $camp1Name = $form->get('camp1')->getData();
+            $camp2Name = $form->get('camp2')->getData();
+
+            // Créer les deux camps
+            $camp1 = new \App\Entity\Camp();
+            $camp1->setNameCamp($camp1Name);
+            $camp1->setDebate($debate);
+
+            $camp2 = new \App\Entity\Camp();
+            $camp2->setNameCamp($camp2Name);
+            $camp2->setDebate($debate);
+
+            // Ajouter au débat
+            $debate->addCamp($camp1);
+            $debate->addCamp($camp2);
+
+            // Persister
+            $entityManager->persist($camp1);
+            $entityManager->persist($camp2);
             $entityManager->persist($debate);
             $entityManager->flush();
 
@@ -89,7 +109,6 @@ final class DebateController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
 
     #[Route('/{id}', name: 'app_debate_show', methods: ['GET'])]
     public function show(Debate $debate, EntityManagerInterface $entityManager): Response

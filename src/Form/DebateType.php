@@ -16,11 +16,11 @@ class DebateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nameDebate', TextType::class, [
-                'label' => 'Nom du débat',
+            ->add('nameDebate', null, [
+                'label' => 'Nom du débat'
             ])
-            ->add('descriptionDebate', TextareaType::class, [
-                'label' => 'Description du débat',
+            ->add('descriptionDebate', null, [
+                'label' => 'Description du débat'
             ])
             ->add('categories', EntityType::class, [
                 'class' => Category::class,
@@ -28,7 +28,16 @@ class DebateType extends AbstractType
                 'multiple' => true,
                 'expanded' => false,
                 'placeholder' => 'Sélectionnez des catégories',
-                'attr' => ['class' => 'tom-select'],
+            ])
+            ->add('camp1', TextType::class, [
+                'label' => 'Nom du premier camp',
+                'mapped' => false,
+                'required' => true,
+            ])
+            ->add('camp2', TextType::class, [
+                'label' => 'Nom du second camp',
+                'mapped' => false,
+                'required' => true,
             ]);
     }
 
