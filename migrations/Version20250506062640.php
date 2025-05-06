@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250429084212 extends AbstractMigration
+final class Version20250506062640 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -21,7 +21,7 @@ final class Version20250429084212 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql(<<<'SQL'
-            ALTER TABLE user ADD roles LONGTEXT NOT NULL COMMENT '(DC2Type:array)'
+            ALTER TABLE argument DROP creation_date
         SQL);
     }
 
@@ -29,7 +29,7 @@ final class Version20250429084212 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql(<<<'SQL'
-            ALTER TABLE user DROP roles
+            ALTER TABLE argument ADD creation_date DATE NOT NULL
         SQL);
     }
 }
