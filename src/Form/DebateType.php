@@ -4,9 +4,10 @@ namespace App\Form;
 
 use App\Entity\Category;
 use App\Entity\Debate;
-use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,22 +16,20 @@ class DebateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nameDebate')
-            ->add('descriptionDebate')
-            ->add('isValid')
-            ->add('creationDate', null, [
-                'widget' => 'single_text',
+            ->add('nameDebate', TextType::class, [
+                'label' => 'Nom du débat',
             ])
-            ->add('userCreated', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
+            ->add('descriptionDebate', TextareaType::class, [
+                'label' => 'Description du débat',
             ])
             ->add('categories', EntityType::class, [
                 'class' => Category::class,
-                'choice_label' => 'id',
+                'choice_label' => 'nameCategory',
                 'multiple' => true,
-            ])
-        ;
+                'expanded' => false,
+                'placeholder' => 'Sélectionnez des catégories',
+                'attr' => ['class' => 'tom-select'],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

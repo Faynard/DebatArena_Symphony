@@ -56,7 +56,6 @@ class Argument
 
     public function __construct()
     {
-        $this->users = new ArrayCollection();
         $this->votes = new ArrayCollection();
         $this->reports = new ArrayCollection();
         $this->subArguments = new ArrayCollection();
