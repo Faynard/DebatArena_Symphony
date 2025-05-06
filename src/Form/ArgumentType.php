@@ -16,7 +16,6 @@ class ArgumentType extends AbstractType
     {
         $builder
             ->add('text')
-            ->add('validationDate')
         ;
     }
 
