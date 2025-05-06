@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/user.css') }}">
+{% endblock %}
+
+
+{% block body %}
+    <div class="card">
+        <h2>Créer un compte</h2>
+        {{ form_start(form) }}
+            <div class="pseudo">
+                {{ form_label(form.pseudo) }}
+                {{ form_widget(form.pseudo, {'attr': {'placeholder': 'Pseudo'}}) }}
+            </div>
+
+            <div class="email">
+                {{ form_label(form.email) }}
+                {{ form_widget(form.email, {'attr': {'placeholder': 'Adresse email'}}) }}
+            </div>
+
+            <div class="password">
+                {{ form_label(form.password) }}
+                {{ form_widget(form.password, {'attr': {'placeholder': 'Mot de passe'}}) }}
+            </div>
+
+            <div class="btn">
+                <button type="button" class="button_retour" onclick="window.location.href='/'">Retour</button>
+                <button type="submit" class="button">Créer un compte</button>
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

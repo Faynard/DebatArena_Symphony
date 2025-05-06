@@ -7,13 +7,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+#[ORM\HasLifecycleCallbacks]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    
     private ?int $id = null;
 
     #[ORM\Column(length: 320)]
@@ -60,6 +64,17 @@ class User
      */
     #[ORM\OneToMany(targetEntity: Debate::class, mappedBy: 'userCreated')]
     private Collection $debates;
+
+    #[ORM\Column(type: Types::ARRAY)]
+    private array $roles = [];
+
+    #[ORM\PrePersist]
+    public function prePersist(): void
+    {
+        $this->createdDate = new \DateTime();
+        $this->roles = ['ROLE_USER'];
+        $this->isBanned = false;
+    }
 
     public function __construct()
     {
@@ -284,4 +299,30 @@ class User
 
         return $this;
     }
+
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER';
+        return array_unique($roles);
+    }
+
+    public function eraseCredentials()
+    {
+        
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    
 }
