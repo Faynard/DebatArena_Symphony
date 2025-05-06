@@ -3,6 +3,6 @@
     <button class="btn">
         <img src="{{ asset('image/vote.png') }}">
     </button>
-    <button class="btn">{{ 'argument.respond'|trans }}</button>
+    <button class="btn" href="{{ path('app_argument_vote', ['argumentId' => argument.id]) }}">{{ 'argument.respond'|trans }}</button>
     <button class="btn">{{ 'argument.report'|trans }}</button>
 </div>
