@@ -16,24 +16,10 @@ class ArgumentType extends AbstractType
     {
         $builder
             ->add('text')
-            ->add('validationDate', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('user', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
-            ])
-            ->add('userValidate', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
-            ])
             ->add('camp', EntityType::class, [
                 'class' => Camp::class,
-                'choice_label' => 'id',
-            ])
-            ->add('mainArgument', EntityType::class, [
-                'class' => Argument::class,
-                'choice_label' => 'id',
+                'choice_label' => 'nameCamp',
+                'choices' => $options['camps'],
             ])
         ;
     }
@@ -42,6 +28,9 @@ class ArgumentType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Argument::class,
+            'camps' => ["Camp 1", "Camp 2"],
         ]);
+
+        $resolver->setRequired(['camps']);
     }
 }

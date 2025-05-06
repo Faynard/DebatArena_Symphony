@@ -30,6 +30,12 @@
         </tbody>
     </table>
 
+    {% for camp in debate.camps %}
+        <h2>{{ camp.nameCamp }}</h2>
+        {% set arguments = camp.arguments %}
+        {{ include('argument/_list.html.twig', {name: 'arguments'}) }}
+    {% endfor %}
+
     <a href="{{ path('app_debate_index') }}">back to list</a>
 
     <a href="{{ path('app_debate_edit', {'id': debate.id}) }}">edit</a>

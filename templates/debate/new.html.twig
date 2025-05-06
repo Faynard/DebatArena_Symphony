@@ -1,11 +1,122 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Debate{% endblock %}
+{% block title %}Créer un débat{% endblock %}
 
 {% block body %}
-    <h1>Create new Debate</h1>
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
 
-    {{ include('debate/_form.html.twig') }}
+    <style>
+        :root {
+            --primary-color: #3d3548;
+            --secondary-color: #ffffff;
+            --accent-blue: #8c91e3;
+            --text-color: #333;
+            --border-radius: 10px;
+        }
 
-    <a href="{{ path('app_debate_index') }}">back to list</a>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .debate-form {
+            background-color: var(--secondary-color);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .debate-form label {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .debate-form input,
+        .debate-form textarea,
+        .debate-form select {
+            padding: 12px;
+            border-radius: var(--border-radius);
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+
+        .debate-form input:focus,
+        .debate-form textarea:focus,
+        .debate-form select:focus {
+            border-color: var(--accent-blue);
+            outline: none;
+        }
+
+        .debate-form textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        .debate-form button {
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .debate-form button:hover {
+            background-color: #7073c0;
+        }
+    </style>
+
+    <div class="content">
+        <form method="post" class="debate-form">
+            <h1>Créer un débat</h1>
+
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            {{ form_start(form, {'attr': {'class': 'debate-form'}}) }}
+
+            {{ form_row(form.nameDebate, {'label': 'Nom du débat'}) }}
+            {{ form_row(form.descriptionDebate, {'label': 'Description du débat'}) }}
+            {{ form_row(form.categories) }}
+
+            <button type="submit">Créer le débat</button>
+
+            {{ form_end(form) }}
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            new TomSelect('.tom-select', {
+                plugins: ['remove_button'],
+                persist: false,
+                create: false,
+                maxItems: null,
+                placeholder: "Sélectionnez une ou plusieurs catégories"
+            });
+        });
+    </script>
 {% endblock %}

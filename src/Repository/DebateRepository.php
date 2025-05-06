@@ -6,9 +6,6 @@ use App\Entity\Debate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @extends ServiceEntityRepository<Debate>
- */
 class DebateRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -16,28 +13,150 @@ class DebateRepository extends ServiceEntityRepository
         parent::__construct($registry, Debate::class);
     }
 
-    //    /**
-    //     * @return Debate[] Returns an array of Debate objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('d')
-    //            ->andWhere('d.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('d.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function getAllDebatsSortedByParticipants(int $limit, int $offset): array
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->leftJoin('d.camps', 'c')
+            ->leftJoin('c.arguments', 'a')
+            ->leftJoin('a.votes', 'v')
+            ->leftJoin('a.user', 'argUser')
+            ->leftJoin('v.user', 'voteUser')
+            ->groupBy('d.id')
+            ->addSelect('COUNT(DISTINCT argUser.id) + COUNT(DISTINCT voteUser.id) AS HIDDEN totalParticipants')
+            ->orderBy('totalParticipants', 'DESC')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit);
 
-    //    public function findOneBySomeField($value): ?Debate
-    //    {
-    //        return $this->createQueryBuilder('d')
-    //            ->andWhere('d.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        return $qb->getQuery()->getResult();
+    }
+
+    public function calculateStatsForDebat(int $debatId): array
+    {
+        $em = $this->getEntityManager();
+
+        // Récupération des deux camps du débat
+        $camps = $em->createQuery(
+            'SELECT c.id FROM App\Entity\Camp c WHERE c.debate = :debatId ORDER BY c.id ASC'
+        )
+            ->setParameter('debatId', $debatId)
+            ->getResult();
+
+        if (count($camps) < 2) {
+            return [
+                'participants' => 0,
+                'votes' => 0,
+                'pourcentage_camp_1' => 50,
+                'pourcentage_camp_2' => 50,
+            ];
+        }
+
+        $camp1Id = $camps[0]['id'];
+        $camp2Id = $camps[1]['id'];
+
+        // Votes camp 1 (uniquement sur des arguments validés)
+        $camp1Votes = (int) $em->createQuery(
+            'SELECT COUNT(v.id)
+        FROM App\Entity\Votes v
+        JOIN v.argument a
+        JOIN a.camp c
+        WHERE c.id = :campId AND a.validationDate IS NOT NULL'
+        )
+            ->setParameter('campId', $camp1Id)
+            ->getSingleScalarResult();
+
+        // Votes camp 2 (idem)
+        $camp2Votes = (int) $em->createQuery(
+            'SELECT COUNT(v.id)
+        FROM App\Entity\Votes v
+        JOIN v.argument a
+        JOIN a.camp c
+        WHERE c.id = :campId AND a.validationDate IS NOT NULL'
+        )
+            ->setParameter('campId', $camp2Id)
+            ->getSingleScalarResult();
+
+        $totalVotes = $camp1Votes + $camp2Votes;
+        $pourcentageCamp1 = $totalVotes > 0 ? round(($camp1Votes / $totalVotes) * 100, 1) : 50;
+        $pourcentageCamp2 = $totalVotes > 0 ? round(($camp2Votes / $totalVotes) * 100, 1) : 50;
+
+
+        // Participants = utilisateurs distincts ayant posté un argument validé OU voté
+        $argUsers = $em->createQuery(
+            'SELECT DISTINCT u.id FROM App\Entity\Argument a
+        JOIN a.user u
+        JOIN a.camp c
+        WHERE c.debate = :debatId AND a.validationDate IS NOT NULL'
+        )
+            ->setParameter('debatId', $debatId)
+            ->getArrayResult();
+
+        $voteUsers = $em->createQuery(
+            'SELECT DISTINCT u.id FROM App\Entity\Votes v
+        JOIN v.user u
+        JOIN v.argument a
+        JOIN a.camp c
+        WHERE c.debate = :debatId'
+        )
+            ->setParameter('debatId', $debatId)
+            ->getArrayResult();
+
+        // Fusionner les deux listes d’ID et retirer les doublons
+        $userIds = array_unique(array_merge(
+            array_column($argUsers, 'id'),
+            array_column($voteUsers, 'id')
+        ));
+
+        $participants = count($userIds);
+
+        return [
+            'participants' => $participants,
+            'votes' => $totalVotes,
+            'pourcentage_camp_1' => $pourcentageCamp1,
+            'pourcentage_camp_2' => $pourcentageCamp2,
+        ];
+    }
+
+
+
+
+    public function getUserRankingByVotes(): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $startDate = new \DateTime('first day of this month 00:00:00');
+        $endDate = new \DateTime('last day of this month 23:59:59');
+
+        $qb = $entityManager->createQueryBuilder();
+
+        $qb->select('u.id', 'u.pseudo', 'COUNT(v.id) AS voteCount')
+            ->from('App\Entity\Votes', 'v')
+            ->join('v.argument', 'a')
+            ->join('a.user', 'u')
+            ->where('v.voteDate BETWEEN :startDate AND :endDate')
+            ->groupBy('u.id')
+            ->orderBy('voteCount', 'DESC')
+            ->setMaxResults(10)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate);
+
+        return $qb->getQuery()->getResult();
+    }
+    public function getAllDebatsSortedByDate(int $limit, int $offset): array
+    {
+        return $this->getEntityManager()->createQuery(
+            'SELECT d
+         FROM App\Entity\Debate d
+         LEFT JOIN d.camps c
+         LEFT JOIN c.arguments a WITH a.validationDate IS NOT NULL
+         GROUP BY d.id
+         ORDER BY MAX(a.validationDate) DESC'
+        )
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->getResult();
+    }
+
+
+
+
 }

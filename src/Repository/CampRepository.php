@@ -16,6 +16,20 @@ class CampRepository extends ServiceEntityRepository
         parent::__construct($registry, Camp::class);
     }
 
+    /**
+     * @return Camp[] Returns an array of Camp objects
+     */
+    public function findByDebate($debate): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.debate = :debate')
+            ->setParameter('debate', $debate)
+            ->orderBy('c.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     //    /**
     //     * @return Camp[] Returns an array of Camp objects
     //     */

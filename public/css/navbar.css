@@ -1,0 +1,147 @@
+* {
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ----- Navbar principale ----- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #212c3d; /* Bleu foncé */
+    padding: 12px 20px;
+    color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* ----- Logo et Titre ----- */
+.navbar__logo {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Espacement entre l'image et le texte */
+}
+
+.navbar__logo a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none; /* Supprimer le soulignement du lien */
+    color: inherit; /* Garder la couleur du texte */
+}
+
+.navbar__logo-img {
+    width: 45px; /* Taille du logo */
+    height: auto;
+    object-fit: contain;
+}
+
+.navbar__logo span {
+    font-size: 1.7rem; /* Taille du texte */
+    font-weight: bold;
+    color: #f5f5f5;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+    display: inline-block; /* Empêcher le texte de bouger */
+}
+
+/* Effet au survol */
+.navbar__logo a:hover span {
+    color: #4fb3d8; /* Changement de couleur */
+}
+
+/* ----- Barre de recherche ----- */
+.navbar__search {
+    display: flex;
+    align-items: center;
+    background: #e5e5e5;
+    border-radius: 20px;
+    padding: 5px 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar__search input {
+    border: none;
+    background: none;
+    outline: none;
+    padding: 5px;
+    border-radius: 10px;
+    width: 250px;
+    transition: width 0.3s ease;
+    color: #333;
+    font-size: 1rem;
+}
+
+/* Icône de recherche */
+.search-icon {
+    width: 20px;
+    cursor: pointer;
+}
+
+/* ----- Actions: Bouton Ajouter Débat + Connexion ----- */
+.navbar__actions {
+    display: flex;
+    align-items: center; /* Alignement vertical */
+    gap: 15px; /* Espacement entre les éléments */
+}
+
+/* ----- Bouton "Ajouter un Débat" (placé à gauche du logo) ----- */
+.btn-create-debate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    background: linear-gradient(135deg, #4fb3d8, #3e64e5);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    white-space: nowrap; /* Empêche le retour à la ligne */
+    order: -1; /* Place le bouton AVANT les autres éléments */
+}
+
+.btn-create-debate:hover {
+    background: linear-gradient(135deg, #3e64e5, #4fb3d8);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+.btn-create-debate:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Icône utilisateur */
+.login-button img {
+    width: 48px;
+    height: 48px;
+}
+
+/* ----- Responsive Design ----- */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .navbar__search input {
+        width: 200px;
+    }
+
+    .navbar__actions {
+        flex-direction: row;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .btn-create-debate {
+        padding: 8px 15px;
+    }
+}
