@@ -9,7 +9,7 @@
     </div>
 
     <div class="navbar__search">
-        <form action="{{ path('app_debate_search') }}" method="get" autocomplete="off">
+        <form id="search-form" action="{{ path('app_debate_search') }}" method="get" autocomplete="off">
             <input type="text" id="debate-search" name="q" placeholder="Rechercher un débat..." />
             <button type="submit">
                 <img src="{{ asset('image/loupe.png') }}" alt="Rechercher" class="search-icon" />
@@ -30,10 +30,11 @@
 </nav>
 
 <script>
+    const resultsContainer = document.getElementById('search-results');
+
     document.addEventListener('DOMContentLoaded', () => {
         const input = document.getElementById('debate-search');
-        const resultsContainer = document.getElementById('search-results');
-
+        const form = document.getElementById('search-form');
         let timeout = null;
 
         input.addEventListener('input', () => {
@@ -42,11 +43,16 @@
 
             if (query.length < 2) {
                 resultsContainer.innerHTML = '';
+                resultsContainer.style.display = 'none';
                 return;
             }
 
+            // Affichage immédiat d’un message pendant l’attente
+            resultsContainer.innerHTML = '<div class="search-loading">Recherche en cours...</div>';
+            resultsContainer.style.display = 'block';
+
             timeout = setTimeout(() => {
-                fetch(`/ajax/search?q=${encodeURIComponent(query)}`)
+                fetch(`/debate/ajax/search?q=${encodeURIComponent(query)}`)
                     .then(res => res.json())
                     .then(data => {
                         resultsContainer.innerHTML = '';
@@ -62,8 +68,40 @@
                                 resultsContainer.appendChild(item);
                             });
                         }
+
+                        resultsContainer.style.display = 'block';
                     });
-            }, 300);
+            }, 100); // Réduction du délai à 100 ms
         });
+
+        // Empêche la soumission si aucun résultat
+        form.addEventListener('submit', function (e) {
+            const resultItems = resultsContainer.querySelectorAll('.search-item');
+
+            if (resultItems.length === 0) {
+                e.preventDefault();
+                alert("Aucun débat trouvé. Veuillez sélectionner une suggestion.");
+            } else if (resultItems.length === 1) {
+                e.preventDefault();
+                window.location.href = resultItems[0].href;
+            }
+        });
+
+        input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                const resultItems = resultsContainer.querySelectorAll('.search-item');
+                if (resultItems.length === 0) {
+                    e.preventDefault();
+                    alert("Aucun débat trouvé. Veuillez sélectionner une suggestion.");
+                }
+            }
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!document.querySelector('.navbar__search').contains(e.target)) {
+            resultsContainer.innerHTML = '';
+            resultsContainer.style.display = 'none';
+        }
     });
 </script>
