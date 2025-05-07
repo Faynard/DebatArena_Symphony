@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Argument;
 use App\Entity\Camp;
+use App\Entity\Report;
 use App\Entity\User;
 use App\Entity\Votes;
 use App\Form\ArgumentType;
@@ -31,21 +32,61 @@ final class ArgumentController extends AbstractController
     {
         $argumentId = $_POST['argumentId'];
 
-        $argumentRepository = $entityManager->getRepository(ArgumentRepository::class);
+        $argumentRepository = $entityManager->getRepository(Argument::class);
         $argument = $argumentRepository->findOneBy(['id' => $argumentId]);
 
-        $vote = new Votes();
-        $vote->setUser($this->getUser());
-        $vote->setArgument($argument);
+        $voteRepository = $entityManager->getRepository(Votes::class);
+        $numberVotes = $voteRepository->countByUserAndDebate($this->getUser(), $argument->getCamp()->getDebate()->getId());
 
-        $entityManager->persist($vote);
-        $entityManager->flush();
+        if ($numberVotes < 1) {
+            $vote = new Votes();
+            $vote->setUser($this->getUser());
+            $vote->setArgument($argument);
 
-
+            $entityManager->persist($vote);
+            $entityManager->flush();
+        }
 
         return $this->redirectToRoute('app_debate_show', [
             'id' => $argument->getCamp()->getDebate()->getId(),
         ]);
+    }
+
+    #[Route('/unvote', name: 'app_argument_unvote', methods: ['POST'])]
+    public function unvote(EntityManagerInterface $entityManager): Response
+    {
+        $argumentId = $_POST['argumentId'];
+
+        $argumentRepository = $entityManager->getRepository(Argument::class);
+        $argument = $argumentRepository->findOneBy(['id' => $argumentId]);
+
+        $voteRepository = $entityManager->getRepository(Votes::class);
+        $vote = $voteRepository->findOneBy(['argument' => $argument, "user" => $this->getUser()]);
+
+        $entityManager->remove($vote);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_debate_show', [
+            'id' => $argument->getCamp()->getDebate()->getId(),
+        ]);
+    }
+
+    #[Route('/report', name: 'app_argument_report', methods: ['POST'])]
+    public function report(EntityManagerInterface $entityManager): Response
+    {
+        $argumentId = $_POST['argumentId'];
+
+        $argumentRepository = $entityManager->getRepository(Argument::class);
+        $argument = $argumentRepository->findOneBy(['id' => $argumentId]);
+
+        $report = new Report();
+        $report->setArgument($argument);
+        $report->setUser($this->getUser());
+
+        $entityManager->persist($report);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_debate_index');
     }
 
     #[Route('/new', name: 'app_argument_new', methods: ['GET', 'POST'])]

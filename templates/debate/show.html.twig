@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% set debateId = debate.id %}
+
 {% block title %}Debate{% endblock %}
 
 {% block body %}
@@ -36,7 +38,8 @@
                 <h2>{{ camp.nameCamp }}</h2>
                 <div>
                     {% for argument in arguments[camp.id] %}
-                        {{ include('argument/show.html.twig', {name: 'argument'}) }}
+                        {% set isVoted = argument.id in argumentIdVoted %}
+                        {{ include('argument/show.html.twig', {name: 'argument,isVoted,debateId'}) }}
                     {% endfor %}
                 </div>
             </div>

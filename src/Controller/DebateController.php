@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Argument;
 use App\Entity\Debate;
+use App\Entity\Votes;
 use App\Form\DebateType;
 use App\Repository\DebateRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -118,9 +119,18 @@ final class DebateController extends AbstractController
         foreach ($debate->getCamps() as $camp) {
             $arguments[$camp->getId()] = $argumentRepository->findMainValidatedArgumentByCamp($camp->getId());
         }
+
+        $argumentIdVoted = [];
+        $votesRepository = $entityManager->getRepository(Votes::class);
+        foreach ($votesRepository->findByUser($this->getUser()) as $vote) {
+            $argumentIdVoted[] = $vote->getArgument()->getId();
+        }
+
+
         return $this->render('debate/show.html.twig', [
             'debate' => $debate,
             'arguments' => $arguments,
+            'argumentIdVoted' => $argumentIdVoted,
         ]);
     }
 
