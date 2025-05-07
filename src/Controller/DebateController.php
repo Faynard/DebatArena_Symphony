@@ -152,4 +152,21 @@ final class DebateController extends AbstractController
 
         return $this->redirectToRoute('app_debate_index');
     }
+    #[Route('/recherche', name: 'app_debate_search')]
+    public function search(Request $request, DebateRepository $debateRepository): Response
+    {
+        $query = $request->query->get('q');
+
+        $debats = $debateRepository->createQueryBuilder('d')
+            ->where('d.nameDebate LIKE :query')
+            ->setParameter('query', '%' . $query . '%')
+            ->getQuery()
+            ->getResult();
+
+        return $this->render('debate/search_results.html.twig', [
+            'debats' => $debats,
+            'query' => $query,
+        ]);
+    }
+
 }

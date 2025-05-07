@@ -144,4 +144,47 @@ body {
     .btn-create-debate {
         padding: 8px 15px;
     }
+    .navbar__search input:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px #4fb3d8;
+    }
+
+    .login-button img:hover {
+        transform: scale(1.05);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .search-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid #ccc;
+        z-index: 1000;
+        max-height: 250px;
+        overflow-y: auto;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .search-item {
+        display: block;
+        padding: 10px 15px;
+        text-decoration: none;
+        color: #333;
+        font-size: 0.95rem;
+    }
+
+    .search-item:hover {
+        background-color: #f3f3f3;
+    }
+
+    .no-result {
+        padding: 10px 15px;
+        color: #777;
+        font-style: italic;
+    }
+
+
 }

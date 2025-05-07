@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
+
 <nav class="navbar">
     <div class="navbar__logo">
         <a href="{{ path('app_debate_index') }}">
@@ -8,10 +9,13 @@
     </div>
 
     <div class="navbar__search">
-        <input type="text" placeholder="Rechercher un débat..." />
-        <button>
-            <img src="{{ asset('image/loupe.png') }}" alt="Loupe" class="search-icon" />
-        </button>
+        <form action="{{ path('app_debate_search') }}" method="get" autocomplete="off">
+            <input type="text" id="debate-search" name="q" placeholder="Rechercher un débat..." />
+            <button type="submit">
+                <img src="{{ asset('image/loupe.png') }}" alt="Rechercher" class="search-icon" />
+            </button>
+        </form>
+        <div id="search-results" class="search-dropdown"></div>
     </div>
 
     <div class="navbar__actions">
@@ -24,3 +28,42 @@
         </a>
     </div>
 </nav>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const input = document.getElementById('debate-search');
+        const resultsContainer = document.getElementById('search-results');
+
+        let timeout = null;
+
+        input.addEventListener('input', () => {
+            clearTimeout(timeout);
+            const query = input.value.trim();
+
+            if (query.length < 2) {
+                resultsContainer.innerHTML = '';
+                return;
+            }
+
+            timeout = setTimeout(() => {
+                fetch(`/ajax/search?q=${encodeURIComponent(query)}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        resultsContainer.innerHTML = '';
+
+                        if (data.length === 0) {
+                            resultsContainer.innerHTML = '<div class="no-result">Aucun débat trouvé</div>';
+                        } else {
+                            data.forEach(debat => {
+                                const item = document.createElement('a');
+                                item.href = `/debate/${debat.id}`;
+                                item.classList.add('search-item');
+                                item.textContent = debat.nameDebate;
+                                resultsContainer.appendChild(item);
+                            });
+                        }
+                    });
+            }, 300);
+        });
+    });
+</script>
