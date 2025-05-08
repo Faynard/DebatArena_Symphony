@@ -40,7 +40,7 @@ final class ArgumentController extends AbstractController
         $voteRepository = $entityManager->getRepository(Votes::class);
         $numberVotes = count($voteRepository->findByUserAndDebate($this->getUser(), $argument->getCamp()->getDebate()));
 
-        if ($numberVotes < 1) {
+        if ($numberVotes < 5) {
             $vote = new Votes();
             $vote->setUser($this->getUser());
             $vote->setArgument($argument);
@@ -94,16 +94,12 @@ final class ArgumentController extends AbstractController
     }
 
     #[IsGranted('ROLE_USER')]
-    #[Route('/new', name: 'app_argument_new', methods: ['POST'])]
+    #[Route('/new', name: 'app_argument_new', methods: ['GET','POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $ID_DEBATE = $_POST["idDebate"];
-        $USER = $entityManager->getRepository(User::class)->find(1); /* TODO Ne pas mettre l'id en dur */
-
         $argument = new Argument();
-        $argument->setUser($this->getUser()); /* TODO Mettre le current user */
+        $argument->setUser($this->getUser());
 
-        $campRepository = $entityManager->getRepository(Camp::class);
         $form = $this->createForm(ArgumentType::class, $argument);
         $form->handleRequest($request);
 

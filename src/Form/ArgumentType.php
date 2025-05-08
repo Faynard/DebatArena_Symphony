@@ -16,7 +16,10 @@ class ArgumentType extends AbstractType
     {
         $builder
             ->add('text')
-            ->add('camp')
+            ->add('camp', EntityType::class, [
+                'class' => Camp::class,
+                'choice_label' => 'nameCamp',
+            ])
         ;
     }
 
@@ -25,6 +28,5 @@ class ArgumentType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Argument::class,
         ]);
-
     }
 }

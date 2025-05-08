@@ -1,7 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% set debateId = debate.id %}
-
 {% block title %}Debate{% endblock %}
 
 {% block body %}
@@ -39,12 +37,15 @@
                 <div>
                     {% for argument in arguments[camp.id] %}
                         {% set isVoted = argument.id in argumentIdVoted %}
-                        {{ include('argument/show.html.twig', {name: 'argument,isVoted,debateId'}) }}
+                        {% include 'argument/show.html.twig' with {'argument' : argument, 'isVoted': isVoted} %}
                     {% endfor %}
                 </div>
             </div>
         {% endfor %}
     </div>
+
+    <p>Bonjour</p>
+
     <a href="{{ path('app_debate_index') }}">back to list</a>
 
     <a href="{{ path('app_debate_edit', {'id': debate.id}) }}">edit</a>
