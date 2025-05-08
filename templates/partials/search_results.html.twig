@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résultats de recherche{% endblock %}
+
+{% block body %}
+    <h1>Résultats pour "{{ query }}"</h1>
+
+    {% if debats is empty %}
+        <p>Aucun débat trouvé.</p>
+    {% else %}
+        <ul>
+            {% for debat in debats %}
+                <li><a href="{{ path('app_debate_show', { id: debat.id }) }}">{{ debat.nameDebate }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

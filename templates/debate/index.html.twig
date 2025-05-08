@@ -28,8 +28,17 @@
                 </a>
                 <div class="debate-stats">{{ stats.participants ?? 0 }} participants</div>
                 <div class="progress-container">
-                    <div class="progress-blue" style="width: {{ stats.pourcentage_camp_1 }}%;">{{ stats.pourcentage_camp_1 }}%</div>
-                    <div class="progress-red" style="width: {{ stats.pourcentage_camp_2 }}%;">{{ stats.pourcentage_camp_2 }}%</div>
+                    {% if stats.pourcentage_camp_1 > 0 %}
+                        <div class="progress-blue" style="width: {{ stats.pourcentage_camp_1 }}%;">
+                            {{ stats.pourcentage_camp_1 }}%
+                        </div>
+                    {% endif %}
+
+                    {% if stats.pourcentage_camp_2 > 0 %}
+                        <div class="progress-red" style="width: {{ stats.pourcentage_camp_2 }}%;">
+                            {{ stats.pourcentage_camp_2 }}%
+                        </div>
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>
@@ -74,9 +83,19 @@
                     <h3>{{ debat.getNameDebate()|e }}</h3>
                     <div class="debate-description">{{ debat.descriptionDebate|e }}</div>
                     <div class="progress-container">
-                        <div class="progress-blue" style="width: {{ stats.pourcentage_camp_1 }}%;">{{ stats.pourcentage_camp_1 }}%</div>
-                        <div class="progress-red" style="width: {{ stats.pourcentage_camp_2 }}%;">{{ stats.pourcentage_camp_2 }}%</div>
+                        {% if stats.pourcentage_camp_1 > 0 %}
+                            <div class="progress-blue" style="width: {{ stats.pourcentage_camp_1 }}%;">
+                                {{ stats.pourcentage_camp_1 }}%
+                            </div>
+                        {% endif %}
+
+                        {% if stats.pourcentage_camp_2 > 0 %}
+                            <div class="progress-red" style="width: {{ stats.pourcentage_camp_2 }}%;">
+                                {{ stats.pourcentage_camp_2 }}%
+                            </div>
+                        {% endif %}
                     </div>
+
                     <div class="debate-stats">{{ stats.participants ?? 0 }} participants</div>
                 </div>
             </a>

@@ -19,7 +19,7 @@
             <tr>
                 <td>{{ argument.id }}</td>
                 <td>{{ argument.text }}</td>
-                <td>{{ argument.creationDate ? argument.creationDate|date('Y-m-d') : '' }}</td>
+                <td>{{ argument.validationDate ? argument.validationDate|date('Y-m-d') : '' }}</td>
                 <td>
                     <a href="{{ path('app_argument_show', {'id': argument.id}) }}">show</a>
                     <a href="{{ path('app_argument_edit', {'id': argument.id}) }}">edit</a>
