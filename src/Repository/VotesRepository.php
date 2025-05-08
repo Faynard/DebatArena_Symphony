@@ -16,6 +16,25 @@ class VotesRepository extends ServiceEntityRepository
         parent::__construct($registry, Votes::class);
     }
 
+    /**
+     * @return Votes[] Returns an array of Votes objects
+     */
+    public function findByUserAndDebate($user, $debate): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        return $entityManager->createQuery(
+            'SELECT v
+            FROM App\Entity\Votes v
+            INNER JOIN v.argument a
+            INNER JOIN a.camp c
+            WHERE v.user = :user
+            AND c.debate = :debate'
+        )->setParameter('user', $user)
+            ->setParameter('debate', $debate)
+            ->getResult();
+    }
+
     //    /**
     //     * @return Votes[] Returns an array of Votes objects
     //     */

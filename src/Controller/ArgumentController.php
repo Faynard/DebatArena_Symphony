@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Argument;
 use App\Entity\Camp;
+use App\Entity\Report;
 use App\Entity\User;
 use App\Entity\Votes;
 use App\Form\ArgumentType;
@@ -14,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/argument')]
 final class ArgumentController extends AbstractController
@@ -26,38 +28,78 @@ final class ArgumentController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_USER')]
     #[Route('/vote', name: 'app_argument_vote', methods: ['POST'])]
     public function vote(EntityManagerInterface $entityManager): Response
     {
         $argumentId = $_POST['argumentId'];
 
-        $argumentRepository = $entityManager->getRepository(ArgumentRepository::class);
+        $argumentRepository = $entityManager->getRepository(Argument::class);
         $argument = $argumentRepository->findOneBy(['id' => $argumentId]);
 
-        $vote = new Votes();
-        $vote->setUser($this->getUser());
-        $vote->setArgument($argument);
+        $voteRepository = $entityManager->getRepository(Votes::class);
+        $numberVotes = count($voteRepository->findByUserAndDebate($this->getUser(), $argument->getCamp()->getDebate()));
 
-        $entityManager->persist($vote);
-        $entityManager->flush();
+        if ($numberVotes < 5) {
+            $vote = new Votes();
+            $vote->setUser($this->getUser());
+            $vote->setArgument($argument);
 
-
+            $entityManager->persist($vote);
+            $entityManager->flush();
+        }
 
         return $this->redirectToRoute('app_debate_show', [
             'id' => $argument->getCamp()->getDebate()->getId(),
         ]);
     }
 
-    #[Route('/new', name: 'app_argument_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_USER')]
+    #[Route('/unvote', name: 'app_argument_unvote', methods: ['POST'])]
+    public function unvote(EntityManagerInterface $entityManager): Response
+    {
+        $argumentId = $_POST['argumentId'];
+
+        $argumentRepository = $entityManager->getRepository(Argument::class);
+        $argument = $argumentRepository->findOneBy(['id' => $argumentId]);
+
+        $voteRepository = $entityManager->getRepository(Votes::class);
+        $vote = $voteRepository->findOneBy(['argument' => $argument, "user" => $this->getUser()]);
+
+        $entityManager->remove($vote);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_debate_show', [
+            'id' => $argument->getCamp()->getDebate()->getId(),
+        ]);
+    }
+
+    #[IsGranted('ROLE_USER')]
+    #[Route('/report', name: 'app_argument_report', methods: ['POST'])]
+    public function report(EntityManagerInterface $entityManager): Response
+    {
+        $argumentId = $_POST['argumentId'];
+
+        $argumentRepository = $entityManager->getRepository(Argument::class);
+        $argument = $argumentRepository->findOneBy(['id' => $argumentId]);
+
+        $report = new Report();
+        $report->setArgument($argument);
+        $report->setUser($this->getUser());
+
+        $entityManager->persist($report);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_debate_index');
+    }
+
+    #[IsGranted('ROLE_USER')]
+    #[Route('/new', name: 'app_argument_new', methods: ['GET','POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $ID_DEBATE = 1; /* TODO Ne pas mettre l'id en dur */
-        $USER = $entityManager->getRepository(User::class)->find(1); /* TODO Ne pas mettre l'id en dur */
-
         $argument = new Argument();
-        $argument->setUser($USER); /* TODO Mettre le current user */
+        $argument->setUser($this->getUser());
 
-        $campRepository = $entityManager->getRepository(Camp::class);
         $form = $this->createForm(ArgumentType::class, $argument);
         $form->handleRequest($request);
 
@@ -82,6 +124,7 @@ final class ArgumentController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_USER')]
     #[Route('/{id}/edit', name: 'app_argument_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Argument $argument, EntityManagerInterface $entityManager): Response
     {
@@ -98,16 +141,5 @@ final class ArgumentController extends AbstractController
             'argument' => $argument,
             'form' => $form,
         ]);
-    }
-
-    #[Route('/{id}', name: 'app_argument_delete', methods: ['POST'])]
-    public function delete(Request $request, Argument $argument, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$argument->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($argument);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_argument_index', [], Response::HTTP_SEE_OTHER);
     }
 }

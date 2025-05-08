@@ -36,12 +36,14 @@
                 <h2>{{ camp.nameCamp }}</h2>
                 <div>
                     {% for argument in arguments[camp.id] %}
-                        {{ include('argument/show.html.twig', {name: 'argument'}) }}
+                        {% set isVoted = argument.id in argumentIdVoted %}
+                        {% include 'argument/show.html.twig' with {'argument' : argument, 'isVoted': isVoted} %}
                     {% endfor %}
                 </div>
             </div>
         {% endfor %}
     </div>
+
     <a href="{{ path('app_debate_index') }}">back to list</a>
 
     <a href="{{ path('app_debate_edit', {'id': debate.id}) }}">edit</a>
