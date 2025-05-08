@@ -15,8 +15,8 @@
             </button>
         </form>
     {% endif %}
-    <form method="post" action="{{ path('app_argument_new') }}" id="respond-form-{{ argument.id }}">
-        <input type="hidden" name="debateId" value="1">
+    <form method="get" action="{{ path('app_argument_new') }}" id="respond-form-{{ argument.id }}">
+        <input type="hidden" name="debate" value="{{ debateId }}">
         <input type="hidden" name="mainArgumentId" value="{{ argument.id }}">
         <button class="btn">{{ 'argument.respond'|trans }}</button>
     </form>
@@ -24,5 +24,9 @@
         <input type="hidden" name="argumentId" value="{{ argument.id }}">
         <button class="btn">{{ 'argument.report'|trans }}</button>
     </form>
+    <p>
+        {% for subArgument in argument.subArguments %}
+            {{ subArgument.text }}<br>
+        {% endfor %}
+    </p>
 </div>
-<!-- TODO Afficher les sous-arguments -->

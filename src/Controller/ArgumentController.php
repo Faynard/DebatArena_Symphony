@@ -99,20 +99,29 @@ final class ArgumentController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $debateId = $request->query->get('debate');
+        $mainArgumentId = $request->query->get('mainArgumentId');
+        $mainArgument = false;
+
         $debateRepository = $entityManager->getRepository(Debate::class);
+        $argumentRepository = $entityManager->getRepository(Argument::class);
 
         if (!$debateId) {
             throw $this->createNotFoundException('Missing debate ID.');
         }
-
         $debate = $debateRepository->find($debateId);
-
         if (!$debate) {
             throw $this->createNotFoundException('Debate not found.');
         }
 
         $argument = new Argument();
         $argument->setUser($this->getUser());
+
+        if ($mainArgumentId) {
+            $mainArgument = $argumentRepository->find($mainArgumentId);
+        }
+        if ($mainArgument) {
+            $argument->setMainArgument($mainArgument);
+        }
 
         $form = $this->createForm(ArgumentType::class, $argument, [
             'debate' => $debate,
@@ -123,7 +132,9 @@ final class ArgumentController extends AbstractController
             $entityManager->persist($argument);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_argument_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_debate_show', [
+                'id' => $argument->getCamp()->getDebate()->getId(),
+            ], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('argument/new.html.twig', [
