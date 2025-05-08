@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Argument;
 use App\Entity\Camp;
+use App\Entity\Debate;
 use App\Entity\Report;
 use App\Entity\User;
 use App\Entity\Votes;
@@ -94,13 +95,28 @@ final class ArgumentController extends AbstractController
     }
 
     #[IsGranted('ROLE_USER')]
-    #[Route('/new', name: 'app_argument_new', methods: ['GET','POST'])]
+    #[Route('/new', name: 'app_argument_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $debateId = $request->query->get('debate');
+        $debateRepository = $entityManager->getRepository(Debate::class);
+
+        if (!$debateId) {
+            throw $this->createNotFoundException('Missing debate ID.');
+        }
+
+        $debate = $debateRepository->find($debateId);
+
+        if (!$debate) {
+            throw $this->createNotFoundException('Debate not found.');
+        }
+
         $argument = new Argument();
         $argument->setUser($this->getUser());
 
-        $form = $this->createForm(ArgumentType::class, $argument);
+        $form = $this->createForm(ArgumentType::class, $argument, [
+            'debate' => $debate,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

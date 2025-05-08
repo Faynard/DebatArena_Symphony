@@ -30,6 +30,11 @@
         </tbody>
     </table>
 
+    <form method="get" action="{{ path('app_argument_new') }}">
+        <input type="hidden" name="debate" value="{{ debate.id }}">
+        <button class="btn">{{ 'argument.new'|trans }}</button>
+    </form>
+
     <div class="d-flex justify-content-around">
         {% for camp in debate.camps %}
             <div>
