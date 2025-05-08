@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ReportRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Report
 {
     #[ORM\Id]
@@ -27,6 +28,13 @@ class Report
 
     #[ORM\Column]
     private ?bool $isValid = null;
+
+    #[ORM\PrePersist]
+    public function prePersist(): void
+    {
+        $this->reportDate = new \DateTime();
+        $this->isValid = false;
+    }
 
     public function getId(): ?int
     {
