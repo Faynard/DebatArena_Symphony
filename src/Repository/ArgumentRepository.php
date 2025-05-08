@@ -22,9 +22,11 @@ class ArgumentRepository extends ServiceEntityRepository
     public function findMainValidatedArgumentByCamp($camp): array
     {
         return $this->createQueryBuilder('a')
+            ->join('App\Entity\Report', 'r', 'WITH', 'r.argument = a')
             ->andWhere('a.camp = :camp')
+            ->andWhere('a.mainArgument IS NULL')
+            ->andWhere('r.isValid = FALSE')
             ->setParameter('camp', $camp)
-            ->orderBy('a.creationDate', 'ASC')
             ->getQuery()
             ->getResult()
             ;

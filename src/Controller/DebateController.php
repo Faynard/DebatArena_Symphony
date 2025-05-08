@@ -117,15 +117,14 @@ final class DebateController extends AbstractController
         $arguments = [];
         $argumentRepository = $entityManager->getRepository(Argument::class);
         foreach ($debate->getCamps() as $camp) {
-            $arguments[$camp->getId()] = $argumentRepository->findMainValidatedArgumentByCamp($camp->getId());
+            $arguments[$camp->getId()] = $argumentRepository->findAll();
         }
 
         $argumentIdVoted = [];
         $votesRepository = $entityManager->getRepository(Votes::class);
-        foreach ($votesRepository->findByUser($this->getUser()) as $vote) {
+        foreach ($votesRepository->findByUserAndDebate($this->getUser(), $debate) as $vote) {
             $argumentIdVoted[] = $vote->getArgument()->getId();
         }
-
 
         return $this->render('debate/show.html.twig', [
             'debate' => $debate,

@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/argument')]
 final class ArgumentController extends AbstractController
@@ -27,6 +28,7 @@ final class ArgumentController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_USER')]
     #[Route('/vote', name: 'app_argument_vote', methods: ['POST'])]
     public function vote(EntityManagerInterface $entityManager): Response
     {
@@ -36,7 +38,7 @@ final class ArgumentController extends AbstractController
         $argument = $argumentRepository->findOneBy(['id' => $argumentId]);
 
         $voteRepository = $entityManager->getRepository(Votes::class);
-        $numberVotes = $voteRepository->countByUserAndDebate($this->getUser(), $argument->getCamp()->getDebate()->getId());
+        $numberVotes = count($voteRepository->findByUserAndDebate($this->getUser(), $argument->getCamp()->getDebate()));
 
         if ($numberVotes < 1) {
             $vote = new Votes();
@@ -52,6 +54,7 @@ final class ArgumentController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_USER')]
     #[Route('/unvote', name: 'app_argument_unvote', methods: ['POST'])]
     public function unvote(EntityManagerInterface $entityManager): Response
     {
@@ -71,6 +74,7 @@ final class ArgumentController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_USER')]
     #[Route('/report', name: 'app_argument_report', methods: ['POST'])]
     public function report(EntityManagerInterface $entityManager): Response
     {
@@ -89,14 +93,15 @@ final class ArgumentController extends AbstractController
         return $this->redirectToRoute('app_debate_index');
     }
 
-    #[Route('/new', name: 'app_argument_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_USER')]
+    #[Route('/new', name: 'app_argument_new', methods: ['POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $ID_DEBATE = 1; /* TODO Ne pas mettre l'id en dur */
+        $ID_DEBATE = $_POST["idDebate"];
         $USER = $entityManager->getRepository(User::class)->find(1); /* TODO Ne pas mettre l'id en dur */
 
         $argument = new Argument();
-        $argument->setUser($USER); /* TODO Mettre le current user */
+        $argument->setUser($this->getUser()); /* TODO Mettre le current user */
 
         $campRepository = $entityManager->getRepository(Camp::class);
         $form = $this->createForm(ArgumentType::class, $argument);
@@ -123,6 +128,7 @@ final class ArgumentController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_USER')]
     #[Route('/{id}/edit', name: 'app_argument_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Argument $argument, EntityManagerInterface $entityManager): Response
     {
@@ -139,16 +145,5 @@ final class ArgumentController extends AbstractController
             'argument' => $argument,
             'form' => $form,
         ]);
-    }
-
-    #[Route('/{id}', name: 'app_argument_delete', methods: ['POST'])]
-    public function delete(Request $request, Argument $argument, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$argument->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($argument);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_argument_index', [], Response::HTTP_SEE_OTHER);
     }
 }
