@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
+
 <nav class="navbar">
     <div class="navbar__logo">
         <a href="{{ path('app_debate_index') }}">
@@ -8,10 +9,13 @@
     </div>
 
     <div class="navbar__search">
-        <input type="text" placeholder="Rechercher un débat..." />
-        <button>
-            <img src="{{ asset('image/loupe.png') }}" alt="Loupe" class="search-icon" />
-        </button>
+        <form id="search-form" action="{{ path('app_debate_search') }}" method="get" autocomplete="off">
+            <input type="text" id="debate-search" name="q" placeholder="Rechercher un débat..." />
+            <button type="submit">
+                <img src="{{ asset('image/loupe.png') }}" alt="Rechercher" class="search-icon" />
+            </button>
+        </form>
+        <div id="search-results" class="search-dropdown"></div>
     </div>
 
     <div class="navbar__actions">
@@ -24,3 +28,80 @@
         </a>
     </div>
 </nav>
+
+<script>
+    const resultsContainer = document.getElementById('search-results');
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const input = document.getElementById('debate-search');
+        const form = document.getElementById('search-form');
+        let timeout = null;
+
+        input.addEventListener('input', () => {
+            clearTimeout(timeout);
+            const query = input.value.trim();
+
+            if (query.length < 2) {
+                resultsContainer.innerHTML = '';
+                resultsContainer.style.display = 'none';
+                return;
+            }
+
+            // Affichage immédiat d’un message pendant l’attente
+            resultsContainer.innerHTML = '<div class="search-loading">Recherche en cours...</div>';
+            resultsContainer.style.display = 'block';
+
+            timeout = setTimeout(() => {
+                fetch(`/debate/ajax/search?q=${encodeURIComponent(query)}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        resultsContainer.innerHTML = '';
+
+                        if (data.length === 0) {
+                            resultsContainer.innerHTML = '<div class="no-result">Aucun débat trouvé</div>';
+                        } else {
+                            data.forEach(debat => {
+                                const item = document.createElement('a');
+                                item.href = `/debate/${debat.id}`;
+                                item.classList.add('search-item');
+                                item.textContent = debat.nameDebate;
+                                resultsContainer.appendChild(item);
+                            });
+                        }
+
+                        resultsContainer.style.display = 'block';
+                    });
+            }, 100); // Réduction du délai à 100 ms
+        });
+
+        // Empêche la soumission si aucun résultat
+        form.addEventListener('submit', function (e) {
+            const resultItems = resultsContainer.querySelectorAll('.search-item');
+
+            if (resultItems.length === 0) {
+                e.preventDefault();
+                alert("Aucun débat trouvé. Veuillez sélectionner une suggestion.");
+            } else if (resultItems.length === 1) {
+                e.preventDefault();
+                window.location.href = resultItems[0].href;
+            }
+        });
+
+        input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                const resultItems = resultsContainer.querySelectorAll('.search-item');
+                if (resultItems.length === 0) {
+                    e.preventDefault();
+                    alert("Aucun débat trouvé. Veuillez sélectionner une suggestion.");
+                }
+            }
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!document.querySelector('.navbar__search').contains(e.target)) {
+            resultsContainer.innerHTML = '';
+            resultsContainer.style.display = 'none';
+        }
+    });
+</script>

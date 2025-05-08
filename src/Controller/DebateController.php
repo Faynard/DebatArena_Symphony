@@ -9,6 +9,7 @@ use App\Form\DebateType;
 use App\Repository\DebateRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -161,4 +162,60 @@ final class DebateController extends AbstractController
 
         return $this->redirectToRoute('app_debate_index');
     }
+    #[Route('/recherche', name: 'app_debate_search')]
+    public function search(Request $request, DebateRepository $debateRepository): Response
+    {
+        $query = $request->query->get('q');
+
+        if (!$query || strlen(trim($query)) < 2) {
+            $this->addFlash('warning', 'Veuillez entrer au moins 2 caractères.');
+            return $this->redirectToRoute('app_debate_index');
+        }
+
+        $debats = $debateRepository->createQueryBuilder('d')
+            ->where('d.nameDebate LIKE :query')
+            ->setParameter('query', '%' . $query . '%')
+            ->getQuery()
+            ->getResult();
+
+        if (count($debats) === 0) {
+            $this->addFlash('info', 'Aucun débat trouvé pour : "' . htmlspecialchars($query) . '".');
+            return $this->redirectToRoute('app_debate_index');
+        }
+
+        // Rediriger directement si un seul résultat
+        if (count($debats) === 1) {
+            return $this->redirectToRoute('app_debate_show', ['id' => $debats[0]->getId()]);
+        }
+
+        return $this->render('debate/search_results.html.twig', [
+            'debats' => $debats,
+            'query' => $query,
+        ]);
+    }
+
+    #[Route('/ajax/search', name: 'ajax_debate_search')]
+    public function ajaxSearch(Request $request, DebateRepository $debateRepository): JsonResponse
+    {
+        $query = $request->query->get('q', '');
+
+        $debats = $debateRepository->createQueryBuilder('d')
+            ->where('d.nameDebate LIKE :query')
+            ->setParameter('query', '%' . $query . '%')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+
+        $results = [];
+
+        foreach ($debats as $debat) {
+            $results[] = [
+                'id' => $debat->getId(),
+                'nameDebate' => $debat->getNameDebate(),
+            ];
+        }
+
+        return new JsonResponse($results);
+    }
+
 }
