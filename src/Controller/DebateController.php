@@ -117,7 +117,7 @@ final class DebateController extends AbstractController
         $arguments = [];
         $argumentRepository = $entityManager->getRepository(Argument::class);
         foreach ($debate->getCamps() as $camp) {
-            $arguments[$camp->getId()] = $argumentRepository->findAll();
+            $arguments[$camp->getId()] = $argumentRepository->findMainValidatedArgumentByCamp($camp);
         }
 
         $argumentIdVoted = [];
