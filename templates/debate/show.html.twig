@@ -1,56 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Debate{% endblock %}
+{% block title %}{{ debate.nameDebate }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/Debate/debate_show.css') }}">
+{% endblock %}
 
 {% block body %}
-    <h1>Debate</h1>
+    <div class="page">
+        <div class="header">
+            <h1 class="text-center">{{ debate.nameDebate }}</h1>
+            <p>{{ debate.descriptionDebate }}</p>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ debate.id }}</td>
-            </tr>
-            <tr>
-                <th>NameDebate</th>
-                <td>{{ debate.nameDebate }}</td>
-            </tr>
-            <tr>
-                <th>DescriptionDebate</th>
-                <td>{{ debate.descriptionDebate }}</td>
-            </tr>
-            <tr>
-                <th>IsValid</th>
-                <td>{{ debate.isValid ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>CreationDate</th>
-                <td>{{ debate.creationDate ? debate.creationDate|date('Y-m-d') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+            <form method="get" action="{{ path('app_argument_new') }}">
+                <input type="hidden" name="debate" value="{{ debate.id }}">
+                <button class="btn">{{ 'argument.new'|trans }}</button>
+            </form>
+        </div>
 
-    <form method="get" action="{{ path('app_argument_new') }}">
-        <input type="hidden" name="debate" value="{{ debate.id }}">
-        <button class="btn">{{ 'argument.new'|trans }}</button>
-    </form>
-
-    <div class="d-flex justify-content-around">
-        {% for camp in debate.camps %}
-            <div>
-                <h2>{{ camp.nameCamp }}</h2>
-                <div>
-                    {% for argument in arguments[camp.id] %}
-                        {% set isVoted = argument.id in argumentIdVoted %}
-                        {% include 'argument/show.html.twig' with {'argument' : argument, 'isVoted': isVoted, 'debateId': debate.id} %}
-                    {% endfor %}
+        <div class="container-arguments">
+            {% for camp in debate.camps %}
+                <div class="column camp{{ camp.id % 2 }}">
+                    <h2 class="text-center">{{ camp.nameCamp }}</h2>
+                    <div>
+                        {% for argument in arguments[camp.id] %}
+                            {% set isVoted = argument.id in argumentIdVoted %}
+                            {% include 'argument/show.html.twig' with {'argument' : argument, 'isVoted': isVoted, 'debateId': debate.id} %}
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
+
+        <a href="{{ path('app_debate_index') }}">back to list</a>
+
+        <a href="{{ path('app_debate_edit', {'id': debate.id}) }}">edit</a>
+        {{ include('debate/_delete_form.html.twig') }}
     </div>
-
-    <a href="{{ path('app_debate_index') }}">back to list</a>
-
-    <a href="{{ path('app_debate_edit', {'id': debate.id}) }}">edit</a>
-    {{ include('debate/_delete_form.html.twig') }}
 {% endblock %}

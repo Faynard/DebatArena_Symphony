@@ -84,14 +84,21 @@ final class ArgumentController extends AbstractController
         $argumentRepository = $entityManager->getRepository(Argument::class);
         $argument = $argumentRepository->findOneBy(['id' => $argumentId]);
 
-        $report = new Report();
-        $report->setArgument($argument);
-        $report->setUser($this->getUser());
+        $reportRepository = $entityManager->getRepository(Report::class);
+        $report = $reportRepository->findOneBy(['user' => $this->getUser(), 'argument' => $argument]);
 
-        $entityManager->persist($report);
-        $entityManager->flush();
+        if(!$report) {
+            $report = new Report();
+            $report->setArgument($argument);
+            $report->setUser($this->getUser());
 
-        return $this->redirectToRoute('app_debate_index');
+            $entityManager->persist($report);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_debate_show', [
+            'id' => $argument->getCamp()->getDebate()->getId(),
+        ]);
     }
 
     #[IsGranted('ROLE_USER')]
@@ -120,6 +127,9 @@ final class ArgumentController extends AbstractController
             $mainArgument = $argumentRepository->find($mainArgumentId);
         }
         if ($mainArgument) {
+            if ($mainArgument->getCamp()->getDebate() !== $debate) {
+                throw $this->createNotFoundException('Debate not found.');
+            }
             $argument->setMainArgument($mainArgument);
         }
 
@@ -140,14 +150,6 @@ final class ArgumentController extends AbstractController
         return $this->render('argument/new.html.twig', [
             'argument' => $argument,
             'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_argument_show', methods: ['GET'])]
-    public function show(Argument $argument): Response
-    {
-        return $this->render('argument/show.html.twig', [
-            'argument' => $argument,
         ]);
     }
 

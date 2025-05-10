@@ -1,32 +1,40 @@
-<div class="card">
-    <p>{{ argument.text }}</p>
-    {% if isVoted %}
-        <form method="post" action="{{ path('app_argument_unvote') }}" id="unvote-form-{{ argument.id }}">
-            <input type="hidden" name="argumentId" value="{{ argument.id }}">
-            <button class="btn">
-                <img src="{{ asset('image/vote_full.png') }}">
-            </button>
+<div class="argument">
+    <p class="text-bold">{{ argument.user.pseudo }}</p>
+    <p class="argument-text">{{ argument.text }}</p>
+    <div class="button-group content-center votes">
+        {% if isVoted %}
+            <form method="post" action="{{ path('app_argument_unvote') }}" id="unvote-form-{{ argument.id }}">
+                <input type="hidden" name="argumentId" value="{{ argument.id }}">
+                <button class="btn">
+                    <img src="{{ asset('image/vote_full.png') }}" class="icon-vote">
+                </button>
+            </form>
+        {% else %}
+            <form method="post" action="{{ path('app_argument_vote') }}" id="vote-form-{{ argument.id }}">
+                <input type="hidden" name="argumentId" value="{{ argument.id }}">
+                <button class="btn">
+                    <img src="{{ asset('image/vote.png') }}" class="icon-vote">
+                </button>
+            </form>
+        {% endif %}
+        {{ argument.votes|length }} {{ 'argument.votes'|trans }}
+    </div>
+    <div class="button-group content-center">
+        <form method="get" action="{{ path('app_argument_new') }}" id="respond-form-{{ argument.id }}">
+            <input type="hidden" name="debate" value="{{ debateId }}">
+            <input type="hidden" name="mainArgumentId" value="{{ argument.id }}">
+            <button class="btn">{{ 'argument.respond'|trans }}</button>
         </form>
-    {% else %}
-        <form method="post" action="{{ path('app_argument_vote') }}" id="vote-form-{{ argument.id }}">
+        <form method="post" action="{{ path('app_argument_report') }}" id="report-form-{{ argument.id }}">
             <input type="hidden" name="argumentId" value="{{ argument.id }}">
-            <button class="btn">
-                <img src="{{ asset('image/vote.png') }}">
-            </button>
+            <button class="btn">{{ 'argument.report'|trans }}</button>
         </form>
-    {% endif %}
-    <form method="get" action="{{ path('app_argument_new') }}" id="respond-form-{{ argument.id }}">
-        <input type="hidden" name="debate" value="{{ debateId }}">
-        <input type="hidden" name="mainArgumentId" value="{{ argument.id }}">
-        <button class="btn">{{ 'argument.respond'|trans }}</button>
-    </form>
-    <form method="post" action="{{ path('app_argument_report') }}" id="report-form-{{ argument.id }}">
-        <input type="hidden" name="argumentId" value="{{ argument.id }}">
-        <button class="btn">{{ 'argument.report'|trans }}</button>
-    </form>
-    <p>
-        {% for subArgument in argument.subArguments %}
-            {{ subArgument.text }}<br>
-        {% endfor %}
-    </p>
+    </div>
+    <div>
+        <p>
+            {% for subArgument in argument.subArguments %}
+                {{ subArgument.text }}<br>
+            {% endfor %}
+        </p>
+    </div>
 </div>
