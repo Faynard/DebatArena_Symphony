@@ -17,13 +17,16 @@
         </form>
         <div id="search-results" class="search-dropdown"></div>
     </div>
+    <a href="{{ path('app_debate_advanced_search') }}" class="btn-advanced-search">
+        🔍 Recherche avancée
+    </a>
 
     <div class="navbar__actions">
         <a href="{{ is_granted('IS_AUTHENTICATED_REMEMBERED') ? path('app_debate_new') : path('app_user_index') }}" class="btn-create-debate">
             Ajouter un débat
         </a>
 
-        <a href="{{ path('app_user_index') }}" class="login-button">
+        <a href="{{ path('app_user_show', {'id': app.user.id}) }}" class="login-button">
             <img src="{{ asset('image/profil.svg') }}">
         </a>
     </div>
