@@ -9,6 +9,10 @@
     gap: 1rem;
 }
 
+.text-bold {
+    font-weight: bold;
+}
+
 .button {
     padding: 0.6rem 1.5rem;
     border: none;

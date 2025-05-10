@@ -24,10 +24,15 @@
             <h1 class="text-center">{{ debate.nameDebate }}</h1>
             <p>{{ debate.descriptionDebate }}</p>
 
-            <form method="get" action="{{ path('app_argument_new') }}">
-                <input type="hidden" name="debate" value="{{ debate.id }}">
-                <button class="btn">{{ 'argument.new'|trans }}</button>
-            </form>
+            <div class="button-group">
+                <form method="get" action="{{ path('app_argument_new') }}">
+                    <input type="hidden" name="debate" value="{{ debate.id }}">
+                    <button class="button button-main">{{ 'argument.new'|trans }}</button>
+                </form>
+                <button class="button">
+                    {{ 'debate.statistiques'|trans }}
+                </button>
+            </div>
         </div>
 
         <div class="container-arguments">
