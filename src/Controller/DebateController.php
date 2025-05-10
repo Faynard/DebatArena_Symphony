@@ -6,6 +6,7 @@ use App\Entity\Argument;
 use App\Entity\Debate;
 use App\Entity\Votes;
 use App\Form\DebateType;
+use App\Repository\CategoryRepository;
 use App\Repository\DebateRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -112,7 +113,7 @@ final class DebateController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_debate_show', methods: ['GET'])]
+    #[Route('/{id<\d+>}', name: 'app_debate_show', methods: ['GET'])]
     public function show(Debate $debate, EntityManagerInterface $entityManager): Response
     {
         $arguments = [];
@@ -217,5 +218,29 @@ final class DebateController extends AbstractController
 
         return new JsonResponse($results);
     }
+    #[Route('/advanced-search', name: 'app_debate_advanced_search', methods: ['GET'])]
+    public function advancedSearch(
+        Request $request,
+        DebateRepository $debateRepository,
+        CategoryRepository $categoryRepository
+    ): Response {
+        $filters = [
+            'keyword' => $request->query->get('keyword'),
+            'order' => $request->query->get('order', 'recent'),
+            'minParticipants' => $request->query->get('minParticipants'),
+            'startDate' => $request->query->get('startDate'),
+            'endDate' => $request->query->get('endDate'),
+            'categoryIds' => $request->query->all('categoryIds'),
+        ];
+
+        $debats = $debateRepository->findByAdvancedFilters($filters);
+
+        return $this->render('debate/advanced_search.html.twig', [
+            'debats' => $debats,
+            'filters' => $filters,
+            'categories' => $categoryRepository->findAll(),
+        ]);
+    }
+
 
 }

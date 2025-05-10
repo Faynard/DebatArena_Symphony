@@ -1,0 +1,227 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recherche Avancée{% endblock %}
+
+{% block body %}
+    <div class="advanced-search-container">
+        <h2>Recherche Avancée</h2>
+
+        <form method="get" class="search-form">
+            <div class="form-group">
+                <label for="keyword">Mot-clé</label>
+                <input type="text" id="keyword" name="keyword" value="{{ filters.keyword|default('') }}">
+            </div>
+
+            <div class="form-group">
+                <label for="minParticipants">Min. participants</label>
+                <input type="number" id="minParticipants" name="minParticipants" min="0" value="{{ filters.minParticipants|default('') }}">
+            </div>
+
+            <div class="form-group">
+                <label for="startDate">Date de début</label>
+                <input type="date" id="startDate" name="startDate" value="{{ filters.startDate|default('') }}">
+            </div>
+
+            <div class="form-group">
+                <label for="endDate">Date de fin</label>
+                <input type="date" id="endDate" name="endDate" value="{{ filters.endDate|default('') }}">
+            </div>
+
+            <div class="form-group full-width">
+                <label>Catégories</label>
+                <div class="custom-multiselect">
+                    {% for category in categories %}
+                        <label class="custom-option">
+                            <input type="checkbox" name="categoryIds[]" value="{{ category.id }}"
+                                   {% if category.id in filters.categoryIds|default([]) %}checked{% endif %}>
+                            {{ category.nameCategory }}
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="order">Tri</label>
+                <select id="order" name="order">
+                    <option value="recent" {% if filters.order == 'recent' %}selected{% endif %}>Plus récents</option>
+                    <option value="popular" {% if filters.order == 'popular' %}selected{% endif %}>Plus populaires</option>
+                </select>
+            </div>
+
+            <div class="form-group full-width">
+                <button type="submit" class="filter-button">🔍 Filtrer</button>
+            </div>
+        </form>
+
+
+        <hr class="separator">
+
+        <div class="debate-grid">
+            {% for debat in debats %}
+                <div class="debate-item no-image">
+                    <div class="debate-title">
+                        <a href="{{ path('app_debate_show', {'id': debat.id}) }}">{{ debat.nameDebate }}</a>
+                    </div>
+                    <div class="debate-description">
+                        {{ debat.descriptionDebate|slice(0, 100) ~ '...' }}
+                    </div>
+                    <div class="debate-meta">
+                        Créé le {{ debat.creationDate|date('d/m/Y') }}
+                    </div>
+                    <a href="{{ path('app_debate_show', {'id': debat.id}) }}" class="view-link">→ Voir le débat</a>
+                </div>
+            {% else %}
+                <p>Aucun débat trouvé.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block stylesheets %}
+    <style>.advanced-search-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .advanced-search-container .search-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .advanced-search-container .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .advanced-search-container .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .advanced-search-container label {
+            font-size: 14px;
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .advanced-search-container input[type="text"],
+        .advanced-search-container input[type="number"],
+        .advanced-search-container input[type="date"],
+        .advanced-search-container select {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+            background-color: #fff;
+        }
+
+        .advanced-search-container .filter-button {
+            padding: 12px;
+            background: linear-gradient(135deg, #4f46e5, #06b6d4);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .advanced-search-container .filter-button:hover {
+            background: linear-gradient(135deg, #3b82f6, #0ea5e9);
+        }
+
+        .advanced-search-container .custom-multiselect {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .advanced-search-container .custom-option {
+            background-color: #e5e7eb;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background-color 0.2s;
+        }
+
+        .advanced-search-container .custom-option:hover {
+            background-color: #d1d5db;
+        }
+
+        .advanced-search-container .separator {
+            margin: 40px 0;
+            border: none;
+            height: 2px;
+            background: linear-gradient(to right, #4f46e5, #06b6d4);
+        }
+
+        .advanced-search-container .debate-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .advanced-search-container .debate-item.no-image {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-left: 5px solid #6366f1;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .advanced-search-container .debate-item.no-image:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        .advanced-search-container .debate-title a {
+            font-size: 18px;
+            color: #1f2937;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .advanced-search-container .debate-title a:hover {
+            text-decoration: underline;
+        }
+
+        .advanced-search-container .debate-description {
+            margin-top: 10px;
+            color: #4b5563;
+            font-size: 14px;
+        }
+
+        .advanced-search-container .debate-meta {
+            margin-top: 8px;
+            color: #9ca3af;
+            font-size: 13px;
+        }
+
+        .advanced-search-container .view-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #3b82f6;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .advanced-search-container .view-link:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+{% endblock %}

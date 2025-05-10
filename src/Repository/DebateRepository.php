@@ -149,8 +149,49 @@ class DebateRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
             ->getResult();
     }
+    public function findByAdvancedFilters(array $filters): array
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->leftJoin('d.camps', 'c')
+            ->leftJoin('c.arguments', 'a')
+            ->leftJoin('a.votes', 'v')
+            ->leftJoin('d.categories', 'cat')
+            ->addSelect('COUNT(v.id) AS HIDDEN voteCount')
+            ->groupBy('d.id');
 
+        if (!empty($filters['keyword'])) {
+            $qb->andWhere('d.nameDebate LIKE :keyword OR d.descriptionDebate LIKE :keyword')
+                ->setParameter('keyword', '%' . $filters['keyword'] . '%');
+        }
 
+        if (!empty($filters['minParticipants'])) {
+            $qb->having('COUNT(v.id) >= :minParticipants')
+                ->setParameter('minParticipants', $filters['minParticipants']);
+        }
+
+        if (!empty($filters['categoryIds'])) {
+            $qb->andWhere('cat.id IN (:categoryIds)')
+                ->setParameter('categoryIds', $filters['categoryIds']);
+        }
+
+        if (!empty($filters['startDate'])) {
+            $qb->andWhere('d.creationDate >= :startDate')
+                ->setParameter('startDate', new \DateTime($filters['startDate']));
+        }
+
+        if (!empty($filters['endDate'])) {
+            $qb->andWhere('d.creationDate <= :endDate')
+                ->setParameter('endDate', new \DateTime($filters['endDate']));
+        }
+
+        if (!empty($filters['order']) && $filters['order'] === 'popular') {
+            $qb->orderBy('voteCount', 'DESC');
+        } else {
+            $qb->orderBy('d.creationDate', 'DESC');
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 
 
 }
