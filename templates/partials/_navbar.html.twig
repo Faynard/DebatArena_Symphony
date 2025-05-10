@@ -26,9 +26,16 @@
             Ajouter un débat
         </a>
 
-        <a href="{{ path('app_user_show', {'id': app.user.id}) }}" class="login-button">
-            <img src="{{ asset('image/profil.svg') }}">
-        </a>
+        {% if app.user %}
+            <a href="{{ path('app_user_show', {'id': app.user.id}) }}" class="login-button">
+                <img src="{{ asset('image/profil.svg') }}">
+            </a>
+        {% else %}
+            <a href="{{ path('app_login') }}" class="login-button">
+                <img src="{{ asset('image/profil.svg') }}">
+            </a>
+        {% endif %}
+
     </div>
 </nav>
 
