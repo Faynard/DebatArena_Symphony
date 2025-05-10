@@ -197,3 +197,18 @@ body {
     font-style: italic;
     color: #999;
 }
+.btn-advanced-search {
+    margin-left: 10px;
+    padding: 8px 14px;
+    background-color: #6366f1;
+    color: white;
+    border-radius: 8px;
+    font-size: 14px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.3s ease;
+}
+
+.btn-advanced-search:hover {
+    background-color: #4f46e5;
+}
