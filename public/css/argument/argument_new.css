@@ -1,3 +1,43 @@
-.page {
+.container {
     background-color: var(--mainBackgroundColor);
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 750px;
+    margin: 2rem auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.radio-group {
+    margin-bottom: 2%;
+    font-size: 1rem;
+}
+
+.radio-group label {
+    margin-right: 2rem;
+}
+
+.argument-text {
+    width: 100%;
+    height: 201px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 1rem;
+    resize: none;
+    outline: none;
+    box-sizing: border-box;
+    margin-bottom: 2%;
+}
+
+.argument-text:focus {
+    border-color: #8c91e3;
+    outline: none;
 }

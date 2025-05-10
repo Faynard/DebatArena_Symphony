@@ -18,15 +18,26 @@ class ArgumentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('text', TextareaType::class)
+            ->add('text', TextareaType::class, [
+                'attr' => [
+                    'class' => 'argument-text input',
+                ],
+                'label' => false,
+            ])
             ->add('camp', EntityType::class, [
                 'class' => Camp::class,
                 'choice_label' => 'nameCamp',
+                'expanded' => true,
+                'multiple' => false,
                 'query_builder' => function (CampRepository $repo) use ($options) {
                     return $repo->createQueryBuilder('c')
                         ->where('c.debate = :debate')
                         ->setParameter('debate', $options['debate']);
-                }
+                },
+                'attr' => [
+                    'class' => 'radio-group input',
+                ],
+                'label' => false,
             ]);
     }
 
