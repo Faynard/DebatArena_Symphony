@@ -1,52 +1,101 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User{% endblock %}
+{% block title %}Profil utilisateur{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/user.css') }}">
+{% endblock %}
 
 {% block body %}
-    <h1>User</h1>
+<div class="page">
+    <div class="profile_info">
+        <h2>Vos informations</h2>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ user.email }}</td>
-            </tr>
-            <tr>
-                <th>Pseudo</th>
-                <td>{{ user.pseudo }}</td>
-            </tr>
-            <tr>
-                <th>Password</th>
-                <td>{{ user.password }}</td>
-            </tr>
-            <tr>
-                <th>CreatedDate</th>
-                <td>{{ user.createdDate ? user.createdDate|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>IsBanned</th>
-                <td>{{ user.isBanned ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Roles</th>
-                <td>
-                    {% for role in user.roles %}
-                        <span class="badge bg-secondary">{{ role }}</span>
-                    {% else %}
-                        <em>Aucun rôle</em>
-                    {% endfor %}
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        <div id="displayFields">
+            <p><strong>Pseudo :</strong> {{ user.pseudo }}</p>
+            <p><strong>Adresse email :</strong> {{ user.email }}</p>
+            {# <p><strong>Mot de passe :</strong> {{ user.password }}</p> #}
+        </div>
 
-    <a href="{{ path('app_user_index') }}">back to list</a>
+        <form method="POST" action="{{ path('app_user_edit', {'id': user.id}) }}" id="editForm" class="hidden">
+            <div class="editable">
+                <label>Pseudo:</label>
+                <input type="text" name="pseudo" value="{{ user.pseudo }}">
+            </div>
+            <div class="editable">
+                <label>Adresse email:</label>
+                <input type="email" name="email" value="{{ user.email }}">
+            </div>
+            {# <div class="editable">
+                <label>Mot de passe:</label>
+                <input type="password" name="password" value="{{ user.password }}">
+            </div> #}
+            <div class="bouton">
+                <button type="submit" class="button button-enregistrer">Enregistrer</button>
+            </div>
+        </form>
 
-    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
+        <p><strong>Compte créé le :</strong> {{ user.createdDate ? user.createdDate|date('d/m/Y') : '' }}</p>
 
-    {{ include('user/_delete_form.html.twig') }}
+        <div class="bouton">
+            <button type="button" class="button button-modifier" id="logoutButton" onclick="window.location.href='{{ path('app_logout') }}'">Déconnexion</button>
+            <button type="button" class="button button-modifier" id="editButton" onclick="toggleEdit()">Modifier</button>
+            <button type="button" class="button button-supprimer" onclick="confirmDelete()">Supprimer</button>
+        </div>
+    </div>
+
+    <div class="div_stat">
+        <div class="recent_debat">
+            <h2>Récemment débattu</h2>
+            {% for debate in debates %}
+                <div class="debat">
+                    <h3>{{ debate.getNameDebate }}</h3>
+                    <p>Nombre de participants : {{ debate.nbParticipants }}</p>
+                </div>
+            {% else %}
+                <p>Aucun débat récent.</p>
+            {% endfor %}
+        </div>
+
+        <div class="statistique">
+            <h2>Statistiques</h2>
+            {% if stats is defined %}
+                <p><strong>Nombre total de votes accumulés :</strong> {{ stats.total_votes ?? 0 }}</p>
+                <p><strong>Débat remporté :</strong> {{ stats.debates_won ?? 0 }} Victoires</p>
+                <p class="highlight">Classement mois en cours : {{ stats.rank_month ?? 'Non classé' }}</p>
+                <p><strong>Classement global :</strong> {{ stats.rank_global ?? 'Non classé' }}</p>
+            {% else %}
+                <p>Aucune statistique disponible pour cet utilisateur.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleEdit() {
+        const displayFields = document.getElementById('displayFields');
+        const editForm = document.getElementById('editForm');
+        const editButton = document.getElementById('editButton');
+
+        displayFields.classList.toggle('hidden');
+        editForm.classList.toggle('hidden');
+
+        if (!editForm.classList.contains('hidden')) {
+            editButton.textContent = "Annuler";
+            editButton.classList.remove('button-modifier');
+            editButton.classList.add('button-supprimer');
+        } else {
+            editButton.textContent = "Modifier";
+            editButton.classList.remove('button-supprimer');
+            editButton.classList.add('button-modifier');
+        }
+    }
+
+    function confirmDelete() {
+        const confirmation = confirm("Si vous acceptez la suppression, vous serez redirigé vers la page d'accueil.");
+        if (confirmation) {
+            window.location.href = "{{ path('app_user_delete', {'id': user.id}) }}";
+        }
+    }
+</script>
 {% endblock %}

@@ -82,3 +82,181 @@ input[type="text"]{
 }
 
 /*-----------------------------------------------Fin-Register---------------------------------------------------------*/
+
+
+/*-----------------------------------------------Début-Login---------------------------------------------------------*/
+body {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+}
+
+.card {
+    background-color: #FEF8E8;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+.email, .password {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-bottom: 16px;
+}
+
+label {
+    margin-bottom: 4px;
+}
+
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.button {
+    background-color: #A2A9DC;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 30px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.button_retour {
+    background-color: #B2C3D3;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 30px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.button:hover {
+    transform: scale(1.05);
+    box-shadow: 5px 5px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn{
+    display: flex;
+    gap: 16px;  
+    justify-content: center;
+}
+
+a{
+    font-size: 12px;
+}
+
+/*-----------------------------------------------Fin-Login---------------------------------------------------------*/
+
+
+/*-----------------------------------------------Début-Profile---------------------------------------------------------*/
+.page {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.profile_info, .recent_debat, .statistique {
+    background-color: #FEF8E8;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.profile_info p, .profile_info .editable {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+}
+
+.bouton {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+.button {
+    border: none;
+    border-radius: 20px;
+    padding: 10px 30px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.button-modifier { background-color: #A2A9DC; }
+.button-supprimer { background-color: #F44336; }
+.button-enregistrer { background-color: #4CAF50; }
+
+.button:hover {
+    transform: scale(1.05);
+    box-shadow: 5px 5px 12px rgba(0, 0, 0, 0.3);
+}
+
+.hidden {
+    display: none;
+}
+
+.statistique p {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin: 4px 0;
+}
+
+.div_stat {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 16px;
+}
+
+.highlight {
+    background-color: #FFEE58;
+    font-weight: bold;
+}
+
+.recent_debat .debat {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin: 8px 0;
+}
+
+/*-----------------------------------------------Fin-Profile---------------------------------------------------------*/

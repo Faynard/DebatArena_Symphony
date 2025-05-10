@@ -10,11 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_USER')]
 #[Route('/user')]
 final class UserController extends AbstractController
 {
+    #[IsGranted('ROLE_USER', message: 'Tu n\'es pas autorisé à accéder à cette page.')]
     #[Route(name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
@@ -23,38 +25,35 @@ final class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/register', name: 'app_user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
-    {
-        $user = new User();
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-    
-        if ($form->isSubmitted() && $form->isValid()) {
-            // 💥 Hash du mot de passe ici :
-            $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
-            $user->setPassword($hashedPassword);
-    
-            $entityManager->persist($user);
-            $entityManager->flush();
-    
-            return $this->redirectToRoute('app_login'); // redirige vers login par exemple
-        }
-    
-        return $this->render('user/register.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
-    }
-
+    #[IsGranted('ROLE_USER', message: 'Tu n\'es pas autorisé à accéder à cette page.')]
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
-    public function show(User $user): Response
+    public function show(User $user, UserRepository $userRepository): Response
     {
+        $user = $this->getUser();
+        if (!$user instanceof User) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $debates = $user->getDebates();
+
+        $ranking = $userRepository->getUserRankingByVotes($user);
+
+        $stats = [
+            'total_votes' => count($user->getVotes()),
+            'debates_won' => 0, // À compléter si tu veux
+            'rank_month' => $ranking['rank_month'],
+            'rank_global' => $ranking['rank_global'],
+        ];
+
         return $this->render('user/show.html.twig', [
             'user' => $user,
+            'debates' => $debates,
+            'stats' => $stats,
         ]);
     }
 
+
+    #[IsGranted('ROLE_USER', message: 'Tu n\'es pas autorisé à accéder à cette page.')]
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
@@ -73,6 +72,7 @@ final class UserController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_USER', message: 'Tu n\'es pas autorisé à accéder à cette page.')]
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
