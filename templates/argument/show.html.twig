@@ -1,7 +1,7 @@
 <div class="argument">
     <p class="text-bold">{{ argument.user.pseudo }}</p>
     <p class="argument-text">{{ argument.text }}</p>
-    <div class="button-group content-center votes">
+    <div class="button-group justify-content-center votes">
         {% if isVoted %}
             <form method="post" action="{{ path('app_argument_unvote') }}" id="unvote-form-{{ argument.id }}">
                 <input type="hidden" name="argumentId" value="{{ argument.id }}">
@@ -19,7 +19,7 @@
         {% endif %}
         {{ argument.votes|length }} {{ 'argument.votes'|trans }}
     </div>
-    <div class="button-group content-center">
+    <div class="button-group justify-content-center">
         <form method="get" action="{{ path('app_argument_new') }}" id="respond-form-{{ argument.id }}">
             <input type="hidden" name="debate" value="{{ debateId }}">
             <input type="hidden" name="mainArgumentId" value="{{ argument.id }}">

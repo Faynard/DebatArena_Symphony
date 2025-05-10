@@ -1,21 +1,9 @@
 :root {
+    --mainBackgroundColor: #FEF8E8;
     --firstCampColor: #A6B1E1;
     --secondCampColor: #FE5F55;
-}
-
-.text-center {
-    text-align: center;
-}
-
-.text-bold {
-    font-weight: bold;
 }
 
 .button-group {
     display: flex;
 }
-
-.content-center {
-    justify-content: center;
-}
-

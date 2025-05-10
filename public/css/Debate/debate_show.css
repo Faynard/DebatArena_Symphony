@@ -1,5 +1,5 @@
 .page {
-    background-color: #FEF8E8;
+    background-color: var(--mainBackgroundColor);
     font-family: 'Inter', serif;
     margin: 20px 2% 0 2%;
     border-radius: 16px;
@@ -54,4 +54,8 @@
     height: 20px;
     object-fit: contain;
     vertical-align: text-bottom;
+}
+
+.alert {
+    margin: 8px;
 }

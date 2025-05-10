@@ -48,7 +48,11 @@ final class ArgumentController extends AbstractController
 
             $entityManager->persist($vote);
             $entityManager->flush();
+            $this->addFlash('success', 'argument.vote.success');
+        } else {
+            $this->addFlash('danger', 'argument.vote.unsuccess');
         }
+
 
         return $this->redirectToRoute('app_debate_show', [
             'id' => $argument->getCamp()->getDebate()->getId(),
@@ -69,6 +73,8 @@ final class ArgumentController extends AbstractController
 
         $entityManager->remove($vote);
         $entityManager->flush();
+
+        $this->addFlash('success', 'argument.unvote.success');
 
         return $this->redirectToRoute('app_debate_show', [
             'id' => $argument->getCamp()->getDebate()->getId(),
@@ -94,7 +100,11 @@ final class ArgumentController extends AbstractController
 
             $entityManager->persist($report);
             $entityManager->flush();
+            $this->addFlash('success', 'argument.report.success');
+        } else {
+            $this->addFlash('danger', 'argument.vote.unsuccess');
         }
+
 
         return $this->redirectToRoute('app_debate_show', [
             'id' => $argument->getCamp()->getDebate()->getId(),
@@ -113,11 +123,13 @@ final class ArgumentController extends AbstractController
         $argumentRepository = $entityManager->getRepository(Argument::class);
 
         if (!$debateId) {
-            throw $this->createNotFoundException('Missing debate ID.');
+            $this->addFlash('success', 'argument.post.unsuccess');
+            return $this->redirectToRoute('app_debate_list');
         }
         $debate = $debateRepository->find($debateId);
         if (!$debate) {
-            throw $this->createNotFoundException('Debate not found.');
+            $this->addFlash('success', 'argument.post.unsuccess');
+            return $this->redirectToRoute('app_debate_list');
         }
 
         $argument = new Argument();
@@ -128,7 +140,8 @@ final class ArgumentController extends AbstractController
         }
         if ($mainArgument) {
             if ($mainArgument->getCamp()->getDebate() !== $debate) {
-                throw $this->createNotFoundException('Debate not found.');
+                $this->addFlash('success', 'argument.post.unsuccess');
+                return $this->redirectToRoute('app_debate_list');
             }
             $argument->setMainArgument($mainArgument);
         }
@@ -142,6 +155,8 @@ final class ArgumentController extends AbstractController
             $entityManager->persist($argument);
             $entityManager->flush();
 
+            $this->addFlash('success', 'argument.post.success');
+
             return $this->redirectToRoute('app_debate_show', [
                 'id' => $argument->getCamp()->getDebate()->getId(),
             ], Response::HTTP_SEE_OTHER);
@@ -149,6 +164,8 @@ final class ArgumentController extends AbstractController
 
         return $this->render('argument/new.html.twig', [
             'argument' => $argument,
+            'debate' => $debate,
+            'mainArgument' => $mainArgument,
             'form' => $form,
         ]);
     }
