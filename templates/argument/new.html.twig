@@ -1,11 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Argument{% endblock %}
+{% block title %}{{ debate.nameDebate }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/argument/argument_new.css') }}">
+{% endblock %}
 
 {% block body %}
-    <h1>Create new Argument</h1>
 
-    {{ include('argument/_form.html.twig') }}
+    <div class="container">
+        {% if mainArgument == null %}
+            <h1 class="title">{{ 'argument.new.create'|trans }} {{ debate.nameDebate }}</h1>
+        {% else %}
+            <h1 class="title">{{ 'argument.new.response'|trans }} {{ debate.nameDebate }}</h1>
+        {% endif %}
 
-    <a href="{{ path('app_argument_index') }}">back to list</a>
+
+        {{ form_start(form) }}
+
+        {{ form_row(form.camp) }}
+        {{ form_row(form.text) }}
+
+        <div class="button-group justify-content-center">
+            <a href="{{ path('app_debate_show', {'id': debate.id}) }}" class="button">
+                {{ 'argument.new.return' }}
+            </a>
+            <button class="button button-main">{{ 'argument.new.save'|trans }}</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
 {% endblock %}

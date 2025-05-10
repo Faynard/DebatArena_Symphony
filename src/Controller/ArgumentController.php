@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Argument;
 use App\Entity\Camp;
+use App\Entity\Debate;
 use App\Entity\Report;
 use App\Entity\User;
 use App\Entity\Votes;
@@ -47,7 +48,11 @@ final class ArgumentController extends AbstractController
 
             $entityManager->persist($vote);
             $entityManager->flush();
+            $this->addFlash('success', 'argument.vote.success');
+        } else {
+            $this->addFlash('danger', 'argument.vote.unsuccess');
         }
+
 
         return $this->redirectToRoute('app_debate_show', [
             'id' => $argument->getCamp()->getDebate()->getId(),
@@ -69,6 +74,8 @@ final class ArgumentController extends AbstractController
         $entityManager->remove($vote);
         $entityManager->flush();
 
+        $this->addFlash('success', 'argument.unvote.success');
+
         return $this->redirectToRoute('app_debate_show', [
             'id' => $argument->getCamp()->getDebate()->getId(),
         ]);
@@ -83,44 +90,83 @@ final class ArgumentController extends AbstractController
         $argumentRepository = $entityManager->getRepository(Argument::class);
         $argument = $argumentRepository->findOneBy(['id' => $argumentId]);
 
-        $report = new Report();
-        $report->setArgument($argument);
-        $report->setUser($this->getUser());
+        $reportRepository = $entityManager->getRepository(Report::class);
+        $report = $reportRepository->findOneBy(['user' => $this->getUser(), 'argument' => $argument]);
 
-        $entityManager->persist($report);
-        $entityManager->flush();
+        if(!$report) {
+            $report = new Report();
+            $report->setArgument($argument);
+            $report->setUser($this->getUser());
 
-        return $this->redirectToRoute('app_debate_index');
+            $entityManager->persist($report);
+            $entityManager->flush();
+            $this->addFlash('success', 'argument.report.success');
+        } else {
+            $this->addFlash('danger', 'argument.vote.unsuccess');
+        }
+
+
+        return $this->redirectToRoute('app_debate_show', [
+            'id' => $argument->getCamp()->getDebate()->getId(),
+        ]);
     }
 
     #[IsGranted('ROLE_USER')]
-    #[Route('/new', name: 'app_argument_new', methods: ['GET','POST'])]
+    #[Route('/new', name: 'app_argument_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $debateId = $request->query->get('debate');
+        $mainArgumentId = $request->query->get('mainArgumentId');
+        $mainArgument = false;
+
+        $debateRepository = $entityManager->getRepository(Debate::class);
+        $argumentRepository = $entityManager->getRepository(Argument::class);
+
+        if (!$debateId) {
+            $this->addFlash('success', 'argument.post.unsuccess');
+            return $this->redirectToRoute('app_debate_list');
+        }
+        $debate = $debateRepository->find($debateId);
+        if (!$debate) {
+            $this->addFlash('success', 'argument.post.unsuccess');
+            return $this->redirectToRoute('app_debate_list');
+        }
+
         $argument = new Argument();
         $argument->setUser($this->getUser());
 
-        $form = $this->createForm(ArgumentType::class, $argument);
+        if ($mainArgumentId) {
+            $mainArgument = $argumentRepository->find($mainArgumentId);
+        }
+        if ($mainArgument) {
+            if ($mainArgument->getCamp()->getDebate() !== $debate) {
+                $this->addFlash('success', 'argument.post.unsuccess');
+                return $this->redirectToRoute('app_debate_list');
+            }
+            $argument->setMainArgument($mainArgument);
+        }
+
+        $form = $this->createForm(ArgumentType::class, $argument, [
+            'debate' => $debate,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($argument);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_argument_index', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('success', 'argument.post.success');
+
+            return $this->redirectToRoute('app_debate_show', [
+                'id' => $argument->getCamp()->getDebate()->getId(),
+            ], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('argument/new.html.twig', [
             'argument' => $argument,
+            'debate' => $debate,
+            'mainArgument' => $mainArgument,
             'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_argument_show', methods: ['GET'])]
-    public function show(Argument $argument): Response
-    {
-        return $this->render('argument/show.html.twig', [
-            'argument' => $argument,
         ]);
     }
 

@@ -7,8 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: ArgumentRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Argument
 {
     #[ORM\Id]
@@ -56,6 +56,12 @@ class Argument
         $this->votes = new ArrayCollection();
         $this->reports = new ArrayCollection();
         $this->subArguments = new ArrayCollection();
+    }
+
+    #[ORM\PrePersist]
+    public function prePersist(): void
+    {
+        $this->creationDate = new \DateTime();
     }
 
     public function getId(): ?int
@@ -210,10 +216,5 @@ class Argument
         }
 
         return $this;
-    }
-    #[ORM\PrePersist]
-    public function prePersist(): void
-    {
-        $this->creationDate = new \DateTime();
     }
 }

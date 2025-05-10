@@ -1,0 +1,36 @@
+:root {
+    --mainBackgroundColor: #FEF8E8;
+    --firstCampColor: #A6B1E1;
+    --secondCampColor: #FE5F55;
+}
+
+.button-group {
+    display: flex;
+    gap: 1rem;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.button {
+    padding: 0.6rem 1.5rem;
+    border: none;
+    border-radius: 20px;
+    background: linear-gradient(to bottom, #b0b8c3, #aab1bd);
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    text-decoration: none;
+}
+
+.button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+.button-main {
+    background: linear-gradient(to bottom, #A6B1E1, #A2A9DC);
+}
