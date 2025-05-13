@@ -19,7 +19,7 @@
                 <button class="button button-white">{{ 'argument.report'|trans }}</button>
             </form>
         {% else %}
-            <form method="post" action="{{ path('app_debate_index') }}" id="edit-form-{{ argument.id }}">
+            <form method="get" action="{{ path('app_argument_edit', {'id': argument.id}) }}" id="edit-form-{{ argument.id }}">
                 <button class="button button-white">{{ 'argument.edit'|trans }}</button>
             </form>
         {% endif %}
@@ -53,7 +53,7 @@
                 <p class="argument-text">{{ subArgument.text }}</p>
                 <div class="button-group justify-content-center votes">
                     {% if isCurrentUser %}
-                        <form method="post" action="{{ path('app_debate_index') }}" id="edit-form-{{ subArgument.id }}">
+                        <form method="get" action="{{ path('app_argument_edit', {'id': subArgument.id}) }}" id="edit-form-{{ subArgument.id }}">
                             <button class="button button-white">{{ 'argument.edit'|trans }}</button>
                         </form>
                     {% else %}

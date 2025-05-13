@@ -21,14 +21,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/argument')]
 final class ArgumentController extends AbstractController
 {
-    #[Route(name: 'app_argument_index', methods: ['GET'])]
-    public function index(ArgumentRepository $argumentRepository): Response
-    {
-        return $this->render('argument/index.html.twig', [
-            'arguments' => $argumentRepository->findAll(),
-        ]);
-    }
-
     #[IsGranted('ROLE_USER')]
     #[Route('/vote', name: 'app_argument_vote', methods: ['POST'])]
     public function vote(EntityManagerInterface $entityManager): Response
@@ -174,17 +166,23 @@ final class ArgumentController extends AbstractController
     #[Route('/{id}/edit', name: 'app_argument_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Argument $argument, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(ArgumentType::class, $argument);
+        $form = $this->createForm(ArgumentType::class, $argument, [
+            'debate' => $argument->getCamp()->getDebate(),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_argument_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_debate_show', [
+                'id' => $argument->getCamp()->getDebate()->getId(),
+            ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('argument/edit.html.twig', [
+        return $this->render('argument/new.html.twig', [
             'argument' => $argument,
+            'debate' => $argument->getCamp()->getDebate(),
+            'mainArgument' => $argument->getMainArgument(),
             'form' => $form,
         ]);
     }
