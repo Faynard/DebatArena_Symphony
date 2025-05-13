@@ -120,9 +120,14 @@ final class DebateController extends AbstractController
     public function show(Debate $debate, EntityManagerInterface $entityManager): Response
     {
         $arguments = [];
+        $subArguments = [];
         $argumentRepository = $entityManager->getRepository(Argument::class);
         foreach ($debate->getCamps() as $camp) {
-            $arguments[$camp->getId()] = $argumentRepository->findMainValidatedArgumentByCamp($camp);
+            $args = $argumentRepository->findMainValidatedArgumentByCamp($camp);
+            $arguments[$camp->getId()] = $args;
+            foreach ($args as $arg) {
+                $subArguments[$arg->getId()] = $argumentRepository->findSubValidatedArgumentByMain($arg);
+            }
         }
 
         $argumentIdVoted = [];
@@ -134,6 +139,7 @@ final class DebateController extends AbstractController
         return $this->render('debate/show.html.twig', [
             'debate' => $debate,
             'arguments' => $arguments,
+            'subArguments' => $subArguments,
             'argumentIdVoted' => $argumentIdVoted,
         ]);
     }
