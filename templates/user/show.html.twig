@@ -3,7 +3,9 @@
 {% block title %}Profil utilisateur{% endblock %}
 
 {% block stylesheets %}
+    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/user.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/Debate/debate.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -45,17 +47,43 @@
     </div>
 
     <div class="div_stat">
-        {# <div class="recent_debat">
-            <h2>Récemment débattu</h2>
-            {% for debate in debates %}
-                <div class="debat">
-                    <h3>{{ debate.getNameDebate }}</h3>
-                    <p>Nombre de participants : {{ debate.nbParticipants }}</p>
-                </div>
-            {% else %}
-                <p>Aucun débat récent.</p>
-            {% endfor %}
-        </div> #}
+        <div class="recent_debat scrollable-debates">
+            <h2>Débats récents</h2>
+            <div class="scroll-container">
+                {% for debat in recentDebates %}
+                    {% set statsR = statDebates[debat.id] ?? {
+                        'nb_vote_camp_1': 0,
+                        'nb_vote_camp_2': 0,
+                        'pourcentage_camp_1': 50,
+                        'pourcentage_camp_2': 50,
+                        'nb_participants': 0
+                    } %}
+                    <a href="{{ path('app_debate_show', {'id': debat.id}) }}" class="debate-item">
+                        <div class="debat">
+                            <h3>{{ debat.nameDebate }}</h3>
+                            <div class="debate-description">{{ debat.descriptionDebate }}</div>
+                            <div class="progress-container">
+                                {% if statsR.pourcentage_camp_1 > 0 %}
+                                    <div class="progress-blue" style="width: {{ statsR.pourcentage_camp_1 }}%;">
+                                        {{ statsR.pourcentage_camp_1 }}%
+                                    </div>
+                                {% endif %}
+                                {% if statsR.pourcentage_camp_2 > 0 %}
+                                    <div class="progress-red" style="width: {{ statsR.pourcentage_camp_2 }}%;">
+                                        {{ statsR.pourcentage_camp_2 }}%
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="debate-stats">{{ statsR.participants ?? 0 }} participants</div>
+                        </div>
+                    </a>
+                {% else %}
+                    <p>Aucun débat récent trouvé.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        
 
         <div class="statistique">
             <h2>Statistiques</h2>

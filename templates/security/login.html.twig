@@ -10,13 +10,6 @@
 {% endblock %}
 
 {% block body %}
-
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="/logout">Logout</a>
-        </div>
-    {% endif %}
-
     <form method="post" action="{{ path('app_login') }}" class="card">
         <h2>Ravi de vous revoir !</h2>
 

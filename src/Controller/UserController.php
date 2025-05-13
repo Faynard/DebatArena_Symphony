@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\DebateRepository;
 use App\Repository\UserRepository;
 use App\Repository\VotesRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,25 +18,21 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/user')]
 final class UserController extends AbstractController
 {
-    #[IsGranted('ROLE_USER', message: 'Tu n\'es pas autorisé à accéder à cette page.')]
-    #[Route(name: 'app_user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
-    {
-        return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
-    }
 
     #[IsGranted('ROLE_USER', message: 'Tu n\'es pas autorisé à accéder à cette page.')]
-    #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
-    public function show(User $user, UserRepository $userRepository ,VotesRepository $voteRepository): Response
+    #[Route(name: 'app_user_show', methods: ['GET'])]
+    public function show( DebateRepository $debateRepository, UserRepository $userRepository ,VotesRepository $voteRepository): Response
     {
         $user = $this->getUser();
         if (!$user instanceof User) {
             throw $this->createAccessDeniedException();
         }
 
-        $debates = $user->getDebates();
+        $recentDebates = $debateRepository->findRecentDebatesByUser($user);
+
+        foreach ($recentDebates as $debat) {
+            $statDebate[$debat->getId()] = $debateRepository->calculateStatsForDebat($debat->getId());
+        }
 
         $ranking = $userRepository->getUserRankingByVotes($user);
         $nbVotes = $voteRepository->countVotesByUser($user);
@@ -49,7 +46,8 @@ final class UserController extends AbstractController
 
         return $this->render('user/show.html.twig', [
             'user' => $user,
-            'debates' => $debates,
+            'recentDebates' => $recentDebates,
+            'statDebates' => $statDebate,
             'stats' => $stats,
         ]);
     }

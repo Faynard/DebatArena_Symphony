@@ -1,12 +1,8 @@
 
 /*-----------------------------------------------Début-Register---------------------------------------------------------*/
 body {
-    display: flex;
     height: 100vh;
     width: 100vw;
-    margin: 0;
-    justify-content: center;
-    align-items: center;
     font-family: Arial, sans-serif;
 }
 
@@ -86,13 +82,8 @@ input[type="text"]{
 
 /*-----------------------------------------------Début-Login---------------------------------------------------------*/
 body {
-    display: flex;
     height: 100vh;
     width: 100vw;
-    margin: 0;
-    justify-content: center;
-    align-items: center;
-    font-family: Arial, sans-serif;
 }
 
 .card {
@@ -257,6 +248,18 @@ h2 {
     border-radius: 8px;
     padding: 8px 12px;
     margin: 8px 0;
+}
+
+.scrollable-debates {
+    max-height: 400px; /* ou une autre hauteur fixe */
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.scroll-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 /*-----------------------------------------------Fin-Profile---------------------------------------------------------*/
