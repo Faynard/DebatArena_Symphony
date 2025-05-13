@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Repository\VotesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +28,7 @@ final class UserController extends AbstractController
 
     #[IsGranted('ROLE_USER', message: 'Tu n\'es pas autorisé à accéder à cette page.')]
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
-    public function show(User $user, UserRepository $userRepository): Response
+    public function show(User $user, UserRepository $userRepository ,VotesRepository $voteRepository): Response
     {
         $user = $this->getUser();
         if (!$user instanceof User) {
@@ -37,9 +38,10 @@ final class UserController extends AbstractController
         $debates = $user->getDebates();
 
         $ranking = $userRepository->getUserRankingByVotes($user);
+        $nbVotes = $voteRepository->countVotesByUser($user);
 
         $stats = [
-            'total_votes' => count($user->getVotes()),
+            'total_votes' => $nbVotes,
             'debates_won' => 0, // À compléter si tu veux
             'rank_month' => $ranking['rank_month'],
             'rank_global' => $ranking['rank_global'],
