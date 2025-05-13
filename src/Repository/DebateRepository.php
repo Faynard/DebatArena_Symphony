@@ -81,7 +81,7 @@ class DebateRepository extends ServiceEntityRepository
             'SELECT DISTINCT u.id FROM App\Entity\Argument a
         JOIN a.user u
         JOIN a.camp c
-        WHERE c.debate = :debatId AND a.creationDate IS NOT NULL'
+        WHERE c.debate = :debatId'
         )
             ->setParameter('debatId', $debatId)
             ->getArrayResult();
