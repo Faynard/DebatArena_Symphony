@@ -37,12 +37,12 @@
 
         <div class="container-arguments">
             {% for camp in debate.camps %}
-                <div class="column camp{{ camp.id % 2 }}">
+                <div class="column">
                     <h2 class="text-center">{{ camp.nameCamp }}</h2>
                     <div>
                         {% for argument in arguments[camp.id] %}
                             {% set isVoted = argument.id in argumentIdVoted %}
-                            {% include 'argument/show.html.twig' with {'argument' : argument, 'isVoted': isVoted, 'debateId': debate.id} %}
+                            {% include 'argument/show.html.twig' with {'argument' : argument, 'argumentIdVoted': argumentIdVoted, 'debateId': debate.id} %}
                         {% endfor %}
                     </div>
                 </div>
