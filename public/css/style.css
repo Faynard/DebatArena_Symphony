@@ -7,6 +7,7 @@
 .button-group {
     display: flex;
     gap: 1rem;
+    margin-bottom: 5px;
 }
 
 .text-bold {
@@ -17,9 +18,9 @@
     padding: 0.6rem 1.5rem;
     border: none;
     border-radius: 20px;
-    background: linear-gradient(to bottom, #b0b8c3, #aab1bd);
-    color: white;
     font-weight: bold;
+    color: white;
+    background: linear-gradient(to bottom, #b0b8c3, #aab1bd);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     cursor: pointer;
     transition: all 0.2s ease-in-out;
@@ -33,4 +34,10 @@
 
 .button-main {
     background: linear-gradient(to bottom, #A6B1E1, #A2A9DC);
+    color: white;
+}
+
+.button-white {
+    background: #dddddd;
+    color: black;
 }

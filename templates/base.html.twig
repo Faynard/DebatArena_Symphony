@@ -15,7 +15,11 @@
         <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
     </head>
     <body>
-    {% include 'partials/_navbar.html.twig' %}
-        {% block body %}{% endblock %}
+    {% block navbar %}
+        {% include 'partials/_navbar.html.twig' %}
+    {% endblock%}
+
+    {% block body %}
+    {% endblock %}
     </body>
 </html>
