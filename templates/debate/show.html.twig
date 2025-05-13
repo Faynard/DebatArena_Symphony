@@ -42,7 +42,7 @@
                     <div>
                         {% for argument in arguments[camp.id] %}
                             {% set isVoted = argument.id in argumentIdVoted %}
-                            {% include 'argument/show.html.twig' with {'argument' : argument, 'argumentIdVoted': argumentIdVoted, 'debateId': debate.id} %}
+                            {% include 'argument/show.html.twig' with {'argument' : argument, 'subArguments': subArguments, 'argumentIdVoted': argumentIdVoted, 'debateId': debate.id} %}
                         {% endfor %}
                     </div>
                 </div>

@@ -41,7 +41,7 @@
         {{ argument.votes|length }} {{ 'argument.votes'|trans }}
     </div>
     <div class="subArguments">
-        {% for subArgument in argument.subArguments %}
+        {% for subArgument in subArguments[argument.id] %}
             <div class="camp{{ subArgument.camp.id % 2}} argument subArgument">
                 {% if app.user != null %}
                     {% set isCurrentUser = app.user == subArgument.user %}
