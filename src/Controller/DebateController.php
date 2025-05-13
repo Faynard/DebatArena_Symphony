@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/debate')]
 final class DebateController extends AbstractController
 {
-    #[Route(name: 'app_debate_index', methods: ['GET'])]
+    #[Route('/', 'app_debate_index', methods: ['GET'])]
     public function index(
         DebateRepository $debateRepository,
         Request $request
