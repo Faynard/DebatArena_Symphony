@@ -1,7 +1,7 @@
 :root {
     --mainBackgroundColor: #FEF8E8;
-    --firstCampColor: #A6B1E1;
-    --secondCampColor: #FE5F55;
+    --firstCampColor: #c1d0fb;
+    --secondCampColor: #f6a7a7;
 }
 
 .button-group {
@@ -38,6 +38,6 @@
 }
 
 .button-white {
-    background: #dddddd;
+    background: #eeeeee;
     color: black;
 }

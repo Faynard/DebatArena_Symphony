@@ -21,11 +21,11 @@
     align-content: center;
 }
 
-.column.camp1 .argument {
+.camp1 {
     background-color: var(--firstCampColor);
 }
 
-.column.camp0 .argument {
+.camp0 {
     background-color: var(--secondCampColor);
 }
 
@@ -59,4 +59,8 @@
 
 .alert {
     margin: 8px;
+}
+
+.subArgument {
+    width: 90%;
 }
