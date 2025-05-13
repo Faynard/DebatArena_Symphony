@@ -31,6 +31,18 @@ class ArgumentRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
+    public function findSubValidatedArgumentByMain($argument): array
+    {
+        return $this->createQueryBuilder('a')
+            ->leftJoin('App\Entity\Report', 'r', 'WITH', 'r.argument = a')
+            ->andWhere('a.mainArgument = :argument')
+            ->andWhere('r.isValid = FALSE OR r IS NULL')
+            ->setParameter('argument', $argument)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
     //    /**
     //     * @return Argument[] Returns an array of Argument objects
     //     */
