@@ -36,7 +36,7 @@ final class CampController extends AbstractController
             return $this->redirectToRoute('app_camp_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('camp/new.html.twig', [
+        return $this->render('camp/form.html.twig', [
             'camp' => $camp,
             'form' => $form,
         ]);
@@ -45,7 +45,7 @@ final class CampController extends AbstractController
     #[Route('/{id}', name: 'app_camp_show', methods: ['GET'])]
     public function show(Camp $camp): Response
     {
-        return $this->render('camp/show.html.twig', [
+        return $this->render('camp/_show.html.twig', [
             'camp' => $camp,
         ]);
     }

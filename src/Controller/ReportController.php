@@ -36,7 +36,7 @@ final class ReportController extends AbstractController
             return $this->redirectToRoute('app_report_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('report/new.html.twig', [
+        return $this->render('report/form.html.twig', [
             'report' => $report,
             'form' => $form,
         ]);
@@ -45,7 +45,7 @@ final class ReportController extends AbstractController
     #[Route('/{id}', name: 'app_report_show', methods: ['GET'])]
     public function show(Report $report): Response
     {
-        return $this->render('report/show.html.twig', [
+        return $this->render('report/_show.html.twig', [
             'report' => $report,
         ]);
     }

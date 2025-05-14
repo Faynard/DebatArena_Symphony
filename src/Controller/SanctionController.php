@@ -36,7 +36,7 @@ final class SanctionController extends AbstractController
             return $this->redirectToRoute('app_sanction_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('sanction/new.html.twig', [
+        return $this->render('sanction/form.html.twig', [
             'sanction' => $sanction,
             'form' => $form,
         ]);
@@ -45,7 +45,7 @@ final class SanctionController extends AbstractController
     #[Route('/{id}', name: 'app_sanction_show', methods: ['GET'])]
     public function show(Sanction $sanction): Response
     {
-        return $this->render('sanction/show.html.twig', [
+        return $this->render('sanction/_show.html.twig', [
             'sanction' => $sanction,
         ]);
     }

@@ -47,7 +47,7 @@ final class UserController extends AbstractController
             'rank_global' => $ranking['rank_global'],
         ];
 
-        return $this->render('user/show.html.twig', [
+        return $this->render('user/_show.html.twig', [
             'user' => $user,
             'debates' => $debates,
             'stats' => $stats,
