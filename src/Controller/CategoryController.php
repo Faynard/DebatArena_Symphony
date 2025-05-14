@@ -36,7 +36,7 @@ final class CategoryController extends AbstractController
             return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('category/new.html.twig', [
+        return $this->render('category/form.html.twig', [
             'category' => $category,
             'form' => $form,
         ]);
@@ -45,7 +45,7 @@ final class CategoryController extends AbstractController
     #[Route('/{id}', name: 'app_category_show', methods: ['GET'])]
     public function show(Category $category): Response
     {
-        return $this->render('category/show.html.twig', [
+        return $this->render('category/_show.html.twig', [
             'category' => $category,
         ]);
     }

@@ -154,7 +154,7 @@ final class ArgumentController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('argument/new.html.twig', [
+        return $this->render('argument/form.html.twig', [
             'argument' => $argument,
             'debate' => $debate,
             'mainArgument' => $mainArgument,
@@ -179,7 +179,7 @@ final class ArgumentController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('argument/new.html.twig', [
+        return $this->render('argument/form.html.twig', [
             'argument' => $argument,
             'debate' => $argument->getCamp()->getDebate(),
             'mainArgument' => $argument->getMainArgument(),

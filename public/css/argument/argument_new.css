@@ -4,7 +4,7 @@
     padding: 2rem;
     max-width: 750px;
     margin: 2rem auto;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--boxShadow);
     text-align: center;
     font-family: Arial, sans-serif;
 }
@@ -38,6 +38,6 @@
 }
 
 .argument-text:focus {
-    border-color: #8c91e3;
+    border-color: var(--formFocusColor);
     outline: none;
 }

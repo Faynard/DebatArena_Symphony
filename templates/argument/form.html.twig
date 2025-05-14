@@ -11,9 +11,9 @@
 
     <div class="container">
         {% if mainArgument == null %}
-            <h1 class="title">{{ 'argument.new.create'|trans }} {{ debate.nameDebate }}</h1>
+            <h1 class="title">{{ 'argument.form.create'|trans }} {{ debate.nameDebate }}</h1>
         {% else %}
-            <h1 class="title">{{ 'argument.new.response'|trans }} {{ debate.nameDebate }}</h1>
+            <h1 class="title">{{ 'argument.form.response'|trans }} {{ debate.nameDebate }}</h1>
         {% endif %}
 
 
@@ -24,9 +24,9 @@
 
         <div class="button-group justify-content-center">
             <a href="{{ path('app_debate_show', {'id': debate.id}) }}" class="button">
-                {{ 'argument.new.return' }}
+                {{ 'argument.form.return'|trans }}
             </a>
-            <button class="button button-main">{{ 'argument.new.save'|trans }}</button>
+            <button class="button button-main">{{ 'argument.form.save'|trans }}</button>
             {{ form_end(form) }}
         </div>
     </div>

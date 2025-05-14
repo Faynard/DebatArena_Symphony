@@ -27,10 +27,10 @@
             <div class="button-group">
                 <form method="get" action="{{ path('app_argument_new') }}">
                     <input type="hidden" name="debate" value="{{ debate.id }}">
-                    <button class="button button-main">{{ 'argument.new'|trans }}</button>
+                    <button class="button button-main">{{ 'debate.argument.new'|trans }}</button>
                 </form>
                 <button class="button">
-                    {{ 'debate.statistiques'|trans }}
+                    {{ 'debate.statistiques.show'|trans }}
                 </button>
             </div>
         </div>
@@ -42,7 +42,7 @@
                     <div>
                         {% for argument in arguments[camp.id] %}
                             {% set isVoted = argument.id in argumentIdVoted %}
-                            {% include 'argument/show.html.twig' with {'argument' : argument, 'subArguments': subArguments, 'argumentIdVoted': argumentIdVoted, 'debateId': debate.id} %}
+                            {% include 'argument/_show.html.twig' with {'argument' : argument, 'subArguments': subArguments, 'argumentIdVoted': argumentIdVoted, 'debateId': debate.id} %}
                         {% endfor %}
                     </div>
                 </div>

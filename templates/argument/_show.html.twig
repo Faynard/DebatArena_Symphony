@@ -12,15 +12,15 @@
             <form method="get" action="{{ path('app_argument_new') }}" id="respond-form-{{ argument.id }}">
                 <input type="hidden" name="debate" value="{{ debateId }}">
                 <input type="hidden" name="mainArgumentId" value="{{ argument.id }}">
-                <button class="button button-white">{{ 'argument.respond'|trans }}</button>
+                <button class="button button-white">{{ 'debate.argument.respond'|trans }}</button>
             </form>
             <form method="post" action="{{ path('app_argument_report') }}" id="report-form-{{ argument.id }}">
                 <input type="hidden" name="argumentId" value="{{ argument.id }}">
-                <button class="button button-white">{{ 'argument.report'|trans }}</button>
+                <button class="button button-white">{{ 'debate.argument.report'|trans }}</button>
             </form>
         {% else %}
             <form method="get" action="{{ path('app_argument_edit', {'id': argument.id}) }}" id="edit-form-{{ argument.id }}">
-                <button class="button button-white">{{ 'argument.edit'|trans }}</button>
+                <button class="button button-white">{{ 'debate.argument.edit'|trans }}</button>
             </form>
         {% endif %}
         {% if isVoted %}
@@ -38,7 +38,7 @@
                 </button>
             </form>
         {% endif %}
-        {{ argument.votes|length }} {{ 'argument.votes'|trans }}
+        {{ argument.votes|length }} {{ 'debate.argument.votes'|trans }}
     </div>
     <div class="subArguments">
         {% for subArgument in subArguments[argument.id] %}
@@ -54,12 +54,12 @@
                 <div class="button-group justify-content-center votes">
                     {% if isCurrentUser %}
                         <form method="get" action="{{ path('app_argument_edit', {'id': subArgument.id}) }}" id="edit-form-{{ subArgument.id }}">
-                            <button class="button button-white">{{ 'argument.edit'|trans }}</button>
+                            <button class="button button-white">{{ 'debate.argument.edit'|trans }}</button>
                         </form>
                     {% else %}
                     <form method="post" action="{{ path('app_argument_report') }}" id="report-form-{{ subArgument.id }}">
                         <input type="hidden" name="argumentId" value="{{ subArgument.id }}">
-                        <button class="button button-white">{{ 'argument.report'|trans }}</button>
+                        <button class="button button-white">{{ 'debate.argument.report'|trans }}</button>
                     </form>
                     {% endif %}
                     {% if isVoted %}
@@ -77,7 +77,7 @@
                             </button>
                         </form>
                     {% endif %}
-                    {{ subArgument.votes|length }} {{ 'argument.votes'|trans }}
+                    {{ subArgument.votes|length }} {{ 'debate.  argument.votes'|trans }}
                 </div>
             </div>
         {% endfor %}
