@@ -21,9 +21,11 @@ class ReportCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
+            TextField::new('user.pseudo')
+                ->setDisabled(),
+            TextEditorField::new('argument.text')
+                ->setDisabled(),
             BooleanField::new('isValid'),
-            TextField::new('argument.text')->onlyOnIndex(),
         ];
     }
 }

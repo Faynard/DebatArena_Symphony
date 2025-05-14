@@ -136,7 +136,7 @@ final class DebateController extends AbstractController
             $argumentIdVoted[] = $vote->getArgument()->getId();
         }
 
-        return $this->render('debate/_show.html.twig', [
+        return $this->render('debate/show.html.twig', [
             'debate' => $debate,
             'arguments' => $arguments,
             'subArguments' => $subArguments,
