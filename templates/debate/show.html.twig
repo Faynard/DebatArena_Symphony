@@ -10,13 +10,13 @@
 {% block body %}
     {% for message in app.flashes('success') %}
         <div class="alert alert-success">
-            {{ message|trans }}
+            {{ message }}
         </div>
     {% endfor %}
 
     {% for message in app.flashes('danger') %}
         <div class="alert alert-danger">
-            {{ message|trans }}
+            {{ message }}
         </div>
     {% endfor %}
     <div class="page">

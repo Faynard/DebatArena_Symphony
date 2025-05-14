@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use function Symfony\Component\Translation\t;
 
 #[Route('/argument')]
 final class ArgumentController extends AbstractController
@@ -40,9 +41,9 @@ final class ArgumentController extends AbstractController
 
             $entityManager->persist($vote);
             $entityManager->flush();
-            $this->addFlash('success', 'argument.vote.success');
+            $this->addFlash('success', t('argument.vote.success'));
         } else {
-            $this->addFlash('danger', 'argument.vote.unsuccess');
+            $this->addFlash('danger', t('argument.vote.unsuccess'));
         }
 
 
@@ -66,7 +67,7 @@ final class ArgumentController extends AbstractController
         $entityManager->remove($vote);
         $entityManager->flush();
 
-        $this->addFlash('success', 'argument.unvote.success');
+        $this->addFlash('success', t('argument.unvote.success'));
 
         return $this->redirectToRoute('app_debate_show', [
             'id' => $argument->getCamp()->getDebate()->getId(),
@@ -92,9 +93,9 @@ final class ArgumentController extends AbstractController
 
             $entityManager->persist($report);
             $entityManager->flush();
-            $this->addFlash('success', 'argument.report.success');
+            $this->addFlash('success', t('argument.report.success'));
         } else {
-            $this->addFlash('danger', 'argument.vote.unsuccess');
+            $this->addFlash('danger', t('argument.vote.unsuccess'));
         }
 
 
@@ -115,12 +116,12 @@ final class ArgumentController extends AbstractController
         $argumentRepository = $entityManager->getRepository(Argument::class);
 
         if (!$debateId) {
-            $this->addFlash('success', 'argument.post.unsuccess');
+            $this->addFlash('success', t('argument.post.unsuccess'));
             return $this->redirectToRoute('app_debate_list');
         }
         $debate = $debateRepository->find($debateId);
         if (!$debate) {
-            $this->addFlash('success', 'argument.post.unsuccess');
+            $this->addFlash('success', t('argument.post.unsuccess'));
             return $this->redirectToRoute('app_debate_list');
         }
 
@@ -132,7 +133,7 @@ final class ArgumentController extends AbstractController
         }
         if ($mainArgument) {
             if ($mainArgument->getCamp()->getDebate() !== $debate) {
-                $this->addFlash('success', 'argument.post.unsuccess');
+                $this->addFlash('success', t('argument.post.unsuccess'));
                 return $this->redirectToRoute('app_debate_list');
             }
             $argument->setMainArgument($mainArgument);
@@ -147,7 +148,7 @@ final class ArgumentController extends AbstractController
             $entityManager->persist($argument);
             $entityManager->flush();
 
-            $this->addFlash('success', 'argument.post.success');
+            $this->addFlash('success', t('argument.post.success'));
 
             return $this->redirectToRoute('app_debate_show', [
                 'id' => $argument->getCamp()->getDebate()->getId(),
