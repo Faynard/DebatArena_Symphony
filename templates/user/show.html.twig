@@ -9,17 +9,20 @@
 {% endblock %}
 
 {% block body %}
-<div class="page">
-    <div class="profile_info">
-        <h2>{{ 'user.information' |trans }}</h2>
+    <div class="page">
+        <div class="profile_info">
+        <h2>{{ 'user.information' | trans }}</h2>
 
         <div id="displayFields">
-            <p><strong>{{ 'user.pseudo' |trans }}</strong> {{ user.pseudo }}</p>
-            <p><strong>{{ 'user.email' |trans }}</strong> {{ user.email }}</p>
-
+            <p><strong>{{ 'user.pseudo' | trans }}</strong> {{ user.pseudo }}</p>
+            <p><strong>{{ 'user.email' | trans }}</strong> {{ user.email }}</p>
         </div>
 
-        {{ form_start(form, {'action': path('app_user_edit', {'id': user.id}),'method': 'POST','attr': {'id': 'editForm', 'class': 'hidden'} }) }}
+        {{ form_start(form, {
+            'action': path('app_user_edit', {'id': user.id}),
+            'method': 'POST',
+            'attr': {'id': 'editForm', 'class': 'hidden'}
+        }) }}
             <div class="editable">
                 {{ form_label(form.pseudo) }}
                 {{ form_widget(form.pseudo) }}
@@ -33,18 +36,44 @@
                 {{ form_widget(form.password) }}
             </div>
             <div class="bouton">
-                <button type="submit" class="button button-enregistrer">{{ 'user.enregistrer' |trans }}</button>
+                <button type="submit" class="button button-enregistrer">{{ 'user.enregistrer' | trans }}</button>
             </div>
         {{ form_end(form) }}
 
-        <p><strong>{{ user.compteCreer }}</strong> {{ user.createdDate ? user.createdDate|date('d/m/Y') : '' }}</p>
+        <p><strong>{{ 'user.compteCreer' | trans }}</strong> {{ user.createdDate ? user.createdDate|date('d/m/Y') : '' }}</p>
 
         <div class="bouton">
-            <button type="button" class="button button-modifier" id="logoutButton" onclick="window.location.href='{{ path('app_logout') }}'">{{ 'user.deconnexion' |trans }}</button>
-            <button type="button" class="button button-modifier" id="editButton" onclick="toggleEdit()">{{ 'user.modifier' |trans }}</button>
-            <button type="button" class="button button-supprimer" onclick="confirmDelete()">{{ 'user.supprimer' |trans }}</button>
+            <button type="button" class="button button-modifier" id="logoutButton" onclick="window.location.href='{{ path('app_logout') }}'">
+                {{ 'user.deconnexion' | trans }}
+            </button>
+            <button type="button" class="button button-modifier" id="editButton" onclick="toggleEdit()">
+                {{ 'user.modifier' | trans }}
+            </button>
+            <button type="button" class="button button-supprimer" onclick="confirmDelete()">
+                {{ 'user.supprimer' | trans }}
+            </button>
         </div>
+        
+        <div class="admin">
+            {% if is_granted('ROLE_ADMIN')%}
+                <button type="button" class="button button-modifier">
+                    {{ 'user.adminbutton' | trans }}
+                </button>
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR') %}
+                <button type="button" class="button button-modifier">
+                    {{ 'user.moderateurbouton' | trans }}
+                </button>
+            {% endif %}
+        </div>
+        
+
+        {# Formulaire de suppression caché #}
+        <form id="deleteForm" method="POST" action="{{ path('app_user_delete', {'id': user.id}) }}" style="display: none;">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+        </form>
     </div>
+
 
     <div class="div_stat">
         <div class="recent_debat scrollable-debates">
@@ -86,11 +115,11 @@
         
 
         <div class="statistique">
-            <h2>Statistiques</h2>
+            <h2>{{ 'user.statistique' |trans }}</h2>
             {% if stats is defined %}
                 <p><strong>{{ 'user.countVote' |trans }}</strong> {{ stats.total_votes ?? 0 }}</p>
                 <p><strong>{{ 'user.debatWin' |trans }}</strong> {{ stats.debates_won ?? 0 }} {{ 'user.win' |trans }}</p>
-                <p class="highlight">{{ user.rankingMonth }} {{ stats.rank_month ?? "{{ 'user.nonClasse' |trans }}" }}</p>
+                <p><strong>{{ 'user.rankingMonth' |trans }}</strong> {{ stats.rank_month ?? "{{ 'user.nonClasse' |trans }}" }}</p>
                 <p><strong>{{ 'user.rankingGlobal' |trans }}</strong> {{ stats.rank_global ?? "{{ 'user.nonClasse' |trans }}" }}</p>
             {% else %}
                 <p>{{ 'user.aucuneStat' |trans }}</p>
@@ -120,10 +149,11 @@
     }
 
     function confirmDelete() {
-        const confirmation = confirm("{{ 'user.msgSup' |trans }}");
+        const confirmation = confirm("{{ 'user.msgSup' | trans }}");
         if (confirmation) {
-            window.location.href = "{{ path('app_user_delete', {'id': user.id}) }}";
-        }
+            document.getElementById('deleteForm').submit();
+        }   
     }
+
 </script>
 {% endblock %}

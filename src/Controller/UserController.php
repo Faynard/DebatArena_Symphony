@@ -32,6 +32,7 @@ final class UserController extends AbstractController
 
         $recentDebates = $debateRepository->findRecentDebatesByUser($user);
 
+        $statDebate = [];
         foreach ($recentDebates as $debat) {
             $statDebate[$debat->getId()] = $debateRepository->calculateStatsForDebat($debat->getId());
         }
@@ -90,13 +91,18 @@ final class UserController extends AbstractController
 
     #[IsGranted('ROLE_USER', message: 'Tu n\'es pas autorisé à accéder à cette page.')]
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
-    public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, User $user, UserRepository $respositoryUser,EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->getPayload()->getString('_token'))) {
+            $respositoryUser->argumentToAnonyme($user);
+            $respositoryUser->transferDebatesToAnonymous($user);
+            $respositoryUser->transferVotesToAnonymous($user);
+            $respositoryUser->transferReportsToAnonymous($user);
+
             $entityManager->remove($user);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_debate_index', [], Response::HTTP_SEE_OTHER);
     }
 }
