@@ -111,7 +111,7 @@ final class DebateController extends AbstractController
             return $this->redirectToRoute('app_debate_index');
         }
 
-        return $this->render('debate/new.html.twig', [
+        return $this->render('debate/form.html.twig', [
             'form' => $form->createView(),
         ]);
     }

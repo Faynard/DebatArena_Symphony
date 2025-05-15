@@ -17,18 +17,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use function Symfony\Component\Translation\t;
 
 #[Route('/argument')]
 final class ArgumentController extends AbstractController
 {
-    #[Route(name: 'app_argument_index', methods: ['GET'])]
-    public function index(ArgumentRepository $argumentRepository): Response
-    {
-        return $this->render('argument/index.html.twig', [
-            'arguments' => $argumentRepository->findAll(),
-        ]);
-    }
-
     #[IsGranted('ROLE_USER')]
     #[Route('/vote', name: 'app_argument_vote', methods: ['POST'])]
     public function vote(EntityManagerInterface $entityManager): Response
@@ -48,9 +41,9 @@ final class ArgumentController extends AbstractController
 
             $entityManager->persist($vote);
             $entityManager->flush();
-            $this->addFlash('success', 'argument.vote.success');
+            $this->addFlash('success', t('argument.vote.success'));
         } else {
-            $this->addFlash('danger', 'argument.vote.unsuccess');
+            $this->addFlash('danger', t('argument.vote.unsuccess'));
         }
 
 
@@ -74,7 +67,7 @@ final class ArgumentController extends AbstractController
         $entityManager->remove($vote);
         $entityManager->flush();
 
-        $this->addFlash('success', 'argument.unvote.success');
+        $this->addFlash('success', t('argument.unvote.success'));
 
         return $this->redirectToRoute('app_debate_show', [
             'id' => $argument->getCamp()->getDebate()->getId(),
@@ -100,9 +93,9 @@ final class ArgumentController extends AbstractController
 
             $entityManager->persist($report);
             $entityManager->flush();
-            $this->addFlash('success', 'argument.report.success');
+            $this->addFlash('success', t('argument.report.success'));
         } else {
-            $this->addFlash('danger', 'argument.vote.unsuccess');
+            $this->addFlash('danger', t('argument.vote.unsuccess'));
         }
 
 
@@ -123,12 +116,12 @@ final class ArgumentController extends AbstractController
         $argumentRepository = $entityManager->getRepository(Argument::class);
 
         if (!$debateId) {
-            $this->addFlash('success', 'argument.post.unsuccess');
+            $this->addFlash('success', t('argument.post.unsuccess'));
             return $this->redirectToRoute('app_debate_list');
         }
         $debate = $debateRepository->find($debateId);
         if (!$debate) {
-            $this->addFlash('success', 'argument.post.unsuccess');
+            $this->addFlash('success', t('argument.post.unsuccess'));
             return $this->redirectToRoute('app_debate_list');
         }
 
@@ -140,7 +133,7 @@ final class ArgumentController extends AbstractController
         }
         if ($mainArgument) {
             if ($mainArgument->getCamp()->getDebate() !== $debate) {
-                $this->addFlash('success', 'argument.post.unsuccess');
+                $this->addFlash('success', t('argument.post.unsuccess'));
                 return $this->redirectToRoute('app_debate_list');
             }
             $argument->setMainArgument($mainArgument);
@@ -155,14 +148,14 @@ final class ArgumentController extends AbstractController
             $entityManager->persist($argument);
             $entityManager->flush();
 
-            $this->addFlash('success', 'argument.post.success');
+            $this->addFlash('success', t('argument.post.success'));
 
             return $this->redirectToRoute('app_debate_show', [
                 'id' => $argument->getCamp()->getDebate()->getId(),
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('argument/new.html.twig', [
+        return $this->render('argument/form.html.twig', [
             'argument' => $argument,
             'debate' => $debate,
             'mainArgument' => $mainArgument,
@@ -174,17 +167,23 @@ final class ArgumentController extends AbstractController
     #[Route('/{id}/edit', name: 'app_argument_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Argument $argument, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(ArgumentType::class, $argument);
+        $form = $this->createForm(ArgumentType::class, $argument, [
+            'debate' => $argument->getCamp()->getDebate(),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_argument_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_debate_show', [
+                'id' => $argument->getCamp()->getDebate()->getId(),
+            ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('argument/edit.html.twig', [
+        return $this->render('argument/form.html.twig', [
             'argument' => $argument,
+            'debate' => $argument->getCamp()->getDebate(),
+            'mainArgument' => $argument->getMainArgument(),
             'form' => $form,
         ]);
     }
