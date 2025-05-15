@@ -77,7 +77,7 @@
                 'pourcentage_camp_2': 50,
                 'nb_participants': 0
             } %}
-            <a href="{{ path('app_debate_show', {'id': debat.id}) }}" class="debate-item">
+            <a href="{{ path('app_debate_show', {'id': debat.id}) }}">
                 <div class="debat">
                     <h3>{{ debat.getNameDebate()|e }}</h3>
                     <div class="debate-description">{{ debat.descriptionDebate|e }}</div>
