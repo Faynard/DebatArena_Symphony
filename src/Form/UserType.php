@@ -15,16 +15,16 @@ class UserType extends AbstractType
     {
         $builder
             ->add('pseudo', null, [
-                'label' => 'Pseudo *',
-                'attr' => ['placeholder' => 'Pseudo'],
+                'label' => "{{ 'user.pseudo'|trans }} *",
+                'attr' => ['placeholder' => "{{ 'user.pseudo'|trans }}"],
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Adresse email *',
-                'attr' => ['placeholder' => 'Adresse email'],
+                'label' => "{ 'user.email'|trans }} *",
+                'attr' => ['placeholder' => "{{ 'user.email'|trans }}"],
             ])
             ->add('password', PasswordType::class, [
-                'label' => 'Mot de passe *',
-                'attr' => ['placeholder' => 'Mot de passe'],
+                'label' => "{{ 'user.mdp'|trans }} *",
+                'attr' => ['placeholder' => "{{ 'user.mdp'|trans }}"],
             ]);
             // ->add('createdDate', null, [
             //     'widget' => 'single_text',

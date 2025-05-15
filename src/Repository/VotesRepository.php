@@ -38,12 +38,16 @@ class VotesRepository extends ServiceEntityRepository
 
     public function countVotesByUser(User $user): int
     {
-        return $this->createQueryBuilder('v')
+
+        $test =  $this->createQueryBuilder('v')
             ->select('COUNT(v.id)')
             ->where('v.user = :user')
             ->setParameter('user', $user)
             ->getQuery()
             ->getSingleScalarResult();
+
+
+        return $test;
     }
 
     //    /**

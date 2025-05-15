@@ -4,38 +4,40 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\DebateRepository;
 use App\Repository\UserRepository;
 use App\Repository\VotesRepository;
+use App\Form\UserEditType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[IsGranted('ROLE_USER')]
 #[Route('/user')]
 final class UserController extends AbstractController
 {
-    #[IsGranted('ROLE_USER', message: 'Tu n\'es pas autorisé à accéder à cette page.')]
-    #[Route(name: 'app_user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
-    {
-        return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
-    }
 
     #[IsGranted('ROLE_USER', message: 'Tu n\'es pas autorisé à accéder à cette page.')]
-    #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
-    public function show(User $user, UserRepository $userRepository ,VotesRepository $voteRepository): Response
+    #[Route(name: 'app_user_show', methods: ['GET','POST'])]
+    public function show( DebateRepository $debateRepository, UserRepository $userRepository ,VotesRepository $voteRepository): Response
     {
         $user = $this->getUser();
         if (!$user instanceof User) {
             throw $this->createAccessDeniedException();
         }
 
-        $debates = $user->getDebates();
+        $recentDebates = $debateRepository->findRecentDebatesByUser($user);
+
+        $statDebate = [];
+        foreach ($recentDebates as $debat) {
+            $statDebate[$debat->getId()] = $debateRepository->calculateStatsForDebat($debat->getId());
+        }
+
+        $form = $this->createForm(UserEditType::class, $user);
 
         $ranking = $userRepository->getUserRankingByVotes($user);
         $nbVotes = $voteRepository->countVotesByUser($user);
@@ -49,40 +51,58 @@ final class UserController extends AbstractController
 
         return $this->render('user/show.html.twig', [
             'user' => $user,
-            'debates' => $debates,
+            'form' => $form->createView(),
+            'recentDebates' => $recentDebates,
+            'statDebates' => $statDebate,
             'stats' => $stats,
         ]);
     }
 
 
-    #[IsGranted('ROLE_USER', message: 'Tu n\'es pas autorisé à accéder à cette page.')]
-    #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    #[IsGranted('ROLE_USER')]
+    #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET','POST'])]
+    public function edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $hasher): Response
     {
-        $form = $this->createForm(UserType::class, $user);
+        echo $user->getId();
+        // Vérifie que l'utilisateur connecté modifie bien son propre profil
+        if ($this->getUser()->getId() !== $user->getId()) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $form = $this->createForm(UserEditType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $plainPassword = $form->get('password')->getData();
+            if ($plainPassword) {
+                $hashedPassword = $hasher->hashPassword($user, $plainPassword);
+                $user->setPassword($hashedPassword);
+            }
+
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('success', 'Profil mis à jour.');
+            return $this->redirectToRoute('app_user_show', ['id' => $user->getId()]);
         }
 
-        return $this->render('user/edit.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
+        // Retourne une 400 car seule une requête POST est attendue
+        return new Response('Formulaire invalide.', Response::HTTP_BAD_REQUEST);
     }
 
     #[IsGranted('ROLE_USER', message: 'Tu n\'es pas autorisé à accéder à cette page.')]
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
-    public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, User $user, UserRepository $respositoryUser,EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->getPayload()->getString('_token'))) {
+            $respositoryUser->argumentToAnonyme($user);
+            $respositoryUser->transferDebatesToAnonymous($user);
+            $respositoryUser->transferVotesToAnonymous($user);
+            $respositoryUser->transferReportsToAnonymous($user);
+
             $entityManager->remove($user);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_debate_index', [], Response::HTTP_SEE_OTHER);
     }
 }
