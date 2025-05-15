@@ -26,7 +26,7 @@
 
     <!-- Actions Utilisateur -->
     <div class="navbar__actions">
-        <a href="{{ is_granted('IS_AUTHENTICATED_REMEMBERED') ? path('app_debate_new') : path('app_user_index') }}" class="btn-create-debate">
+        <a href="{{ path('app_debate_new') }}" class="btn-create-debate">
             Ajouter un débat
         </a>
 
