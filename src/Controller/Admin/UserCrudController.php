@@ -6,15 +6,13 @@ use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use function Symfony\Component\Translation\t;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -31,16 +29,26 @@ class UserCrudController extends AbstractCrudController
         return User::class;
     }
 
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->showEntityActionsInlined();
+    }
+
     public function configureFields(string $pageName): iterable
     {
         return [
-            TextField::new('pseudo'),
-            TextField::new('email'),
+            TextField::new('pseudo')
+                ->setLabel($this->translator->trans('admin.user.pseudo')),
+            TextField::new('email')
+                ->setLabel($this->translator->trans('admin.user.email')),
             ArrayField::new('roles')
+                ->setLabel($this->translator->trans('admin.user.roles'))
                 ->formatValue(fn ($v, $entity) =>
                 implode(', ', array_map(fn ($role) => $this->translator->trans($this->getRoleLabel($role)), $entity->getRoles()))
                 ),
             ChoiceField::new('roles')
+                ->setLabel($this->translator->trans('admin.user.roles'))
                 ->onlyOnForms()
                 ->setLabel('admin.user.roles')
                 ->allowMultipleChoices()
@@ -66,5 +74,10 @@ class UserCrudController extends AbstractCrudController
             'ROLE_ADMIN' => 'roles.admin',
             default => $role,
         };
+    }
+
+    public function new(AdminContext $context): Response
+    {
+        return $this->redirectToRoute('admin_user_index');
     }
 }
