@@ -3,22 +3,15 @@
 {% block title %}Connexion{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/user.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/security.css') }}">
 {% endblock %}
 
 {% block navbar %}
 {% endblock %}
 
 {% block body %}
-
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="/logout">Logout</a>
-        </div>
-    {% endif %}
-
     <form method="post" action="{{ path('app_login') }}" class="card">
-        <h2>Ravi de vous revoir !</h2>
+        <h2>"{{ 'user.raviDeVousRevoir' |trans }}"</h2>
 
         {% if error %}
             <div class="alert alert-danger">
@@ -27,23 +20,23 @@
         {% endif %}
 
         <div class="email">
-            <label for="username">Adresse email :</label>
-            <input type="email" name="_username" id="username" placeholder="Adresse email" value="{{ last_username }}" required>
+            <label for="username">{{ 'user.email' |trans }} :</label>
+            <input type="email" name="_username" id="username" placeholder="{{ 'user.email' |trans }}" value="{{ last_username }}" required>
         </div>
 
         <div class="password">
-            <label for="password">Mot de passe :</label>
-            <input type="password" name="_password" id="password" placeholder="Mot de passe" required>
+            <label for="password">{{ 'user.mdp' |trans }} :</label>
+            <input type="password" name="_password" id="password" placeholder="{{ 'user.mdp' |trans }}" required>
         </div>
 
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
         <div class="btn">
-            <button type="button" class="button_retour" onclick="window.location.href='/'">Retour</button>
-            <button type="submit" class="button">Se connecter</button>
+            <button type="button" class="button_retour" onclick="window.location.href='/'">{{ 'user.retour' |trans }}</button>
+            <button type="submit" class="button">{{ 'user.seConnecter' |trans }}</button>
         </div>
 
         <br>
-        <a href="{{ path('app_user_new') }}">Souhaitez-vous créer un compte ?</a>
+        <a href="{{ path('app_user_new') }}">{{ 'user.creationCompte' |trans }}</a>
     </form>
 {% endblock %}

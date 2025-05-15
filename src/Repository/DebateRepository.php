@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Debate;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -191,6 +192,23 @@ class DebateRepository extends ServiceEntityRepository
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function findRecentDebatesByUser(User $user): array
+    {
+        $em = $this->getEntityManager();
+
+        $query = $em->createQuery('
+            SELECT DISTINCT d
+            FROM App\Entity\Debate d
+            JOIN d.camps c
+            LEFT JOIN App\Entity\Argument a WITH a.camp = c
+            LEFT JOIN App\Entity\Votes v WITH v.argument = a
+            WHERE a.user = :user OR v.user = :user
+            ORDER BY d.creationDate DESC
+        ')->setParameter('user', $user);
+
+        return $query->getResult();
     }
 
 

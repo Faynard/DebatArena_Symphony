@@ -69,6 +69,94 @@ class UserRepository extends ServiceEntityRepository
         ];
     }
 
+    public function argumentToAnonyme(User $user): void
+    {
+        $entityManager = $this->getEntityManager();
+
+        // Récupère le user anonyme
+        $anonymousUser = $entityManager->getRepository(User::class)->find(9999); // ID de l'anonyme
+
+        if (!$anonymousUser) {
+            throw new \RuntimeException('Utilisateur anonyme non trouvé.');
+        }
+
+        // Met à jour tous les arguments de l’utilisateur
+        $qb = $entityManager->createQueryBuilder();
+        $qb->update('App\Entity\Argument', 'a')
+            ->set('a.user', ':anonymous')
+            ->where('a.user = :user')
+            ->setParameter('anonymous', $anonymousUser)
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->execute();
+    }
+
+    public function transferDebatesToAnonymous(User $user): void
+    {
+        $em = $this->getEntityManager();
+
+        $anonymous = $em->getRepository(User::class)->find(9999); // ID de l'utilisateur anonyme
+
+        if (!$anonymous) {
+            throw new \RuntimeException('Utilisateur anonyme non trouvé.');
+        }
+
+        $qb = $em->createQueryBuilder();
+        $qb->update('App\Entity\Debate', 'd')
+            ->set('d.userCreated', ':anonymous')
+            ->where('d.userCreated = :user')
+            ->setParameter('anonymous', $anonymous)
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->execute();
+    }
+
+    public function transferVotesToAnonymous(User $user): void
+    {
+        $em = $this->getEntityManager();
+
+        // Utilisateur anonyme avec un ID connu (ex: 9999)
+        $anonymous = $em->getRepository(User::class)->find(9999);
+
+        if (!$anonymous) {
+            throw new \RuntimeException('Utilisateur anonyme non trouvé.');
+        }
+
+        // Mise à jour des votes liés à l'utilisateur supprimé
+        $qb = $em->createQueryBuilder();
+        $qb->update('App\Entity\Votes', 'v')
+            ->set('v.user', ':anonymous')
+            ->where('v.user = :user')
+            ->setParameter('anonymous', $anonymous)
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->execute();
+    }
+
+    public function transferReportsToAnonymous(User $user): void
+    {
+        $em = $this->getEntityManager();
+
+        $anonymous = $em->getRepository(User::class)->find(9999); // Utilisateur anonyme
+
+        if (!$anonymous) {
+            throw new \RuntimeException('Utilisateur anonyme non trouvé.');
+        }
+
+        $qb = $em->createQueryBuilder();
+        $qb->update('App\Entity\Report', 'r')
+            ->set('r.user', ':anonymous')
+            ->where('r.user = :user')
+            ->setParameter('anonymous', $anonymous)
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->execute();
+    }
+
+
+
+    
+
 
     //    /**
     //     * @return User[] Returns an array of User objects
