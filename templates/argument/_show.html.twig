@@ -1,0 +1,85 @@
+{% if app.user != null %}
+{% set isCurrentUser = app.user == argument.user %}
+{% else %}
+{% set isCurrentUser = false %}
+{% endif %}
+{% set isVoted = argument.id in argumentIdVoted %}
+<div class="camp{{ argument.camp.id % 2 }} argument">
+    <p class="text-bold">{{ argument.user.pseudo }}</p>
+    <p class="argument-text">{{ argument.text }}</p>
+    <div class="button-group justify-content-center votes">
+        {% if not isCurrentUser %}
+            <form method="get" action="{{ path('app_argument_new') }}" id="respond-form-{{ argument.id }}">
+                <input type="hidden" name="debate" value="{{ debateId }}">
+                <input type="hidden" name="mainArgumentId" value="{{ argument.id }}">
+                <button class="button button-white">{{ 'debate.argument.respond'|trans }}</button>
+            </form>
+            <form method="post" action="{{ path('app_argument_report') }}" id="report-form-{{ argument.id }}">
+                <input type="hidden" name="argumentId" value="{{ argument.id }}">
+                <button class="button button-white">{{ 'debate.argument.report'|trans }}</button>
+            </form>
+        {% else %}
+            <form method="get" action="{{ path('app_argument_edit', {'id': argument.id}) }}" id="edit-form-{{ argument.id }}">
+                <button class="button button-white">{{ 'debate.argument.edit'|trans }}</button>
+            </form>
+        {% endif %}
+        {% if isVoted %}
+            <form method="post" action="{{ path('app_argument_unvote') }}" id="unvote-form-{{ argument.id }}">
+                <input type="hidden" name="argumentId" value="{{ argument.id }}">
+                <button class="button button-white">
+                    <img src="{{ asset('image/vote_full.png') }}" class="icon-vote">
+                </button>
+            </form>
+        {% else %}
+            <form method="post" action="{{ path('app_argument_vote') }}" id="vote-form-{{ argument.id }}">
+                <input type="hidden" name="argumentId" value="{{ argument.id }}">
+                <button class="button button-white">
+                    <img src="{{ asset('image/vote.png') }}" class="icon-vote">
+                </button>
+            </form>
+        {% endif %}
+        {{ argument.votes|length }} {{ 'debate.argument.votes'|trans }}
+    </div>
+    <div class="subArguments">
+        {% for subArgument in subArguments[argument.id] %}
+            <div class="camp{{ subArgument.camp.id % 2}} argument subArgument">
+                {% if app.user != null %}
+                    {% set isCurrentUser = app.user == subArgument.user %}
+                {% else %}
+                    {% set isCurrentUser = false %}
+                {% endif %}
+                {% set isVoted = subArgument.id in argumentIdVoted %}
+                <p class="text-bold">{{ subArgument.user.pseudo }}</p>
+                <p class="argument-text">{{ subArgument.text }}</p>
+                <div class="button-group justify-content-center votes">
+                    {% if isCurrentUser %}
+                        <form method="get" action="{{ path('app_argument_edit', {'id': subArgument.id}) }}" id="edit-form-{{ subArgument.id }}">
+                            <button class="button button-white">{{ 'debate.argument.edit'|trans }}</button>
+                        </form>
+                    {% else %}
+                    <form method="post" action="{{ path('app_argument_report') }}" id="report-form-{{ subArgument.id }}">
+                        <input type="hidden" name="argumentId" value="{{ subArgument.id }}">
+                        <button class="button button-white">{{ 'debate.argument.report'|trans }}</button>
+                    </form>
+                    {% endif %}
+                    {% if isVoted %}
+                        <form method="post" action="{{ path('app_argument_unvote') }}" id="unvote-form-{{ subArgument.id }}">
+                            <input type="hidden" name="argumentId" value="{{ subArgument.id }}">
+                            <button class="button button-white">
+                                <img src="{{ asset('image/vote_full.png') }}" class="icon-vote">
+                            </button>
+                        </form>
+                    {% else %}
+                        <form method="post" action="{{ path('app_argument_vote') }}" id="vote-form-{{ subArgument.id }}">
+                            <input type="hidden" name="argumentId" value="{{ subArgument.id }}">
+                            <button class="button button-white">
+                                <img src="{{ asset('image/vote.png') }}" class="icon-vote">
+                            </button>
+                        </form>
+                    {% endif %}
+                    {{ subArgument.votes|length }} {{ 'debate.argument.votes'|trans }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

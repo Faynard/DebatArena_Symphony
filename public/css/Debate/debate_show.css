@@ -21,18 +21,18 @@
     align-content: center;
 }
 
-.column.camp1 .argument {
+.camp1 {
     background-color: var(--firstCampColor);
 }
 
-.column.camp0 .argument {
+.camp0 {
     background-color: var(--secondCampColor);
 }
 
 .argument {
     padding: 1rem;
     border-radius: 16px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: var(--boxShadow);
     margin-bottom: 20px;
     margin-left: auto;
     margin-right: auto;
@@ -59,4 +59,8 @@
 
 .alert {
     margin: 8px;
+}
+
+.subArgument {
+    width: 90%;
 }

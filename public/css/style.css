@@ -1,7 +1,11 @@
 :root {
     --mainBackgroundColor: #FEF8E8;
-    --firstCampColor: #A6B1E1;
-    --secondCampColor: #FE5F55;
+    --firstCampColor: #c1d0fb;
+    --secondCampColor: #f6a7a7;
+
+    --formFocusColor: #8c91e3;
+
+    --boxShadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .button-group {
@@ -38,6 +42,6 @@
 }
 
 .button-white {
-    background: #dddddd;
+    background: #eeeeee;
     color: black;
 }

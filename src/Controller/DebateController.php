@@ -20,7 +20,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/debate')]
 final class DebateController extends AbstractController
 {
-    #[Route(name: 'app_debate_index', methods: ['GET'])]
+    #[Route('/', 'app_debate_index', methods: ['GET'])]
     public function index(
         DebateRepository $debateRepository,
         Request $request
@@ -111,7 +111,7 @@ final class DebateController extends AbstractController
             return $this->redirectToRoute('app_debate_index');
         }
 
-        return $this->render('debate/new.html.twig', [
+        return $this->render('debate/form.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -120,9 +120,14 @@ final class DebateController extends AbstractController
     public function show(Debate $debate, EntityManagerInterface $entityManager): Response
     {
         $arguments = [];
+        $subArguments = [];
         $argumentRepository = $entityManager->getRepository(Argument::class);
         foreach ($debate->getCamps() as $camp) {
-            $arguments[$camp->getId()] = $argumentRepository->findMainValidatedArgumentByCamp($camp);
+            $args = $argumentRepository->findMainValidatedArgumentByCamp($camp);
+            $arguments[$camp->getId()] = $args;
+            foreach ($args as $arg) {
+                $subArguments[$arg->getId()] = $argumentRepository->findSubValidatedArgumentByMain($arg);
+            }
         }
 
         $argumentIdVoted = [];
@@ -134,6 +139,7 @@ final class DebateController extends AbstractController
         return $this->render('debate/show.html.twig', [
             'debate' => $debate,
             'arguments' => $arguments,
+            'subArguments' => $subArguments,
             'argumentIdVoted' => $argumentIdVoted,
         ]);
     }
