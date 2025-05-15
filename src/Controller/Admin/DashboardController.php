@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Category;
 use App\Entity\Debate;
 use App\Entity\Report;
 use App\Entity\User;
@@ -38,11 +39,15 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
+        yield MenuItem::linkToCrud($this->translator->trans('admin.menu.report'), 'fa fa-flag', Report::class);
+        yield MenuItem::linkToCrud('Creer Categorie', 'fa fa-tags', Category::class);
+        yield MenuItem::linkToCrud($this->translator->trans('admin.menu.user'), 'fa fa-user', User::class);
         yield MenuItem::linkToUrl($this->translator->trans('admin.dashboard.home'), '', '/');
 
         yield MenuItem::section($this->translator->trans('admin.section.moderator'));
         yield MenuItem::linkToCrud($this->translator->trans('admin.menu.report'), 'fa fa-flag', Report::class);
         yield MenuItem::linkToCrud($this->translator->trans('admin.menu.debate'), 'fa fa-newspaper', Debate::class);
+        yield MenuItem::linkToCrud('Creer Categorie', 'fa fa-tags', Category::class);
 
         yield MenuItem::section($this->translator->trans('admin.section.administrator'));
         yield MenuItem::linkToCrud($this->translator->trans('admin.menu.user'), 'fa fa-user', User::class);
