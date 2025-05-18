@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Créer un débat{% endblock %}
+{% block title %}{{ 'debate.create_title'|trans }}{% endblock %}
 
 {% block body %}
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.min.css" rel="stylesheet">
@@ -107,10 +107,9 @@
         }
     </style>
 
-
     <div class="content">
         <form method="post" class="debate-form">
-            <h1>Créer un débat</h1>
+            <h1>{{ 'debate.create_title'|trans }}</h1>
 
             {% for message in app.flashes('success') %}
                 <div class="alert alert-success">
@@ -120,13 +119,13 @@
 
             {{ form_start(form, {'attr': {'class': 'debate-form'}}) }}
 
-            {{ form_row(form.nameDebate, {'label': 'Nom du débat'}) }}
-            {{ form_row(form.descriptionDebate, {'label': 'Description du débat'}) }}
-            {{ form_row(form.camp1, {'label': 'Nom du premier camp'}) }}
-            {{ form_row(form.camp2, {'label': 'Nom du second camp'}) }}
-            {{ form_row(form.categories, {'attr': {'class': 'tom-select'}}) }}
+            {{ form_row(form.nameDebate, {'label': 'debate.name_label'|trans}) }}
+            {{ form_row(form.descriptionDebate, {'label': 'debate.description_label'|trans}) }}
+            {{ form_row(form.camp1, {'label': 'debate.camp1_label'|trans}) }}
+            {{ form_row(form.camp2, {'label': 'debate.camp2_label'|trans}) }}
+            {{ form_row(form.categories, {'attr': {'class': 'tom-select'}, 'label': 'debate.categories_label'|trans}) }}
 
-            <button type="submit">Créer le débat</button>
+            <button type="submit">{{ 'debate.create_button'|trans }}</button>
 
             {{ form_end(form) }}
         </form>
@@ -139,7 +138,7 @@
                 persist: false,
                 create: false,
                 maxItems: null,
-                placeholder: "Sélectionnez une ou plusieurs catégories"
+                placeholder: "{{ 'debate.select_categories_placeholder'|trans }}"
             });
         });
     </script>

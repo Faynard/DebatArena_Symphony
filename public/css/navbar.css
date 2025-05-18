@@ -61,7 +61,7 @@ body {
     background: #e5e5e5;
     border-radius: 20px;
     padding: 5px 12px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: none;
     position: relative;
 }
 
@@ -174,7 +174,7 @@ body {
     left: 0;
     right: 0;
     background: white;
-    border: 1px solid #ccc;
+    border: none;
     z-index: 1000;
     max-height: 250px;
     overflow-y: auto;
