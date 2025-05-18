@@ -39,15 +39,21 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToUrl($this->translator->trans('admin.dashboard.home'), '', '/');
+        yield MenuItem::linkToUrl($this->translator->trans('admin.dashboard.home'), '', '/')
+            ->setPermission('ROLE_MODERATOR');
 
         yield MenuItem::section($this->translator->trans('admin.section.moderator'));
-        yield MenuItem::linkToCrud($this->translator->trans('admin.menu.report'), 'fa fa-flag', Report::class);
-        yield MenuItem::linkToCrud($this->translator->trans('admin.menu.debate'), 'fa fa-newspaper', Debate::class);
-        yield MenuItem::linkToCrud('Creer Categorie', 'fa fa-tags', Category::class);
+        yield MenuItem::linkToCrud($this->translator->trans('admin.menu.report'), 'fa fa-flag', Report::class)
+            ->setPermission('ROLE_MODERATOR');
+        yield MenuItem::linkToCrud($this->translator->trans('admin.menu.debate'), 'fa fa-newspaper', Debate::class)
+            ->setPermission('ROLE_MODERATOR');
+        yield MenuItem::linkToCrud('Creer Categorie', 'fa fa-tags', Category::class)
+            ->setPermission('ROLE_MODERATOR');
 
-        yield MenuItem::section($this->translator->trans('admin.section.administrator'));
-        yield MenuItem::linkToCrud($this->translator->trans('admin.menu.user'), 'fa fa-user', User::class);
+        yield MenuItem::section($this->translator->trans('admin.section.administrator'))
+            ->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToCrud($this->translator->trans('admin.menu.user'), 'fa fa-user', User::class)
+            ->setPermission('ROLE_ADMIN');
     }
 
     public function configureUserMenu(UserInterface $user): UserMenu
