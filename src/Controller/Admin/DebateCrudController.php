@@ -3,9 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Debate;
-use App\Entity\Report;
 use App\Repository\DebateRepository;
-use App\Repository\ReportRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -15,8 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -52,7 +49,7 @@ class DebateCrudController extends AbstractCrudController
         return [
             TextField::new('nameDebate')
                 ->setLabel($this->translator->trans('admin.debate.name')),
-            TextEditorField::new('descriptionDebate')
+            TextareaField::new('descriptionDebate')
                 ->onlyOnForms()
                 ->setLabel($this->translator->trans('admin.debate.description')),
             TextField::new('userCreated')
