@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Résultats de recherche{% endblock %}
+{% block title %}{{ 'search_results.title'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Résultats pour "{{ query }}"</h1>
+    <h1>{{ 'search_results.heading'|trans({'%query%': query}) }}</h1>
 
     {% if debats is empty %}
-        <p>Aucun débat trouvé.</p>
+        <p>{{ 'search_results.no_results'|trans }}</p>
     {% else %}
         <ul>
             {% for debat in debats %}

@@ -1,0 +1,46 @@
+homepage.title: Home
+homepage.recent_debates: Recently Debated
+homepage.best_debaters: Top Debaters of the Month
+homepage.no_rankings: No ranking available for this month
+homepage.total_votes: Total votes
+homepage.trending_debates: Trending Debate
+homepage.previous: Previous
+homepage.next: Next
+homepage.participants: participants
+
+navbar.title: Debate Arena
+navbar.search_placeholder: Search for a debate...
+navbar.search_button: Search
+navbar.advanced_search: Advanced Search
+navbar.create_debate: Add a Debate
+navbar.language: Change language
+navbar.searching: Searching...
+navbar.no_results: No debate found
+navbar.no_debate_found: No debate found. Please select a suggestion.
+search_results.title: Search Results
+search_results.heading: Results for "%query%"
+search_results.no_results: No debates found.
+
+debate.create_title: "Create a debate"
+debate.name_label: "Debate name"
+debate.description_label: "Debate description"
+debate.camp1_label: "Name of the first camp"
+debate.camp2_label: "Name of the second camp"
+debate.categories_label: "Categories"
+debate.create_button: "Create debate"
+debate.select_categories_placeholder: "Select one or more categories"
+
+advanced_search:
+  title: "Advanced Search"
+  keyword: "Keyword"
+  min_participants: "Min. participants"
+  start_date: "Start date"
+  end_date: "End date"
+  categories: "Categories"
+  order: "Sort by"
+  order_recent: "Most recent"
+  order_popular: "Most popular"
+  filter_button: "Filter"
+  created_on: "Created on"
+  view_debate: "View debate"
+  no_results: "No debates found."

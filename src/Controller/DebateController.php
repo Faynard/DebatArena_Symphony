@@ -96,11 +96,9 @@ final class DebateController extends AbstractController
             $camp2->setNameCamp($camp2Name);
             $camp2->setDebate($debate);
 
-            // Ajouter au débat
             $debate->addCamp($camp1);
             $debate->addCamp($camp2);
 
-            // Persister
             $entityManager->persist($camp1);
             $entityManager->persist($camp2);
             $entityManager->persist($debate);
@@ -111,7 +109,7 @@ final class DebateController extends AbstractController
             return $this->redirectToRoute('app_debate_index');
         }
 
-        return $this->render('debate/form.html.twig', [
+        return $this->render('debate/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }

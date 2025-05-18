@@ -1,0 +1,47 @@
+homepage.title: Accueil
+homepage.recent_debates: Récemment débattu
+homepage.best_debaters: Classement meilleur débatteur du mois
+homepage.no_rankings: Aucun classement disponible pour ce mois
+homepage.total_votes: Vote total
+homepage.trending_debates: Débat Tendance
+homepage.previous: Précédent
+homepage.next: Suivant
+homepage.participants: participants
+
+navbar.title: Debate Arena
+navbar.search_placeholder: Rechercher un débat...
+navbar.search_button: Rechercher
+navbar.advanced_search: Recherche avancée
+navbar.create_debate: Ajouter un débat
+navbar.language: Changer de langue
+navbar.searching: Recherche en cours...
+navbar.no_results: Aucun débat trouvé
+navbar.no_debate_found: Aucun débat trouvé. Veuillez sélectionner une suggestion.
+search_results.title: Résultats de recherche
+search_results.heading: Résultats pour «%query%»
+search_results.no_results: Aucun débat trouvé.
+
+debate.create_title: "Créer un débat"
+debate.name_label: "Nom du débat"
+debate.description_label: "Description du débat"
+debate.camp1_label: "Nom du premier camp"
+debate.camp2_label: "Nom du second camp"
+debate.categories_label: "Catégories"
+debate.create_button: "Créer le débat"
+debate.select_categories_placeholder: "Sélectionnez une ou plusieurs catégories"
+
+advanced_search:
+  title: "Recherche Avancée"
+  keyword: "Mot-clé"
+  min_participants: "Min. participants"
+  start_date: "Date de début"
+  end_date: "Date de fin"
+  categories: "Catégories"
+  order: "Tri"
+  order_recent: "Plus récents"
+  order_popular: "Plus populaires"
+  filter_button: "Filtrer"
+  created_on: "Créé le"
+  view_debate: "Voir le débat"
+  no_results: "Aucun débat trouvé."
+
