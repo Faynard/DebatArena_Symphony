@@ -3,14 +3,17 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
 
 final class RedirectionController extends AbstractController
 {
-    #[Route('/', name: 'app_redirection')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
-       return $this->redirectToRoute('app_debate_index');
+        $locale = $request->getPreferredLanguage(['fr', 'en']) ?? 'fr';
+
+        return $this->redirectToRoute('app_debate_index', [
+            '_locale' => $locale,
+        ]);
     }
 }
