@@ -12,7 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -49,7 +49,7 @@ class ReportCrudController extends AbstractCrudController
                 ->setDisabled()
                 ->setLabel($this->translator->trans('admin.camp.name'))
                 ->onlyOnDetail(),
-            TextEditorField::new('argument.text')
+            TextareaField::new('argument.text')
                 ->setDisabled()
                 ->setLabel($this->translator->trans('admin.argument.text')),
             BooleanField::new('isValid')
