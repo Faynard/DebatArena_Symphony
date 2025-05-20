@@ -47,7 +47,7 @@ input[type="text"]{
 }
 
 .button {
-    background-color: #A2A9DC;
+    background-color: var(--buttonPrimaryColor);
     border: none;
     border-radius: 20px;
     padding: 10px 30px;
@@ -123,7 +123,7 @@ input[type="password"] {
 }
 
 .button {
-    background-color: #A2A9DC;
+    background-color: var(--buttonPrimaryColor);
     border: none;
     border-radius: 20px;
     padding: 10px 30px;

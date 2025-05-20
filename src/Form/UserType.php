@@ -23,8 +23,8 @@ class UserType extends AbstractType
                 'attr' => ['placeholder' => "{{ 'user.email'|trans }}"],
             ])
             ->add('password', PasswordType::class, [
-                'label' => "{{ 'user.mdp'|trans }} *",
-                'attr' => ['placeholder' => "{{ 'user.mdp'|trans }}"],
+                'label' => "{{ 'user.password'|trans }} *",
+                'attr' => ['placeholder' => "{{ 'user.password'|trans }}"],
             ]);
             // ->add('createdDate', null, [
             //     'widget' => 'single_text',
