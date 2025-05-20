@@ -57,7 +57,7 @@
         <div class="admin">
             <button onclick="toggleTheme()" class="button button-main">{{ 'user.switchTheme' | trans }}</button>
             {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR') %}
-                <button type="button" class="button button-modifier">
+                <button type="button" class="button button-modifier" onclick="window.location.href='{{ path('admin') }}'" >
                     {{ 'user.adminPanel' | trans }}
                 </button>
             {% endif %}
@@ -114,7 +114,6 @@
             <h2>{{ 'user.statistics' |trans }}</h2>
             {% if stats is defined %}
                 <p><strong>{{ 'user.countVote' |trans }}</strong> {{ stats.total_votes ?? 0 }}</p>
-                <p><strong>{{ 'user.debatWin' |trans }}</strong> {{ stats.debates_won ?? 0 }} {{ 'user.win' |trans }}</p>
                 <p><strong>{{ 'user.rankingMonth' |trans }}</strong> {{ stats.rank_month ?? "{{ 'user.nonRank' |trans }}" }}</p>
                 <p><strong>{{ 'user.rankingGlobal' |trans }}</strong> {{ stats.rank_global ?? "{{ 'user.nonRank' |trans }}" }}</p>
             {% else %}
