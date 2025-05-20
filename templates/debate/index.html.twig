@@ -1,86 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}DebatArena - Accueil{% endblock %}
+{% block title %}DebatArena - {{ 'homepage.title'|trans }}{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/Debate/debate.css') }}">
 {% endblock %}
+
 {% block body %}
+    <div class="container">
+        <!-- Colonne de gauche -->
+        <div class="left-column">
+            <div class="section-title">{{ 'homepage.recent_debates'|trans }}</div>
 
-<div class="container">
-    <!-- Colonne de gauche -->
-    <div class="left-column">
-        <div class="section-title">Récemment débattu</div>
-
-        <div class="recent-debates">
-            {% for debat in debatsRecents %}
-                {% set stats = statsRecents[debat.id] ?? {
-                    'nb_vote_camp_1': 0,
-                    'nb_vote_camp_2': 0,
-                    'pourcentage_camp_1': 50,
-                    'pourcentage_camp_2': 50,
-                    'nb_participants': 0
-                } %}
-                <a href="{{ path('app_debate_show', {'id': debat.id}) }}" class="debate-item">
-                    <div class="debate-title">{{ debat.getNameDebate()|e }}
-                    </div>
-                </a>
-                <div class="debate-stats">{{ stats.participants ?? 0 }} participants</div>
-                <div class="progress-container">
-                    {% if stats.pourcentage_camp_1 > 0 %}
-                        <div class="progress-blue" style="width: {{ stats.pourcentage_camp_1 }}%;">
-                            {{ stats.pourcentage_camp_1 }}%
-                        </div>
-                    {% endif %}
-
-                    {% if stats.pourcentage_camp_2 > 0 %}
-                        <div class="progress-red" style="width: {{ stats.pourcentage_camp_2 }}%;">
-                            {{ stats.pourcentage_camp_2 }}%
-                        </div>
-                    {% endif %}
-                </div>
-            {% endfor %}
-        </div>
-        <div class="section-title">Classement meilleur débatteur du mois</div>
-        <div class="user-ranking">
-            {% if userRanking is empty %}
-                <div class="no-rankings">Aucun classement disponible pour ce mois</div>
-            {% else %}
-                <ul class="user-ranking-list">
-                    {% for user in userRanking %}
-                        {% set rankNum = loop.index %}
-                        <li class="user-ranking-item">
-                            <div class="rank-badge rank-{{ rankNum }}">
-                                {{ rankNum }}
-                            </div>
-                            <div class="user-info">
-                                <div class="user-name">{{ user.pseudo|e }}</div>
-                                <div class="user-votes">Vote total :{{ user.voteCount }}</div>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-    </div>
-
-    <!-- Colonne de droite -->
-    <div class="right-column">
-        <div class="section-title">Débat Tendance</div>
-
-        {% for debat in debatsTendance %}
-            {% set stats = statsTendance[debat.id] ?? {
-                'nb_vote_camp_1': 0,
-                'nb_vote_camp_2': 0,
-                'pourcentage_camp_1': 50,
-                'pourcentage_camp_2': 50,
-                'nb_participants': 0
-            } %}
-            <a href="{{ path('app_debate_show', {'id': debat.id}) }}" class="debate-item">
-                <div class="debat">
-                    <h3>{{ debat.getNameDebate()|e }}</h3>
-                    <div class="debate-description">{{ debat.descriptionDebate|e }}</div>
+            <div class="recent-debates">
+                {% for debat in debatsRecents %}
+                    {% set stats = statsRecents[debat.id] ?? {
+                        'nb_vote_camp_1': 0,
+                        'nb_vote_camp_2': 0,
+                        'pourcentage_camp_1': 50,
+                        'pourcentage_camp_2': 50,
+                        'nb_participants': 0
+                    } %}
+                    <a href="{{ path('app_debate_show', {'id': debat.id}) }}" class="debate-item">
+                        <div class="debate-title">{{ debat.getNameDebate()|e }}</div>
+                    </a>
+                    <div class="debate-stats">{{ stats.participants ?? 0 }} {{ 'homepage.participants'|trans }}</div>
                     <div class="progress-container">
                         {% if stats.pourcentage_camp_1 > 0 %}
                             <div class="progress-blue" style="width: {{ stats.pourcentage_camp_1 }}%;">
@@ -94,25 +39,80 @@
                             </div>
                         {% endif %}
                     </div>
+                {% endfor %}
+            </div>
 
-                    <div class="debate-stats">{{ stats.participants ?? 0 }} participants</div>
-                </div>
-            </a>
-        {% endfor %}
+            <div class="section-title">{{ 'homepage.best_debaters'|trans }}</div>
+            <div class="user-ranking">
+                {% if userRanking is empty %}
+                    <div class="no-rankings">{{ 'homepage.no_rankings'|trans }}</div>
+                {% else %}
+                    <ul class="user-ranking-list">
+                        {% for user in userRanking %}
+                            {% set rankNum = loop.index %}
+                            <li class="user-ranking-item">
+                                <div class="rank-badge rank-{{ rankNum }}">
+                                    {{ rankNum }}
+                                </div>
+                                <div class="user-info">
+                                    <div class="user-name">{{ user.pseudo|e }}</div>
+                                    <div class="user-votes">{{ 'homepage.total_votes'|trans }} {{ user.voteCount }}</div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
 
-        <div class="pagination">
-            {% if page > 1 %}
-                <a href="{{ path('app_debate_index', {'page': page - 1}) }}">Précédent</a>
-            {% else %}
-                <a href="#" class="disabled">Précédent</a>
-            {% endif %}
+        <!-- Colonne de droite -->
+        <div class="right-column">
+            <div class="section-title">{{ 'homepage.trending_debates'|trans }}</div>
 
-            {% if not noMoreDebatsNextPage %}
-                <a href="{{ path('app_debate_index', {'page': page + 1}) }}">Suivant</a>
-            {% else %}
-                <a href="#" class="disabled">Suivant</a>
-            {% endif %}
+            {% for debat in debatsTendance %}
+                {% set stats = statsTendance[debat.id] ?? {
+                    'nb_vote_camp_1': 0,
+                    'nb_vote_camp_2': 0,
+                    'pourcentage_camp_1': 50,
+                    'pourcentage_camp_2': 50,
+                    'nb_participants': 0
+                } %}
+                <a href="{{ path('app_debate_show', {'id': debat.id}) }}">
+                    <div class="debat">
+                        <h3>{{ debat.getNameDebate()|e }}</h3>
+                        <div class="debate-description">{{ debat.descriptionDebate|e }}</div>
+                        <div class="progress-container">
+                            {% if stats.pourcentage_camp_1 > 0 %}
+                                <div class="progress-blue" style="width: {{ stats.pourcentage_camp_1 }}%;">
+                                    {{ stats.pourcentage_camp_1 }}%
+                                </div>
+                            {% endif %}
+
+                            {% if stats.pourcentage_camp_2 > 0 %}
+                                <div class="progress-red" style="width: {{ stats.pourcentage_camp_2 }}%;">
+                                    {{ stats.pourcentage_camp_2 }}%
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="debate-stats">{{ stats.participants ?? 0 }} {{ 'homepage.participants'|trans }}</div>
+                    </div>
+                </a>
+            {% endfor %}
+
+            <div class="pagination">
+                {% if page > 1 %}
+                    <a href="{{ path('app_debate_index', {'page': page - 1}) }}">{{ 'homepage.previous'|trans }}</a>
+                {% else %}
+                    <a href="#" class="disabled">{{ 'homepage.previous'|trans }}</a>
+                {% endif %}
+
+                {% if not noMoreDebatsNextPage %}
+                    <a href="{{ path('app_debate_index', {'page': page + 1}) }}">{{ 'homepage.next'|trans }}</a>
+                {% else %}
+                    <a href="#" class="disabled">{{ 'homepage.next'|trans }}</a>
+                {% endif %}
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}

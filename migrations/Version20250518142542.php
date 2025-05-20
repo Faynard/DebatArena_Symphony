@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250515141438 extends AbstractMigration
+final class Version20250518142542 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -121,7 +121,12 @@ final class Version20250515141438 extends AbstractMigration
         $this->addSql(<<<'SQL'
             ALTER TABLE report DROP FOREIGN KEY FK_C42F77843DD48F21
         SQL);
-        $this->addSql('ALTER TABLE sanction ADD CONSTRAINT FK_6D6491AFA76ED395 FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE');
+        $this->addSql(<<<'SQL'
+            ALTER TABLE sanction DROP FOREIGN KEY FK_6D6491AFA76ED395
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE sanction DROP FOREIGN KEY FK_6D6491AF3DD48F21
+        SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE votes DROP FOREIGN KEY FK_518B7ACFA76ED395
         SQL);

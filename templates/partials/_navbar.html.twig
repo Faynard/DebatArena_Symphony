@@ -1,48 +1,63 @@
 <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
 
 <nav class="navbar">
+    <!-- Logo -->
     <div class="navbar__logo">
         <a href="{{ path('app_debate_index') }}">
             <img src="{{ asset('image/logo.png') }}" alt="Debate Arena Logo" class="navbar__logo-img">
-            <span>Debate Arena</span>
+            <span>{{ 'navbar.title'|trans }}</span>
         </a>
     </div>
 
+    <!-- Recherche -->
     <div class="navbar__search">
         <form id="search-form" action="{{ path('app_debate_search') }}" method="get" autocomplete="off">
-            <input type="text" id="debate-search" name="q" placeholder="Rechercher un débat..." />
+            <input type="text" id="debate-search" name="q" placeholder="{{ 'navbar.search_placeholder'|trans }}" />
             <button type="submit">
-                <img src="{{ asset('image/loupe.png') }}" alt="Rechercher" class="search-icon" />
+                <img src="{{ asset('image/loupe.svg') }}" alt="{{ 'navbar.search_button'|trans }}" class="search-icon" />
             </button>
         </form>
-        <div id="search-results" class="search-dropdown"></div>
+        <div id="search-results" class="search-dropdown"
+             data-search-url="{{ path('ajax_debate_search') }}"
+             data-base-url="{{ path('app_debate_show', {'id': 0})|replace({'0': ''}) }}">
+        </div>
     </div>
+
     <a href="{{ path('app_debate_advanced_search') }}" class="btn-advanced-search">
-        🔍 Recherche avancée
+        🔍 {{ 'navbar.advanced_search'|trans }}
     </a>
 
+    <!-- Actions Utilisateur -->
     <div class="navbar__actions">
-        <a href="{{ is_granted('IS_AUTHENTICATED_REMEMBERED') ? path('app_debate_new') : path('app_user_index') }}" class="btn-create-debate">
-            Ajouter un débat
+        <a href="{{ path('app_debate_new') }}" class="btn-create-debate">
+            {{ 'navbar.create_debate'|trans }}
         </a>
 
         {% if app.user %}
             <a href="{{ path('app_user_show', {'id': app.user.id}) }}" class="login-button">
-                <img src="{{ asset('image/profil.svg') }}">
+                <img src="{{ asset('image/profil.svg') }}" class="profile-icon">
             </a>
         {% else %}
             <a href="{{ path('app_login') }}" class="login-button">
-                <img src="{{ asset('image/profil.svg') }}">
+                <img src="{{ asset('image/profil.svg') }}" class ="profile-icon">
             </a>
         {% endif %}
 
+        <div class="navbar__lang">
+            <img src="{{ asset('image/translate.svg') }}" alt="{{ 'navbar.language'|trans }}" class="lang-icon" />
+            <div class="language-switcher" id="lang-switcher">
+                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({'_locale': 'fr'})) }}">Français</a>
+                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({'_locale': 'en'})) }}">English</a>
+            </div>
+        </div>
     </div>
 </nav>
 
-<script>
-    const resultsContainer = document.getElementById('search-results');
+<!-- JS Recherche & Langue -->
+<script>document.addEventListener('DOMContentLoaded', () => {
+        const resultsContainer = document.getElementById('search-results');
+        const searchUrl = resultsContainer.dataset.searchUrl;
 
-    document.addEventListener('DOMContentLoaded', () => {
         const input = document.getElementById('debate-search');
         const form = document.getElementById('search-form');
         let timeout = null;
@@ -57,22 +72,22 @@
                 return;
             }
 
-            // Affichage immédiat d’un message pendant l’attente
-            resultsContainer.innerHTML = '<div class="search-loading">Recherche en cours...</div>';
+            resultsContainer.innerHTML = '<div class="search-loading">{{ "navbar.searching" | trans }}</div>';
             resultsContainer.style.display = 'block';
 
             timeout = setTimeout(() => {
-                fetch(`/debate/ajax/search?q=${encodeURIComponent(query)}`)
+                fetch(`${searchUrl}?q=${encodeURIComponent(query)}`)
                     .then(res => res.json())
                     .then(data => {
                         resultsContainer.innerHTML = '';
 
                         if (data.length === 0) {
-                            resultsContainer.innerHTML = '<div class="no-result">Aucun débat trouvé</div>';
+                            resultsContainer.innerHTML = '<div class="no-result">{{ "navbar.no_results" | trans }}</div>';
                         } else {
                             data.forEach(debat => {
                                 const item = document.createElement('a');
-                                item.href = `/debate/${debat.id}`;
+                                const baseUrl = resultsContainer.dataset.baseUrl;
+                                item.href = `${baseUrl}${debat.id}`;
                                 item.classList.add('search-item');
                                 item.textContent = debat.nameDebate;
                                 resultsContainer.appendChild(item);
@@ -80,17 +95,18 @@
                         }
 
                         resultsContainer.style.display = 'block';
+                    })
+                    .catch(() => {
+                        resultsContainer.innerHTML = '<div class="no-result">{{ "navbar.no_results" | trans }}</div>';
                     });
-            }, 100); // Réduction du délai à 100 ms
+            }, 300);
         });
 
-        // Empêche la soumission si aucun résultat
         form.addEventListener('submit', function (e) {
             const resultItems = resultsContainer.querySelectorAll('.search-item');
-
             if (resultItems.length === 0) {
                 e.preventDefault();
-                alert("Aucun débat trouvé. Veuillez sélectionner une suggestion.");
+                alert("{{ 'navbar.no_debate_found' | trans }}");
             } else if (resultItems.length === 1) {
                 e.preventDefault();
                 window.location.href = resultItems[0].href;
@@ -102,16 +118,24 @@
                 const resultItems = resultsContainer.querySelectorAll('.search-item');
                 if (resultItems.length === 0) {
                     e.preventDefault();
-                    alert("Aucun débat trouvé. Veuillez sélectionner une suggestion.");
+                    alert("{{ 'navbar.no_debate_found' | trans }}");
                 }
             }
         });
     });
 
     document.addEventListener('click', (e) => {
-        if (!document.querySelector('.navbar__search').contains(e.target)) {
+        const resultsContainer = document.getElementById('search-results');
+        const searchContainer = document.querySelector('.navbar__search');
+        const langSwitcher = document.getElementById('lang-switcher');
+        const langIcon = document.querySelector('.lang-icon');
+
+        if (!searchContainer.contains(e.target) &&
+            !langSwitcher.contains(e.target) &&
+            !langIcon.contains(e.target)) {
             resultsContainer.innerHTML = '';
             resultsContainer.style.display = 'none';
         }
     });
+
 </script>

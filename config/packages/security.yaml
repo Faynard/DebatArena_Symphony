@@ -30,6 +30,7 @@ security:
                 target: /
 
     access_control:
+        - { path: ^/admin, roles: [ROLE_MODERATOR, ROLE_ADMIN] }
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/user/register, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: PUBLIC_ACCESS }

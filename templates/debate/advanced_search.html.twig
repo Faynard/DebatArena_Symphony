@@ -1,34 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Recherche Avancée{% endblock %}
+{% block title %}{{ 'advanced_search.title'|trans }}{% endblock %}
 
 {% block body %}
     <div class="advanced-search-container">
-        <h2>Recherche Avancée</h2>
+        <h2>{{ 'advanced_search.title'|trans }}</h2>
 
         <form method="get" class="search-form">
             <div class="form-group">
-                <label for="keyword">Mot-clé</label>
+                <label for="keyword">{{ 'advanced_search.keyword'|trans }}</label>
                 <input type="text" id="keyword" name="keyword" value="{{ filters.keyword|default('') }}">
             </div>
 
             <div class="form-group">
-                <label for="minParticipants">Min. participants</label>
+                <label for="minParticipants">{{ 'advanced_search.min_participants'|trans }}</label>
                 <input type="number" id="minParticipants" name="minParticipants" min="0" value="{{ filters.minParticipants|default('') }}">
             </div>
 
             <div class="form-group">
-                <label for="startDate">Date de début</label>
+                <label for="startDate">{{ 'advanced_search.start_date'|trans }}</label>
                 <input type="date" id="startDate" name="startDate" value="{{ filters.startDate|default('') }}">
             </div>
 
             <div class="form-group">
-                <label for="endDate">Date de fin</label>
+                <label for="endDate">{{ 'advanced_search.end_date'|trans }}</label>
                 <input type="date" id="endDate" name="endDate" value="{{ filters.endDate|default('') }}">
             </div>
 
             <div class="form-group full-width">
-                <label>Catégories</label>
+                <label>{{ 'advanced_search.categories'|trans }}</label>
                 <div class="custom-multiselect">
                     {% for category in categories %}
                         <label class="custom-option">
@@ -41,18 +41,17 @@
             </div>
 
             <div class="form-group">
-                <label for="order">Tri</label>
+                <label for="order">{{ 'advanced_search.order'|trans }}</label>
                 <select id="order" name="order">
-                    <option value="recent" {% if filters.order == 'recent' %}selected{% endif %}>Plus récents</option>
-                    <option value="popular" {% if filters.order == 'popular' %}selected{% endif %}>Plus populaires</option>
+                    <option value="recent" {% if filters.order == 'recent' %}selected{% endif %}>{{ 'advanced_search.order_recent'|trans }}</option>
+                    <option value="popular" {% if filters.order == 'popular' %}selected{% endif %}>{{ 'advanced_search.order_popular'|trans }}</option>
                 </select>
             </div>
 
             <div class="form-group full-width">
-                <button type="submit" class="filter-button">🔍 Filtrer</button>
+                <button type="submit" class="filter-button">🔍 {{ 'advanced_search.filter_button'|trans }}</button>
             </div>
         </form>
-
 
         <hr class="separator">
 
@@ -66,12 +65,12 @@
                         {{ debat.descriptionDebate|slice(0, 100) ~ '...' }}
                     </div>
                     <div class="debate-meta">
-                        Créé le {{ debat.creationDate|date('d/m/Y') }}
+                        {{ 'advanced_search.created_on'|trans }} {{ debat.creationDate|date('d/m/Y') }}
                     </div>
-                    <a href="{{ path('app_debate_show', {'id': debat.id}) }}" class="view-link">→ Voir le débat</a>
+                    <a href="{{ path('app_debate_show', {'id': debat.id}) }}" class="view-link">→ {{ 'advanced_search.view_debate'|trans }}</a>
                 </div>
             {% else %}
-                <p>Aucun débat trouvé.</p>
+                <p>{{ 'advanced_search.no_results'|trans }}</p>
             {% endfor %}
         </div>
     </div>
