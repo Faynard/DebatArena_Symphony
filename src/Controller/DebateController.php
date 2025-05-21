@@ -249,5 +249,29 @@ final class DebateController extends AbstractController
         ]);
     }
 
+    #[Route('/debate/{id}/statistics', name: 'app_debate_statistics')]
+    public function statistics(Debate $debate, EntityManagerInterface $em, DebateRepository $debateRepository): Response
+    {
+        $votesPerCamp = $debateRepository->getVotesByCamp($debate);
+        $topUser = $debateRepository->getTopUserByVotes($debate);
+        $argumentsPerCamp = $debateRepository->getArgumentsCountByCamp($debate);
+        $topArgument = $debateRepository->getTopArgument($debate);
+
+        $subArguments = [];
+
+        if ($topArgument && isset($topArgument[0])) {
+            $subArguments[$topArgument[0]->getId()] = []; // Fournit une entrée vide pour cet argument
+        }
+
+        return $this->render('debate/statistics.html.twig', [
+            'debate' => $debate,
+            'votesPerCamp' => $votesPerCamp,
+            'topUser' => $topUser,
+            'argumentsPerCamp' => $argumentsPerCamp,
+            'topArgument' => $topArgument,
+            'subArguments' => $subArguments,
+        ]);
+    }
+
 
 }

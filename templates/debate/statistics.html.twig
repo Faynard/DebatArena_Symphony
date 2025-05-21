@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'debate.statistiques.show'|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/Debate/debate_statistics.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="card">
+    <h2>{{ 'debate.statistiques.show'|trans }}</h2>
+
+    <div class="stat-block">
+        <p><strong>{{ 'debate.statistiques.countVoteByCamp'|trans }}<!--Nombre de vote par camp :--></strong></p> 
+        {% for camp in votesPerCamp %}
+            <p><strong>{{ camp.camp }} :</strong> {{ camp.voteCount }} votes</p>
+        {% else %}
+            <p>{{ 'debate.statistiques.voteEmpty'|trans }}<!--Aucun vote enregistré pour ce débat.--></p>
+        {% endfor %}
+    </div>
+
+    <div class="stat-block">
+        <p><strong>{{ 'debate.statistiques.bestUser'|trans }}<!--Utilisateur ayant reçu le plus de votes :--></strong></p> 
+        {% if topUser %}
+            <p>{{ topUser.pseudo }} ({{ topUser.voteCount }} votes)</p>
+        {% else %}
+            <p>{{ 'debate.statistiques.voteEmptyUser'|trans }}<!--Aucun vote attribué encore.--></p>
+        {% endif %}
+    </div>
+
+    {# <div class="stat-block">
+        <h3>Nombre d'arguments par camp</h3>
+        {% for row in argumentsPerCamp %}
+            <p><strong>{{ row.nameCamp }} :</strong> {{ row.count }} arguments</p>
+        {% else %}
+            <p>Aucun argument dans ce débat.</p>
+        {% endfor %}
+    </div> #}
+
+    {% if topArgument is defined and topArgument[0] is defined %}
+        {% set argument = topArgument[0] %}
+        <div class="stat-block">
+            <h3>Argument ayant reçu le plus de votes ({{ topArgument.voteCount }} votes)</h3>
+
+            <div class="container-arguments">
+                <div class="column">
+                    <div class="top-argument">
+                        <h4>{{ 'debate.statistiques.camp'|trans }} <!--Camp :--> {{ argument.camp.nameCamp }}</h4>
+                        <p>{{ 'debate.statistiques.author'|trans }}<!--<strong>Auteur :--></strong> {{ argument.user.pseudo }}</p>
+                        <p>{{ 'debate.statistiques.argument'|trans }}<!--<strong>Argument :--></strong> {{ argument.text }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+
+    <div class="btn">
+        <a href="{{ path('app_debate_show', {id: debate.id}) }}" class="button">{{ 'debate.statistiques.backToDebat'|trans }}<!--⬅ Retour au débat--></a>
+    </div>
+</div>
+{% endblock %}
