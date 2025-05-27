@@ -19,7 +19,7 @@ class UserEditType extends AbstractType
             ->add('password', PasswordType::class, [
                 'mapped' => false,
                 'required' => false,
-                'attr' => ['placeholder' => "{{ 'user.msgModifMdp'|trans }}"],//Laissez vide pour ne pas changer le mot de passe
+                'attr' => ['placeholder' => "{{ 'user.messageModifyPassword'|trans }}"],//Laissez vide pour ne pas changer le mot de passe
             ]);
     }
 
