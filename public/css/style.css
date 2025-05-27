@@ -3,7 +3,21 @@
     --firstCampColor: #c1d0fb;
     --secondCampColor: #f6a7a7;
 
+    --buttonPrimaryColor:#c1d0fb;
+
     --formFocusColor: #8c91e3;
+
+    --boxShadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.green-theme {
+    --mainBackgroundColor: #FEF8E8;
+    --firstCampColor: #74f7a4;
+    --secondCampColor: #e697ce;
+
+    --buttonPrimaryColor: #74f7a4;
+
+    --formFocusColor: #8de3e1;
 
     --boxShadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }

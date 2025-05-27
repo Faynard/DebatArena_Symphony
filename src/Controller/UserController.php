@@ -44,7 +44,6 @@ final class UserController extends AbstractController
 
         $stats = [
             'total_votes' => $nbVotes,
-            'debates_won' => 0, // À compléter si tu veux
             'rank_month' => $ranking['rank_month'],
             'rank_global' => $ranking['rank_global'],
         ];

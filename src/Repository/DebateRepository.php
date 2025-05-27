@@ -211,5 +211,64 @@ class DebateRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    
+    public function getVotesByCamp(Debate $debate): array
+    {
+        return $this->getEntityManager()->createQuery('
+            SELECT c.nameCamp AS camp, COUNT(v.id) AS voteCount
+            FROM App\Entity\Votes v
+            JOIN v.argument a
+            JOIN a.camp c
+            WHERE c.debate = :debate
+            GROUP BY c.id
+        ')->setParameter('debate', $debate)->getResult();
+    }
+
+    public function getTopUserByVotes(Debate $debate): ?array
+    {
+        return $this->getEntityManager()->createQuery('
+            SELECT u.pseudo, COUNT(v.id) AS voteCount
+            FROM App\Entity\Votes v
+            JOIN v.argument a
+            JOIN a.user u
+            JOIN a.camp c
+            JOIN c.debate d
+            WHERE d = :debate
+            GROUP BY u.id
+            ORDER BY voteCount DESC
+        ')
+        ->setParameter('debate', $debate)
+        ->setMaxResults(1)
+        ->getOneOrNullResult();
+    }
+
+    public function getArgumentsCountByCamp(Debate $debate): array
+    {
+        return $this->getEntityManager()->createQuery('
+            SELECT c.id AS campId, c.nameCamp, COUNT(a.id) AS count
+            FROM App\Entity\Argument a
+            JOIN a.camp c
+            WHERE c.debate = :debate
+            GROUP BY c.id
+        ')->setParameter('debate', $debate)->getResult();
+    }
+
+    public function getTopArgument(Debate $debate): ?array
+    {
+        return $this->getEntityManager()->createQuery('
+            SELECT a, COUNT(v.id) AS voteCount
+            FROM App\Entity\Argument a
+            LEFT JOIN a.votes v
+            JOIN a.camp c
+            JOIN c.debate d
+            WHERE d = :debate
+            GROUP BY a.id
+            ORDER BY voteCount DESC
+        ')
+        ->setParameter('debate', $debate)
+        ->setMaxResults(1)
+        ->getOneOrNullResult();
+    }
+
 
 }

@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Report;
+use App\Entity\Sanction;
 use App\Repository\ReportRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -16,6 +17,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ReportCrudController extends AbstractCrudController
 {
@@ -92,11 +94,43 @@ class ReportCrudController extends AbstractCrudController
             });
     }
 
-    public function giveSanction(AdminContext $context): Response
+    public function giveSanction(AdminContext $context, EntityManagerInterface $em): Response
     {
-        /* TODO voir avec Thomas */
-        return $this->redirectToRoute('app_debate_index');
+        $reportId = $context->getRequest()->query->get('entityId');
+        /** @var Report $report */
+        $report = $em->getRepository(Report::class)->find($reportId);
+
+        if (!$report || $report->isValid()) {
+            $this->addFlash('warning', 'Ce signalement a déjà été traité.');
+            return $this->redirectToRoute('admin_report_index');
+        }
+
+        $argument = $report->getArgument();
+        $author = $argument->getUser();
+
+        // Créer la sanction
+        $sanction = new Sanction();
+        $sanction->setUser($author);
+        $sanction->setArgument($argument);
+        $sanction->setSanctionDate(new \DateTime());
+        $sanction->setReason('Sanction appliquée suite à un signalement validé.');
+
+        $em->persist($sanction);
+
+        // Bannir l'utilisateur
+        $author->setIsBanned(true);
+        $em->persist($author);
+
+        // Marquer le report comme validé
+        $report->setIsValid(true);
+        $em->persist($report);
+
+        $em->flush();
+
+        $this->addFlash('success', 'Sanction appliquée avec succès.');
+        return $this->redirectToRoute('admin_report_index');
     }
+
 
     public function validate(AdminContext $context, ReportRepository $reportRepository, EntityManagerInterface $entityManager): Response
     {

@@ -29,7 +29,7 @@
                     <input type="hidden" name="debate" value="{{ debate.id }}">
                     <button class="button button-main">{{ 'debate.argument.new'|trans }}</button>
                 </form>
-                <button class="button">
+                <button class="button" onclick="window.location.href='{{ path('app_debate_statistics', { id: debate.id }) }}'">
                     {{ 'debate.statistiques.show'|trans }}
                 </button>
             </div>
