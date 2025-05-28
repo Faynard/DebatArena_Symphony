@@ -12,20 +12,20 @@
     <h2>{{ 'debate.statistiques.show'|trans }}</h2>
 
     <div class="stat-block">
-        <p><strong>{{ 'debate.statistiques.countVoteByCamp'|trans }}<!--Nombre de vote par camp :--></strong></p> 
+        <p><strong>{{ 'debate.statistiques.countVoteByCamp'|trans }}</strong></p> 
         {% for camp in votesPerCamp %}
             <p><strong>{{ camp.camp }} :</strong> {{ camp.voteCount }} votes</p>
         {% else %}
-            <p>{{ 'debate.statistiques.voteEmpty'|trans }}<!--Aucun vote enregistré pour ce débat.--></p>
+            <p>{{ 'debate.statistiques.voteEmpty'|trans }}</p>
         {% endfor %}
     </div>
 
     <div class="stat-block">
-        <p><strong>{{ 'debate.statistiques.bestUser'|trans }}<!--Utilisateur ayant reçu le plus de votes :--></strong></p> 
+        <p><strong>{{ 'debate.statistiques.bestUser'|trans }}</strong></p> 
         {% if topUser %}
             <p>{{ topUser.pseudo }} ({{ topUser.voteCount }} votes)</p>
         {% else %}
-            <p>{{ 'debate.statistiques.voteEmptyUser'|trans }}<!--Aucun vote attribué encore.--></p>
+            <p>{{ 'debate.statistiques.voteEmptyUser'|trans }}</p>
         {% endif %}
     </div>
 
@@ -57,7 +57,7 @@
 
 
     <div class="btn">
-        <a href="{{ path('app_debate_show', {id: debate.id}) }}" class="button">{{ 'debate.statistiques.backToDebat'|trans }}<!--⬅ Retour au débat--></a>
+        <a href="{{ path('app_debate_show', {id: debate.id}) }}" class="button">{{ 'debate.statistiques.backToDebat'|trans }}</a>
     </div>
 </div>
 {% endblock %}

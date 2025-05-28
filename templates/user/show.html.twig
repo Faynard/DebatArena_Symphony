@@ -55,7 +55,6 @@
         </div>
         
         <div class="admin">
-            <button onclick="toggleTheme()" class="button button-main">{{ 'user.switchTheme' | trans }}</button>
             {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR') %}
                 <button type="button" class="button button-modifier" onclick="window.location.href='{{ path('admin') }}'" >
                     {{ 'user.adminPanel' | trans }}
