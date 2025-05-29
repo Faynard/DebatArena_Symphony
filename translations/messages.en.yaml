@@ -19,14 +19,6 @@ navbar.no_debate_found: 'No debate found. Please select a suggestion.'
 search_results.title: 'Search Results'
 search_results.heading: 'Results for "%query%"'
 search_results.no_results: 'No debates found.'
-debate.create_title: 'Create a debate'
-debate.name_label: 'Debate name'
-debate.description_label: 'Debate description'
-debate.camp1_label: 'Name of the first camp'
-debate.camp2_label: 'Name of the second camp'
-debate.categories_label: Categories
-debate.create_button: 'Create debate'
-debate.select_categories_placeholder: 'Select one or more categories'
 advanced_search.title: 'Advanced Search'
 advanced_search.keyword: Keyword
 advanced_search.min_participants: 'Min. participants'
@@ -71,26 +63,6 @@ argument.unvote.success: "You unvote for an argument"
 argument.report.success: "You report an argument"
 argument.post.unsuccess: "Your argument hasn't been saved"
 argument.post.success: "Your argument has been added to the debate"
-user.information: __user.information
-user.pseudo: __user.pseudo
-user.email: __user.email
-user.save: __user.save
-user.createAccount: __user.createAccount
-user.signout: __user.signout
-user.modify: __user.modify
-user.delete: __user.delete
-user.switchTheme: __user.switchTheme
-user.adminPanel: __user.adminPanel
-user.recentDebat: __user.recentDebat
-user.participant: __user.participant
-user.noDebatFind: __user.noDebatFind
-user.statistics: __user.statistics
-user.countVote: __user.countVote
-user.rankingMonth: __user.rankingMonth
-user.rankingGlobal: __user.rankingGlobal
-user.noStat: __user.noStat
-user.cancel: __user.cancel
-user.messageDel: __user.messageDel
 argument.form.create: "Create an argument for : "
 argument.form.response: "Response to an argument for : "
 argument.form.return: "Return"
@@ -100,19 +72,6 @@ debate.argument.report: "Report"
 debate.argument.edit: "Edit"
 debate.argument.votes: "votes"
 debate.argument.new: "New"
-debate.statistiques.show: "Statistics"
-debate.statistiques.countVoteByCamp: __debate.statistiques.countVoteByCamp
-debate.statistiques.voteEmpty: __debate.statistiques.voteEmpty
-debate.statistiques.bestUser: __debate.statistiques.bestUser
-debate.statistiques.voteEmptyUser: __debate.statistiques.voteEmptyUser
-debate.statistiques.camp: __debate.statistiques.camp
-debate.statistiques.author: __debate.statistiques.author
-debate.statistiques.argument: __debate.statistiques.argument
-debate.statistiques.backToDebat: __debate.statistiques.backToDebat
-user.back: __user.back
-user.niceToSeeYouAgain: __user.niceToSeeYouAgain
-user.password: __user.password
-user.connected: __user.connected
 
 debate.create_title: "Create a debate"
 debate.name_label: "Debate name"
