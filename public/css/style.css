@@ -17,9 +17,6 @@ body {
     color: var(--navbar-text-color);
     box-shadow: var(--box-shadow);
 }
-    --buttonPrimaryColor:#c1d0fb;
-
-    --formFocusColor: #8c91e3;
 
 /* Footer */
 .footer {
@@ -68,4 +65,3 @@ body {
     background: var(--button-white-bg);
     color: var(--button-white-color);
 }
-

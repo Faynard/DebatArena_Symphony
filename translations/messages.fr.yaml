@@ -148,3 +148,6 @@ advanced_search:
   view_debate: "Voir le débat"
   no_results: "Aucun débat trouvé."
 
+category:
+  name: Nom de la catégorie
+  description: Description de la catégorie

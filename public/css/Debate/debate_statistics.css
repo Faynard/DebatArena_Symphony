@@ -25,3 +25,17 @@
     box-shadow: var(--boxShadow);
     margin-top: 1.5rem;
 }
+body.dark .card {
+    background-color: var(--card-bg-color);
+    color: var(--text-color);
+}
+
+body.dark .stat-block {
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+}
+
+body.dark .top-argument {
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+}
