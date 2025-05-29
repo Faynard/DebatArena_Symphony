@@ -103,5 +103,7 @@ class CampFixtures extends Fixture implements DependentFixtureInterface
         $camp->setNameCamp("Non");
         $manager->persist($camp);
         $this->addReference('camp7.2', $camp);
+
+        $manager->flush();
     }
 }

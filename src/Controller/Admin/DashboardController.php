@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[AdminDashboard(routePath: '/admin', routeName: 'admin')]
+#[AdminDashboard(routePath: '/{_locale}/admin', routeName: 'admin')]
 class DashboardController extends AbstractDashboardController
 {
     private TranslatorInterface $translator;
@@ -40,8 +40,7 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToUrl($this->translator->trans('admin.dashboard.home'), '', '/')
-            ->setPermission('ROLE_MODERATOR');
+        yield MenuItem::linkToUrl($this->translator->trans('admin.dashboard.home'), '', '/');
 
         yield MenuItem::section($this->translator->trans('admin.section.moderator'));
         yield MenuItem::linkToCrud($this->translator->trans('admin.menu.report'), 'fa fa-flag', Report::class)

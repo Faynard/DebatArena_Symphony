@@ -78,3 +78,8 @@
     ```
 
 9. **Accéder à l'application dans votre navigateur à l'adresse `http://localhost:8000`.**
+
+10. **Purger les données**
+    ```bash
+    php bin/console app:purge
+    ```
