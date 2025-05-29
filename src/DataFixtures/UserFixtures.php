@@ -24,7 +24,7 @@ class UserFixtures extends Fixture
         $user->setPseudo("PixelRider");
         $user->setPassword("pixel123");
         $user->setPassword($this->passwordHasher->hashPassword($user, $user->getPassword()));
-        $user->setRoles(["ROLE_ADMIN"]);
+        $user->setRoles(["ROLE_ADMIN", "ROLE_MODERATOR"]);
         $manager->persist($user);
         $this->addReference("admin", $user);
 

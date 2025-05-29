@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SanctionRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Sanction
 {
     #[ORM\Id]
@@ -27,6 +28,12 @@ class Sanction
 
     #[ORM\Column(length: 800)]
     private ?string $reason = null;
+
+    #[ORM\PrePersist]
+    public function prePersist(): void
+    {
+        $this->sanctionDate = new \DateTime();
+    }
 
     public function getId(): ?int
     {
