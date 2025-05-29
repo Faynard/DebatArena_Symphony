@@ -84,7 +84,6 @@ body.dark .progress-container {
     background-color: #2a2a2a;
 }
 
-/* Force la couleur du texte des cases à cocher (custom-option) en noir même en mode sombre */
 body.dark .advanced-search-container .custom-option {
     color: #000000;
 }

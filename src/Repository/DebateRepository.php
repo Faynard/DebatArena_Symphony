@@ -54,7 +54,6 @@ class DebateRepository extends ServiceEntityRepository
         $camp1Id = $camps[0]['id'];
         $camp2Id = $camps[1]['id'];
 
-        // Votes camp 1 (sur des arguments avec creationDate renseignée)
         $camp1Votes = (int) $em->createQuery(
             'SELECT COUNT(v.id)
         FROM App\Entity\Votes v
@@ -131,7 +130,7 @@ class DebateRepository extends ServiceEntityRepository
             ->where('v.voteDate BETWEEN :startDate AND :endDate')
             ->groupBy('u.id')
             ->orderBy('voteCount', 'DESC')
-            ->setMaxResults(10)
+            ->setMaxResults(5)
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate);
 
