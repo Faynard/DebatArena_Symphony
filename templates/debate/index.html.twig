@@ -24,23 +24,23 @@
                     } %}
                     <a href="{{ path('app_debate_show', {'id': debat.id}) }}" class="debate-item">
                         <div class="debate-title">{{ debat.getNameDebate()|e }}</div>
+                        <div class="debate-stats">{{ stats.participants ?? 0 }} {{ 'homepage.participants'|trans }}</div>
+                        <div class="progress-container">
+                            {% if stats.pourcentage_camp_1 > 0 %}
+                                <div class="progress-blue" style="width: {{ stats.pourcentage_camp_1 }}%;">
+                                    {{ stats.pourcentage_camp_1 }}%
+                                </div>
+                            {% endif %}
+                            {% if stats.pourcentage_camp_2 > 0 %}
+                                <div class="progress-red" style="width: {{ stats.pourcentage_camp_2 }}%;">
+                                    {{ stats.pourcentage_camp_2 }}%
+                                </div>
+                            {% endif %}
+                        </div>
                     </a>
-                    <div class="debate-stats">{{ stats.participants ?? 0 }} {{ 'homepage.participants'|trans }}</div>
-                    <div class="progress-container">
-                        {% if stats.pourcentage_camp_1 > 0 %}
-                            <div class="progress-blue" style="width: {{ stats.pourcentage_camp_1 }}%;">
-                                {{ stats.pourcentage_camp_1 }}%
-                            </div>
-                        {% endif %}
-
-                        {% if stats.pourcentage_camp_2 > 0 %}
-                            <div class="progress-red" style="width: {{ stats.pourcentage_camp_2 }}%;">
-                                {{ stats.pourcentage_camp_2 }}%
-                            </div>
-                        {% endif %}
-                    </div>
                 {% endfor %}
             </div>
+
 
             <div class="section-title">{{ 'homepage.best_debaters'|trans }}</div>
             <div class="user-ranking">

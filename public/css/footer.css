@@ -1,0 +1,49 @@
+.footer {
+    background-color: var(--footer-bg-color);
+    color: var(--footer-text-color);
+    padding: 20px 30px;
+    text-align: center;
+    box-shadow: var(--box-shadow);
+    margin-top: auto;
+    font-size: 0.95rem;
+}
+
+.footer p {
+    margin: 0;
+    padding: 5px;
+    font-size: 0.95rem;
+}
+
+.footer button {
+    background: linear-gradient(135deg, var(--button-main-gradient-start), var(--button-main-gradient-end));
+    border: none;
+    border-radius: 30px;
+    padding: 10px 18px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: var(--box-shadow);
+    transition: all 0.3s ease;
+}
+
+.footer button:hover {
+    background: linear-gradient(135deg, var(--button-main-gradient-end), var(--button-main-gradient-start));
+    transform: translateY(-1px);
+}
+
+.footer button:active {
+    transform: scale(0.97);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+    .footer {
+        padding: 15px;
+        font-size: 0.9rem;
+    }
+
+    .footer button {
+        padding: 8px 14px;
+        font-size: 0.9rem;
+    }
+}
