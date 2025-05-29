@@ -130,7 +130,7 @@ class DebateRepository extends ServiceEntityRepository
             ->where('v.voteDate BETWEEN :startDate AND :endDate')
             ->groupBy('u.id')
             ->orderBy('voteCount', 'DESC')
-            ->setMaxResults(5)
+            ->setMaxResults(3)
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate);
 
