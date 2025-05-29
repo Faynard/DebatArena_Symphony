@@ -58,14 +58,17 @@
     ```bash
     php bin/console app:create-anonymous-user
     ```
+    Les identifiants de connexion de l'utilisateur anonyme sont :
+   Email : anonyme@domain.local
+   Mot de passe : Anonyme
 
-7. **(Optionnel) Charger les données de test (fixtures) :**
+8. **(Optionnel) Charger les données de test (fixtures) :**
 
     ```bash
     php bin/console doctrine:fixtures:load
     ```
 
-8. **Démarrer le serveur Symfony :**
+9. **Démarrer le serveur Symfony :**
 
     ```bash
     symfony server:start
@@ -77,9 +80,9 @@
     php -S localhost:8000 -t public
     ```
 
-9. **Accéder à l'application dans votre navigateur à l'adresse `http://localhost:8000`.**
+10. **Accéder à l'application dans votre navigateur à l'adresse `http://localhost:8000`.**
 
-10. **Purger les données**
+11. **Purger les données**
     ```bash
     php bin/console app:purge
     ```
