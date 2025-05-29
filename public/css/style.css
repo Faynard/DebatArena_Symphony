@@ -10,18 +10,6 @@
     --boxShadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.green-theme {
-    --mainBackgroundColor: #FEF8E8;
-    --firstCampColor: #74f7a4;
-    --secondCampColor: #e697ce;
-
-    --buttonPrimaryColor: #74f7a4;
-
-    --formFocusColor: #8de3e1;
-
-    --boxShadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
 .button-group {
     display: flex;
     gap: 1rem;

@@ -11,7 +11,7 @@
 
 {% block body %}
     <form method="post" action="{{ path('app_login') }}" class="card">
-        <h2>"{{ 'user.niceToSeeYouAgain' |trans }}"</h2>
+        <h2>{{ 'user.niceToSeeYouAgain' |trans }}</h2>
 
         {% if error %}
             <div class="alert alert-danger">
@@ -20,8 +20,8 @@
         {% endif %}
 
         <div class="email">
-            <label for="username">{{ 'user.email' |trans }} :</label>
-            <input type="email" name="_username" id="username" placeholder="{{ 'user.password' |trans }}" value="{{ last_username }}" required>
+            <label for="username">{{ 'user.email' |trans }} </label>
+            <input type="email" name="_username" id="username" placeholder="{{ 'user.email' |trans }}" value="{{ last_username }}" required>
         </div>
 
         <div class="password">
@@ -37,6 +37,6 @@
         </div>
 
         <br>
-        <a href="{{ path('app_user_new') }}">{{ 'user.createAccount' |trans }}</a>
+        <a href="{{ path('app_user_new') }}">{{ 'user.register' |trans }}</a>
     </form>
 {% endblock %}

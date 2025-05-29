@@ -9,7 +9,6 @@ body {
     font-family: Arial, sans-serif;
 }
 
-
 .card {
     background-color: #FEF8E8;
     padding: 40px;
@@ -51,7 +50,8 @@ input[type="text"]{
     border: none;
     border-radius: 20px;
     padding: 10px 30px;
-    color: #fff;
+    background: linear-gradient(to bottom, #A6B1E1, #A2A9DC);
+    color: white;
     font-weight: bold;
     cursor: pointer;
     box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
