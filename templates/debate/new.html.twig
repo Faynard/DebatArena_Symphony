@@ -8,19 +8,14 @@
 
     <style>
         :root {
-            --primary-color: #3d3548;
-            --secondary-color: #ffffff;
-            --accent-color: #8c91e3;
-            --accent-hover: #7073c0;
-            --text-color: #333;
-            --bg-light: #f9f9f9;
             --border-radius: 12px;
             --input-padding: 12px 15px;
         }
 
         body {
             font-family: 'Segoe UI', sans-serif;
-            background-color: var(--bg-light);
+            background-color: var(--background-color);
+            color: var(--text-color);
             margin: 0;
             padding: 0;
         }
@@ -31,31 +26,34 @@
             align-items: flex-start;
             padding: 40px 20px;
             min-height: 100vh;
+            background-color: var(--background-color);
+            color: var(--text-color);
         }
 
         .debate-form {
-            background-color: var(--secondary-color);
+            background-color: var(--card-bg-color);
             border-radius: var(--border-radius);
             padding: 35px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            box-shadow: var(--box-shadow);
             width: 100%;
             max-width: 650px;
             display: flex;
             flex-direction: column;
             gap: 24px;
+            color: var(--text-color);
         }
 
         .debate-form h1 {
             font-size: 1.8rem;
             margin-bottom: 10px;
-            color: var(--primary-color);
+            color: var(--text-color);
         }
 
         .debate-form label {
             font-weight: 600;
             margin-bottom: 6px;
             display: inline-block;
-            color: var(--primary-color);
+            color: var(--text-color);
         }
 
         .debate-form input,
@@ -63,17 +61,18 @@
         .debate-form select {
             width: 100%;
             padding: var(--input-padding);
-            border: 1px solid #ccc;
+            border: 1px solid var(--border-color);
             border-radius: var(--border-radius);
             font-size: 1rem;
-            background-color: white;
+            background-color: var(--input-bg-color);
+            color: var(--input-text-color, var(--text-color));
             transition: border 0.2s;
         }
 
         .debate-form input:focus,
         .debate-form textarea:focus,
         .debate-form select:focus {
-            border-color: var(--accent-color);
+            border-color: var(--link-color);
             outline: none;
         }
 
@@ -83,7 +82,7 @@
         }
 
         .debate-form button {
-            background-color: var(--accent-color);
+            background: linear-gradient(to bottom, var(--button-main-gradient-start), var(--button-main-gradient-end));
             color: white;
             padding: 14px;
             border: none;
@@ -94,7 +93,7 @@
         }
 
         .debate-form button:hover {
-            background-color: var(--accent-hover);
+            filter: brightness(1.1);
         }
 
         .alert-success {
@@ -105,7 +104,32 @@
             color: #2d8a53;
             font-weight: 500;
         }
+        body.dark .ts-control,
+        body.dark .ts-dropdown,
+        body.dark .ts-control input {
+            background-color: var(--input-bg-color);
+            color: var(--input-text-color, var(--text-color));
+            border-color: var(--border-color);
+        }
+
+        body.dark .ts-dropdown .option {
+            background-color: var(--input-bg-color);
+            color: var(--input-text-color, var(--text-color));
+        }
+
+        body.dark .ts-dropdown .option:hover,
+        body.dark .ts-dropdown .option.active {
+            background-color: var(--button-main-gradient-start);
+            color: white;
+        }
+
+        body.dark .ts-control::placeholder,
+        body.dark .ts-control input::placeholder {
+            color: var(--text-muted-color);
+        }
+
     </style>
+
 
     <div class="content">
         <form method="post" class="debate-form">

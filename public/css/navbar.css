@@ -174,7 +174,7 @@ body {
     left: 0;
     right: 0;
     background: white;
-    border: none;
+    border: none ;
     z-index: 1000;
     max-height: 250px;
     overflow-y: auto;

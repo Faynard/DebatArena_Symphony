@@ -18,7 +18,8 @@
 }
 
 body {
-    background-color: #f5f5f5;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
 }
 
 .container {
@@ -126,7 +127,7 @@ body {
     font-weight: bold;
 }
 
-/* Ranking section - Redesigned */
+/* Ranking section */
 .user-ranking {
     width: 100%;
 }
@@ -242,6 +243,7 @@ a {
     color: #777;
     font-style: italic;
 }
+
 /* Section Conseils & Astuces */
 .tips {
     background-color: #f9f9f9;
