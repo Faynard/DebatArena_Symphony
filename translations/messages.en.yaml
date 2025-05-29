@@ -139,3 +139,7 @@ advanced_search:
   created_on: "Created on"
   view_debate: "View debate"
   no_results: "No debates found."
+
+category:
+  name: Category Name
+  description: Category Description

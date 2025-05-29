@@ -22,6 +22,8 @@
     --border-color: #cccccc;
     --text-muted-color: #6b7280;
     --link-color: #3b82f6;
+    --firstCampColor: #cfe2ff;
+    --secondCampColor: #f8d7da;
 }
 
 body.dark {
@@ -46,6 +48,8 @@ body.dark {
     --checkbox-bg-color: #1e1e1e;
     --checkbox-checked-bg-color: #4fb3d8;
     --checkbox-checked-border-color: #4fb3d8;
+    --firstCampColor: #2f5b99;
+    --secondCampColor: #992f3b;
 }
 
 body.dark .left-column,
