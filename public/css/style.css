@@ -1,13 +1,33 @@
-:root {
-    --mainBackgroundColor: #FEF8E8;
-    --firstCampColor: #c1d0fb;
-    --secondCampColor: #f6a7a7;
-
-    --formFocusColor: #8c91e3;
-
-    --boxShadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Arial', sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--navbar-bg-color);
+    padding: 12px 20px;
+    color: var(--navbar-text-color);
+    box-shadow: var(--box-shadow);
+}
+
+/* Footer */
+.footer {
+    background-color: var(--footer-bg-color);
+    color: var(--footer-text-color);
+    padding: 15px 20px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+/* Boutons */
 .button-group {
     display: flex;
     gap: 1rem;
@@ -24,7 +44,7 @@
     border-radius: 20px;
     font-weight: bold;
     color: white;
-    background: linear-gradient(to bottom, #b0b8c3, #aab1bd);
+    background: linear-gradient(to bottom, var(--button-bg-gradient-start), var(--button-bg-gradient-end));
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     cursor: pointer;
     transition: all 0.2s ease-in-out;
@@ -37,11 +57,12 @@
 }
 
 .button-main {
-    background: linear-gradient(to bottom, #A6B1E1, #A2A9DC);
+    background: linear-gradient(to bottom, var(--button-main-gradient-start), var(--button-main-gradient-end));
     color: white;
 }
 
 .button-white {
-    background: #eeeeee;
-    color: black;
+    background: var(--button-white-bg);
+    color: var(--button-white-color);
 }
+

@@ -22,6 +22,7 @@ class DebateRepository extends ServiceEntityRepository
             ->leftJoin('a.votes', 'v')
             ->leftJoin('a.user', 'argUser')
             ->leftJoin('v.user', 'voteUser')
+            ->where('d.isValid = true')
             ->groupBy('d.id')
             ->addSelect('COUNT(DISTINCT argUser.id) + COUNT(DISTINCT voteUser.id) AS HIDDEN totalParticipants')
             ->orderBy('totalParticipants', 'DESC')
@@ -143,6 +144,7 @@ class DebateRepository extends ServiceEntityRepository
          FROM App\Entity\Debate d
          LEFT JOIN d.camps c
          LEFT JOIN c.arguments a WITH a.creationDate IS NOT NULL
+         WHERE d.isValid = true
          GROUP BY d.id
          ORDER BY MAX(a.creationDate) DESC'
         )
@@ -158,6 +160,7 @@ class DebateRepository extends ServiceEntityRepository
             ->leftJoin('a.votes', 'v')
             ->leftJoin('d.categories', 'cat')
             ->addSelect('COUNT(v.id) AS HIDDEN voteCount')
+            ->andWhere('d.isValid = true')
             ->groupBy('d.id');
 
         if (!empty($filters['keyword'])) {
@@ -205,6 +208,7 @@ class DebateRepository extends ServiceEntityRepository
             LEFT JOIN App\Entity\Argument a WITH a.camp = c
             LEFT JOIN App\Entity\Votes v WITH v.argument = a
             WHERE a.user = :user OR v.user = :user
+            AND d.isValid = true
             ORDER BY d.creationDate DESC
         ')->setParameter('user', $user);
 

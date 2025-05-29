@@ -1,0 +1,92 @@
+/* Thèmes clair et sombre avec variables CSS */
+
+:root {
+    /* Thème clair par défaut */
+    --background-color: #FEF8E8;
+    --text-color: #000000;
+    --navbar-bg-color: #212c3d;
+    --navbar-text-color: #ffffff;
+    --footer-bg-color: #212c3d;
+    --footer-text-color: #ffffff;
+    --button-bg-gradient-start: #b0b8c3;
+    --button-bg-gradient-end: #aab1bd;
+    --button-main-gradient-start: #A6B1E1;
+    --button-main-gradient-end: #A2A9DC;
+    --button-white-bg: #eeeeee;
+    --button-white-color: #000000;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --card-bg-color: #ffffff;
+    --chip-bg-color: #f0f0f0;
+    --chip-hover-bg-color: #e0e0e0;
+    --input-bg-color: #ffffff;
+    --border-color: #cccccc;
+    --text-muted-color: #6b7280;
+    --link-color: #3b82f6;
+}
+
+body.dark {
+    /* Thème sombre */
+    --background-color: #121212;
+    --text-color: #ffffff;
+    --navbar-bg-color: #1a1a1a;
+    --navbar-text-color: #eeeeee;
+    --footer-bg-color: #1a1a1a;
+    --footer-text-color: #eeeeee;
+    --button-bg-gradient-start: #555a66;
+    --button-bg-gradient-end: #444a55;
+    --button-main-gradient-start: #4fb3d8;
+    --button-main-gradient-end: #3e64e5;
+    --button-white-bg: #333333;
+    --button-white-color: #ffffff;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    --card-bg-color: #1e1e1e;
+    --input-bg-color: #333333;
+    --input-text-color: #ffffff;
+    --checkbox-border-color: #666666;
+    --checkbox-bg-color: #1e1e1e;
+    --checkbox-checked-bg-color: #4fb3d8;
+    --checkbox-checked-border-color: #4fb3d8;
+}
+
+body.dark .left-column,
+body.dark .right-column {
+    background-color: #1e1e1e;
+    color: var(--text-color);
+}
+
+
+body.dark .section-title {
+    color: var(--text-color);
+    border-bottom: 1px solid #444;
+}
+
+body.dark .user-ranking-item {
+    background-color: #1e1e1e;
+    color: var(--text-color);
+}
+
+body.dark .debate-item,
+body.dark .debat {
+    background-color: #1e1e1e;
+    color: var(--text-color);
+    border: 1px solid #333333;
+}
+
+body.dark .debate-title,
+body.dark .debate-description,
+body.dark .debate-stats,
+body.dark .progress-blue,
+body.dark .progress-red {
+    color: var(--text-color);
+}
+
+body.dark .progress-container {
+    background-color: #2a2a2a;
+}
+
+/* Force la couleur du texte des cases à cocher (custom-option) en noir même en mode sombre */
+body.dark .advanced-search-container .custom-option {
+    color: #000000;
+}
+
+
