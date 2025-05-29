@@ -1,0 +1,27 @@
+.card {
+    background-color: #FEF8E8;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: var(--boxShadow);
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    text-align: center;
+    margin-top: 3%;
+}
+
+.stat-block {
+    margin: 16px 0;
+    background: white;
+    border-radius: 8px;
+    padding: 12px;
+    font-weight: bold;
+}
+
+.top-argument {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--boxShadow);
+    margin-top: 1.5rem;
+}

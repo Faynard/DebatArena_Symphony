@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\Debate;
 use App\Entity\Report;
 use App\Entity\User;
+use App\Entity\Sanction;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -48,6 +49,9 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud($this->translator->trans('admin.menu.debate'), 'fa fa-newspaper', Debate::class)
             ->setPermission('ROLE_MODERATOR');
         yield MenuItem::linkToCrud('Creer Categorie', 'fa fa-tags', Category::class)
+            ->setPermission('ROLE_MODERATOR');
+        
+        yield MenuItem::linkToCrud($this->translator->trans('admin.menu.sanction'), 'fa fa-gavel', Sanction::class)
             ->setPermission('ROLE_MODERATOR');
 
         yield MenuItem::section($this->translator->trans('admin.section.administrator'))

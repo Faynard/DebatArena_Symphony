@@ -36,33 +36,28 @@
                 {{ form_widget(form.password) }}
             </div>
             <div class="bouton">
-                <button type="submit" class="button button-enregistrer">{{ 'user.enregistrer' | trans }}</button>
+                <button type="submit" class="button button-enregistrer">{{ 'user.save' | trans }}</button>
             </div>
         {{ form_end(form) }}
 
-        <p><strong>{{ 'user.compteCreer' | trans }}</strong> {{ user.createdDate ? user.createdDate|date('d/m/Y') : '' }}</p>
+        <p><strong>{{ 'user.createAccount' | trans }}</strong> {{ user.createdDate ? user.createdDate|date('d/m/Y') : '' }}</p>
 
         <div class="bouton">
             <button type="button" class="button button-modifier" id="logoutButton" onclick="window.location.href='{{ path('app_logout') }}'">
-                {{ 'user.deconnexion' | trans }}
+                {{ 'user.signout' | trans }}
             </button>
             <button type="button" class="button button-modifier" id="editButton" onclick="toggleEdit()">
-                {{ 'user.modifier' | trans }}
+                {{ 'user.modify' | trans }}
             </button>
             <button type="button" class="button button-supprimer" onclick="confirmDelete()">
-                {{ 'user.supprimer' | trans }}
+                {{ 'user.delete' | trans }}
             </button>
         </div>
         
         <div class="admin">
-            {% if is_granted('ROLE_ADMIN')%}
-                <button type="button" class="button button-modifier">
-                    {{ 'user.adminbutton' | trans }}
-                </button>
-            {% endif %}
             {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR') %}
-                <button type="button" class="button button-modifier">
-                    {{ 'user.moderateurbouton' | trans }}
+                <button type="button" class="button button-modifier" onclick="window.location.href='{{ path('admin') }}'" >
+                    {{ 'user.adminPanel' | trans }}
                 </button>
             {% endif %}
         </div>
@@ -77,7 +72,7 @@
 
     <div class="div_stat">
         <div class="recent_debat scrollable-debates">
-            <h2>{{ 'user.debatRecent' |trans }}</h2>
+            <h2>{{ 'user.recentDebat' |trans }}</h2>
             <div class="scroll-container">
                 {% for debat in recentDebates %}
                     {% set statsR = statDebates[debat.id] ?? {
@@ -107,7 +102,7 @@
                         </div>
                     </a>
                 {% else %}
-                    <p>{{ 'user.aucunDebatTrouver' |trans }}</p>
+                    <p>{{ 'user.noDebatFind' |trans }}</p>
                 {% endfor %}
             </div>
         </div>
@@ -115,14 +110,13 @@
         
 
         <div class="statistique">
-            <h2>{{ 'user.statistique' |trans }}</h2>
+            <h2>{{ 'user.statistics' |trans }}</h2>
             {% if stats is defined %}
                 <p><strong>{{ 'user.countVote' |trans }}</strong> {{ stats.total_votes ?? 0 }}</p>
-                <p><strong>{{ 'user.debatWin' |trans }}</strong> {{ stats.debates_won ?? 0 }} {{ 'user.win' |trans }}</p>
-                <p><strong>{{ 'user.rankingMonth' |trans }}</strong> {{ stats.rank_month ?? "{{ 'user.nonClasse' |trans }}" }}</p>
-                <p><strong>{{ 'user.rankingGlobal' |trans }}</strong> {{ stats.rank_global ?? "{{ 'user.nonClasse' |trans }}" }}</p>
+                <p><strong>{{ 'user.rankingMonth' |trans }}</strong> {{ stats.rank_month ?? "{{ 'user.nonRank' |trans }}" }}</p>
+                <p><strong>{{ 'user.rankingGlobal' |trans }}</strong> {{ stats.rank_global ?? "{{ 'user.nonRank' |trans }}" }}</p>
             {% else %}
-                <p>{{ 'user.aucuneStat' |trans }}</p>
+                <p>{{ 'user.noStat' |trans }}</p>
             {% endif %}
         </div>
     </div>
@@ -138,22 +132,38 @@
         editForm.classList.toggle('hidden');
 
         if (!editForm.classList.contains('hidden')) {
-            editButton.textContent = "{{ 'user.annuler' |trans }}";
+            editButton.textContent = "{{ 'user.cancel' |trans }}";
             editButton.classList.remove('button-modifier');
             editButton.classList.add('button-supprimer');
         } else {
-            editButton.textContent = "{{ 'user.modifier' |trans }}";
+            editButton.textContent = "{{ 'user.modify' |trans }}";
             editButton.classList.remove('button-supprimer');
             editButton.classList.add('button-modifier');
         }
     }
 
     function confirmDelete() {
-        const confirmation = confirm("{{ 'user.msgSup' | trans }}");
+        const confirmation = confirm("{{ 'user.messageDel' | trans }}");
         if (confirmation) {
             document.getElementById('deleteForm').submit();
         }   
     }
+
+    function toggleTheme() {
+        const current = localStorage.getItem('theme');
+        const next = current === 'green' ? 'default' : 'green';
+        localStorage.setItem('theme', next);
+
+        // recharge avec le bon thème
+        location.reload();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'green') {
+            document.body.classList.add('green-theme');
+        }
+    });
 
 </script>
 {% endblock %}

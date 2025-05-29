@@ -72,7 +72,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function prePersist(): void
     {
         $this->createdDate = new \DateTime();
-        $this->roles = ['ROLE_USER'];
+        if (empty($this->roles)) {
+            $this->roles = ['ROLE_USER'];
+        }
         $this->isBanned = false;
     }
 
@@ -88,6 +90,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): static{
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getEmail(): ?string

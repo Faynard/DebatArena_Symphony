@@ -95,7 +95,7 @@ class UserRepository extends ServiceEntityRepository
     {
         $em = $this->getEntityManager();
 
-        $anonymous = $em->getRepository(User::class)->find(9999); // ID de l'utilisateur anonyme
+        $anonymous = $em->getRepository(User::class)->find(1); // ID de l'utilisateur anonyme
 
         if (!$anonymous) {
             throw new \RuntimeException('Utilisateur anonyme non trouvé.');
@@ -115,8 +115,8 @@ class UserRepository extends ServiceEntityRepository
     {
         $em = $this->getEntityManager();
 
-        // Utilisateur anonyme avec un ID connu (ex: 9999)
-        $anonymous = $em->getRepository(User::class)->find(9999);
+        // Utilisateur anonyme avec un ID connu (ex: 1)
+        $anonymous = $em->getRepository(User::class)->find(1);
 
         if (!$anonymous) {
             throw new \RuntimeException('Utilisateur anonyme non trouvé.');
@@ -137,7 +137,7 @@ class UserRepository extends ServiceEntityRepository
     {
         $em = $this->getEntityManager();
 
-        $anonymous = $em->getRepository(User::class)->find(9999); // Utilisateur anonyme
+        $anonymous = $em->getRepository(User::class)->find(1); // Utilisateur anonyme
 
         if (!$anonymous) {
             throw new \RuntimeException('Utilisateur anonyme non trouvé.');

@@ -11,26 +11,26 @@
 
 {% block body %}
     <div class="card">
-        <h2>{{ 'user.creerCompte' |trans }}</h2>
+        <h2>{{ 'user.register.title' |trans }}</h2>
         {{ form_start(form) }}
             <div class="pseudo">
                 {{ form_label(form.pseudo) }}
-                {{ form_widget(form.pseudo, {'attr': {'placeholder': "{{ 'user.pseudo' |trans }}"}}) }}
+                {{ form_widget(form.pseudo, {'attr': {'placeholder': "pseudo"}}) }}
             </div>
 
             <div class="email">
                 {{ form_label(form.email) }}
-                {{ form_widget(form.email, {'attr': {'placeholder': "{{ 'user.email' |trans }}"}}) }}
+                {{ form_widget(form.email, {'attr': {'placeholder': "email"}}) }}
             </div>
 
             <div class="password">
                 {{ form_label(form.password) }}
-                {{ form_widget(form.password, {'attr': {'placeholder': "{{ 'user.mdp' |trans }}"}}) }}
+                {{ form_widget(form.password, {'attr': {'placeholder': "Mot de passe"}}) }}
             </div>
 
             <div class="btn">
-                <button type="button" class="button_retour" onclick="window.location.href='/'">{{ 'user.retour' |trans }}</button>
-                <button type="submit" class="button">{{ 'user.creationCompte' |trans }}</button>
+                <button type="button" class="button_retour" onclick="window.location.href='/'">{{ 'user.register.back' |trans }}</button>
+                <button type="submit" class="button">{{ 'user.register.createAccount' |trans }}</button>
             </div>
         {{ form_end(form) }}
     </div>

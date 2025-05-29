@@ -1,34 +1,137 @@
+roles:
+  user: "Utilisateur"
+  moderator: "Modérateur"
+  admin: "Administrateur"
+argument:
+  form:
+    create: "Poster un argument sur le débat : "
+    response: "Répondre à un argument sur le débat : "
+    return: "Retour"
+    save: "Poster"
+debate:
+  argument:
+    respond: "Répondre"
+    report: "Signaler"
+    edit: "Modifier"
+    votes: "Voter"
+    new: "Nouveau"
+  statistiques:
+    show: "Statistiques"
 homepage.title: Accueil
-homepage.recent_debates: Récemment débattu
-homepage.best_debaters: Classement meilleur débatteur du mois
-homepage.no_rankings: Aucun classement disponible pour ce mois
-homepage.total_votes: Vote total
-homepage.trending_debates: Débat Tendance
+homepage.recent_debates: 'Récemment débattu'
+homepage.best_debaters: 'Classement meilleur débatteur du mois'
+homepage.no_rankings: 'Aucun classement disponible pour ce mois'
+homepage.total_votes: 'Vote total'
+homepage.trending_debates: 'Débat Tendance'
 homepage.previous: Précédent
 homepage.next: Suivant
 homepage.participants: participants
-
-navbar.title: Debate Arena
-navbar.search_placeholder: Rechercher un débat...
+navbar.title: 'Debate Arena'
+navbar.search_placeholder: 'Rechercher un débat...'
 navbar.search_button: Rechercher
-navbar.advanced_search: Recherche avancée
-navbar.create_debate: Ajouter un débat
-navbar.language: Changer de langue
-navbar.searching: Recherche en cours...
-navbar.no_results: Aucun débat trouvé
-navbar.no_debate_found: Aucun débat trouvé. Veuillez sélectionner une suggestion.
-search_results.title: Résultats de recherche
-search_results.heading: Résultats pour «%query%»
-search_results.no_results: Aucun débat trouvé.
+navbar.advanced_search: 'Recherche avancée'
+navbar.create_debate: 'Ajouter un débat'
+navbar.language: 'Changer de langue'
+navbar.searching: 'Recherche en cours...'
+navbar.no_results: 'Aucun débat trouvé'
+navbar.no_debate_found: 'Aucun débat trouvé. Veuillez sélectionner une suggestion.'
+search_results.title: 'Résultats de recherche'
+search_results.heading: 'Résultats pour «%query%»'
+search_results.no_results: 'Aucun débat trouvé.'
+debate.create_title: 'Créer un débat'
+debate.name_label: 'Nom du débat'
+debate.description_label: 'Description du débat'
+debate.camp1_label: 'Nom du premier camp'
+debate.camp2_label: 'Nom du second camp'
+debate.categories_label: Catégories
+debate.create_button: 'Créer le débat'
+debate.select_categories_placeholder: 'Sélectionnez une ou plusieurs catégories'
+advanced_search.title: 'Recherche Avancée'
+advanced_search.keyword: Mot-clé
+advanced_search.min_participants: 'Min. participants'
+advanced_search.start_date: 'Date de début'
+advanced_search.end_date: 'Date de fin'
+advanced_search.categories: Catégories
+advanced_search.order: Tri
+advanced_search.order_recent: 'Plus récents'
+advanced_search.order_popular: 'Plus populaires'
+advanced_search.filter_button: Filtrer
+advanced_search.created_on: 'Créé le'
+advanced_search.view_debate: 'Voir le débat'
+advanced_search.no_results: 'Aucun débat trouvé.'
+admin.user.pseudo: "Pseudo"
+admin.user.email: "Email"
+admin.user.roles: "Rôles"
+admin.dashboard.home: "Retour au site"
+admin.section.moderator: "Modération"
+admin.menu.report: "Signalements"
+admin.menu.debate: "Débats"
+admin.menu.sanction: "Sanctions"
+admin.section.administrator: "Administrations"
+admin.menu.user: "Utilisateurs"
+admin.adminUser.profile: "Profil"
+admin.debate.name: "Nom du débat"
+admin.camp.name: "Nom du camp"
+admin.argument.text: "Argument"
+admin.argument.valid: "Est valide ?"
+admin.report.validate: "Valider"
+admin.report.sanction: "Sanctionner"
+admin.debate.valid: "Est valide ?"
+admin.debate.description: "Description du débat"
+admin.debate.user: "Utilisateur"
+admin.debate.camps: "Camps"
+admin.debate.validate: "Valider"
+argument.vote.success: "Votre vote a bien été pris en compte"
+argument.vote.unsuccess: "Votre vote n'a pas été pris en compte"
+argument.unvote.success: "Vous venez d'enlevez votre vote"
+argument.report.success: "Vous venez de signaler l'argument"
+argument.post.unsuccess: "Vous n'avez pas pu poster un argument sur ce débat"
+argument.post.success: "Vous venez de poster un argument sur ce débat"
 
-debate.create_title: "Créer un débat"
-debate.name_label: "Nom du débat"
-debate.description_label: "Description du débat"
-debate.camp1_label: "Nom du premier camp"
-debate.camp2_label: "Nom du second camp"
-debate.categories_label: "Catégories"
-debate.create_button: "Créer le débat"
-debate.select_categories_placeholder: "Sélectionnez une ou plusieurs catégories"
+debate.statistiques.show: "Statistiques du débat"
+debate.statistiques.countVoteByCamp: "Nombre de vote par camp :"
+debate.statistiques.voteEmpty: "Aucun vote enregistré pour ce débat."
+debate.statistiques.bestUser: "Utilisateur ayant reçu le plus de votes :"
+debate.statistiques.voteEmptyUser: "Aucun vote attribué encore."
+debate.statistiques.camp: "Camp :"
+debate.statistiques.author: "Auteur :"
+debate.statistiques.argument: "Argument :"
+debate.statistiques.backToDebat: "⬅ Retour au débat"
+
+#Page User
+user.information: "Vos informations"
+user.pseudo: "Pseudo :"
+user.email: "Adresse email :"
+user.save: "Enregistrer"
+user.createAccount: "Compte créé le :"
+user.signout: "Déconnexion"
+user.modify: "Modifier"
+user.delete: "Supprimer"
+user.switchTheme: "Changer de thème"
+user.adminPanel: "Panneau d'administration"
+user.recentDebat: "Débats récents"
+user.participant: "participants"
+user.noDebatFind: "Aucun débat récent trouvé."
+user.statistics: "Statistiques"
+user.countVote: "Nombre total de votes accumulés :"
+user.rankingMonth: "Classement du mois en cours :"
+user.rankingGlobal: "Classement global :"
+user.nonRank: "Non classé"
+user.noStat: "Aucune statistique disponible pour cet utilisateur."
+user.cancel: "Annuler"
+user.messageDel: "Si vous acceptez la suppression, vous serez redirigé vers la page d'accueil."
+
+#Page login
+user.niceToSeeYouAgain: "Ravi de vous revoir !"
+user.password: "Mot de passe"
+user.back: "Retour"
+user.connected: "Se connecter"
+user.register: "Créer un compte !"
+
+user.register.title: "Créer votre comtpe"
+user.register.createAccount: "Créer un compte"
+user.register.back: "Retour"
+
 
 advanced_search:
   title: "Recherche Avancée"

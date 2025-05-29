@@ -11,7 +11,7 @@
 
 {% block body %}
     <form method="post" action="{{ path('app_login') }}" class="card">
-        <h2>"{{ 'user.raviDeVousRevoir' |trans }}"</h2>
+        <h2>{{ 'user.niceToSeeYouAgain' |trans }}</h2>
 
         {% if error %}
             <div class="alert alert-danger">
@@ -20,24 +20,24 @@
         {% endif %}
 
         <div class="email">
-            <label for="username">{{ 'user.email' |trans }} :</label>
+            <label for="username">{{ 'user.email' |trans }} </label>
             <input type="email" name="_username" id="username" placeholder="{{ 'user.email' |trans }}" value="{{ last_username }}" required>
         </div>
 
         <div class="password">
-            <label for="password">{{ 'user.mdp' |trans }} :</label>
-            <input type="password" name="_password" id="password" placeholder="{{ 'user.mdp' |trans }}" required>
+            <label for="password">{{ 'user.password' |trans }} :</label>
+            <input type="password" name="_password" id="password" placeholder="{{ 'user.password' |trans }}" required>
         </div>
 
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
         <div class="btn">
-            <button type="button" class="button_retour" onclick="window.location.href='/'">{{ 'user.retour' |trans }}</button>
-            <button type="submit" class="button">{{ 'user.seConnecter' |trans }}</button>
+            <button type="button" class="button_retour" onclick="window.location.href='/'">{{ 'user.back' |trans }}</button>
+            <button type="submit" class="button">{{ 'user.connected' |trans }}</button>
         </div>
 
         <br>
-        <a href="{{ path('app_user_new') }}">{{ 'user.creationCompte' |trans }}</a>
+        <a href="{{ path('app_user_new') }}">{{ 'user.register' |trans }}</a>
     </form>
 {% endblock %}
 {% block footer %}

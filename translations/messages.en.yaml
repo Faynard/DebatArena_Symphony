@@ -1,25 +1,77 @@
 homepage.title: Home
-homepage.recent_debates: Recently Debated
-homepage.best_debaters: Top Debaters of the Month
-homepage.no_rankings: No ranking available for this month
-homepage.total_votes: Total votes
-homepage.trending_debates: Trending Debate
+homepage.recent_debates: 'Recently Debated'
+homepage.best_debaters: 'Top Debaters of the Month'
+homepage.no_rankings: 'No ranking available for this month'
+homepage.total_votes: 'Total votes'
+homepage.trending_debates: 'Trending Debate'
 homepage.previous: Previous
 homepage.next: Next
 homepage.participants: participants
-
-navbar.title: Debate Arena
-navbar.search_placeholder: Search for a debate...
+navbar.title: 'Debate Arena'
+navbar.search_placeholder: 'Search for a debate...'
 navbar.search_button: Search
-navbar.advanced_search: Advanced Search
-navbar.create_debate: Add a Debate
-navbar.language: Change language
+navbar.advanced_search: 'Advanced Search'
+navbar.create_debate: 'Add a Debate'
+navbar.language: 'Change language'
 navbar.searching: Searching...
-navbar.no_results: No debate found
-navbar.no_debate_found: No debate found. Please select a suggestion.
-search_results.title: Search Results
-search_results.heading: Results for "%query%"
-search_results.no_results: No debates found.
+navbar.no_results: 'No debate found'
+navbar.no_debate_found: 'No debate found. Please select a suggestion.'
+search_results.title: 'Search Results'
+search_results.heading: 'Results for "%query%"'
+search_results.no_results: 'No debates found.'
+advanced_search.title: 'Advanced Search'
+advanced_search.keyword: Keyword
+advanced_search.min_participants: 'Min. participants'
+advanced_search.start_date: 'Start date'
+advanced_search.end_date: 'End date'
+advanced_search.categories: Categories
+advanced_search.order: 'Sort by'
+advanced_search.order_recent: 'Most recent'
+advanced_search.order_popular: 'Most popular'
+advanced_search.filter_button: Filter
+advanced_search.created_on: 'Created on'
+advanced_search.view_debate: 'View debate'
+advanced_search.no_results: 'No debates found.'
+admin.user.pseudo: "Username"
+admin.user.email: "Mail"
+admin.user.roles: "Roles"
+roles.user: "User"
+roles.moderator: "Moderator"
+roles.admin: "Administrator"
+admin.dashboard.home: "Back to site"
+admin.section.moderator: "Moderation"
+admin.menu.report: "Reports"
+admin.menu.debate: "Debates"
+admin.menu.sanction: "Sanctions"
+admin.section.administrator: "Administrator"
+admin.menu.user: "Users"
+admin.adminUser.profile: "Profile"
+admin.debate.name: "Debate name"
+admin.camp.name: "Camp name"
+admin.argument.text: "Argument"
+admin.argument.valid: "Is valid ?"
+admin.report.validate: "Validate"
+admin.report.sanction: "Sanction"
+admin.debate.valid: "Is valid ?"
+admin.debate.description: "Description"
+admin.debate.user: "User"
+admin.debate.camps: "Camps"
+admin.debate.validate: "Validate"
+argument.vote.success: "You vote for an argument"
+argument.vote.unsuccess: "Your vote hasn't been saved"
+argument.unvote.success: "You unvote for an argument"
+argument.report.success: "You report an argument"
+argument.post.unsuccess: "Your argument hasn't been saved"
+argument.post.success: "Your argument has been added to the debate"
+argument.form.create: "Create an argument for : "
+argument.form.response: "Response to an argument for : "
+argument.form.return: "Return"
+argument.form.save: "Post"
+debate.argument.respond: "Respond"
+debate.argument.report: "Report"
+debate.argument.edit: "Edit"
+debate.argument.votes: "votes"
+debate.argument.new: "New"
 
 debate.create_title: "Create a debate"
 debate.name_label: "Debate name"
@@ -29,6 +81,49 @@ debate.camp2_label: "Name of the second camp"
 debate.categories_label: "Categories"
 debate.create_button: "Create debate"
 debate.select_categories_placeholder: "Select one or more categories"
+
+debate.statistiques.show: "Debate statistics"
+debate.statistiques.countVoteByCamp: "Number of votes per side:"
+debate.statistiques.voteEmpty: "No votes recorded for this debate."
+debate.statistiques.bestUser: "User who received the most votes:"
+debate.statistiques.voteEmptyUser: "No votes attributed yet."
+debate.statistiques.camp: "Side:"
+debate.statistiques.author: "Author:"
+debate.statistiques.argument: "Argument:"
+debate.statistiques.backToDebat: "⬅ Back to debat"
+
+user.information: "Your information"
+user.pseudo: "Username:"
+user.email: "Email address:"
+user.save: "Save"
+user.createAccount: "Account created on:"
+user.signout: "Logout"
+user.modify: "Edit"
+user.delete: "Delete"
+user.switchTheme: "Switch theme"
+user.adminPanel: "Admin panel"
+user.recentDebat: "Recent debates"
+user.participant: "participants"
+user.noDebatFind: "No recent debates found."
+user.statistics: "Statistics"
+user.countVote: "Total votes accumulated:"
+user.rankingMonth: "Ranking this month:"
+user.rankingGlobal: "Global ranking:"
+user.nonRank: "Unranked"
+user.noStat: "No statistics available for this user."
+user.cancel: "Cancel"
+user.messageDel: "If you confirm the deletion, you will be redirected to the homepage."
+
+user.niceToSeeYouAgain: "Nice to see you again!"
+user.password: "Password"
+user.back: "Back"
+user.connected: "Log in"
+user.register: "Create Account"
+
+user.register.createAccount: "Create an account"
+user.register.back: "Back"
+user.register.title: "Create an account"
+
 
 advanced_search:
   title: "Advanced Search"

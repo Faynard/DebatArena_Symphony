@@ -34,16 +34,20 @@ final class ArgumentController extends AbstractController
         $voteRepository = $entityManager->getRepository(Votes::class);
         $numberVotes = count($voteRepository->findByUserAndDebate($this->getUser(), $argument->getCamp()->getDebate()));
 
-        if ($numberVotes < 5) {
-            $vote = new Votes();
-            $vote->setUser($this->getUser());
-            $vote->setArgument($argument);
-
-            $entityManager->persist($vote);
-            $entityManager->flush();
-            $this->addFlash('success', t('argument.vote.success'));
-        } else {
+        if($this->getUser() === $argument->getUser()){
             $this->addFlash('danger', t('argument.vote.unsuccess'));
+        } else {
+            if ($numberVotes < 5) {
+                $vote = new Votes();
+                $vote->setUser($this->getUser());
+                $vote->setArgument($argument);
+
+                $entityManager->persist($vote);
+                $entityManager->flush();
+                $this->addFlash('success', t('argument.vote.success'));
+            } else {
+                $this->addFlash('danger', t('argument.vote.unsuccess'));
+            }
         }
 
 
