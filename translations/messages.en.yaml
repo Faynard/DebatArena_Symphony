@@ -144,3 +144,8 @@ advanced_search:
 category:
   name: Category Name
   description: Category Description
+
+footer:
+  dark_mode: Dark mode
+  light_mode: Light mode
+  rights_reserved: All rights reserved.

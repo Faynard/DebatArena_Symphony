@@ -1,6 +1,10 @@
 <footer class="footer">
     <div class="container">
-        <button id="theme-toggle">🌗 Changer de thème</button>
-        <p class="mt-2">© {{ "now"|date("Y") }} Debate Arena. Tous droits réservés.</p>
+        <button id="theme-toggle"
+                data-light="{{ 'footer.light_mode'|trans }}"
+                data-dark="{{ 'footer.dark_mode'|trans }}">
+            🌗 {{ app.request.cookies.get('theme') == 'dark' ? 'footer.light_mode'|trans : 'footer.dark_mode'|trans }}
+        </button>
+        <p class="mt-2">© {{ "now"|date("Y") }} Debate Arena. {{ 'footer.rights_reserved'|trans }}</p>
     </div>
 </footer>
