@@ -40,9 +40,12 @@
         function updateButtonText(isDark) {
             const btn = document.getElementById('theme-toggle');
             if (btn) {
-                btn.textContent = isDark ? '☀️ Mode clair' : '🌗 Mode sombre';
+                const light = btn.getAttribute('data-light');
+                const dark = btn.getAttribute('data-dark');
+                btn.textContent = isDark ? '☀️ ' + light : '🌗 ' + dark;
             }
         }
+
 
         document.addEventListener('DOMContentLoaded', () => {
             const theme = getCookie('theme');

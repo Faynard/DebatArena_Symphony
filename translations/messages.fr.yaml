@@ -151,3 +151,8 @@ advanced_search:
 category:
   name: Nom de la catégorie
   description: Description de la catégorie
+
+footer:
+  dark_mode: Mode sombre
+  light_mode: Mode clair
+  rights_reserved: Tous droits réservés.
