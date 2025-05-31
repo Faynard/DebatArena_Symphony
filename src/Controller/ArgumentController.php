@@ -3,14 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Argument;
-use App\Entity\Camp;
 use App\Entity\Debate;
 use App\Entity\Report;
-use App\Entity\User;
 use App\Entity\Votes;
 use App\Form\ArgumentType;
-use App\Repository\ArgumentRepository;
-use App\Repository\CampRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

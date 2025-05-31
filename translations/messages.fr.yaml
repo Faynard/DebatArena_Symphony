@@ -13,7 +13,7 @@ debate:
     respond: "Répondre"
     report: "Signaler"
     edit: "Modifier"
-    votes: "Voter"
+    votes: "votes"
     new: "Nouveau"
   statistiques:
     show: "Statistiques"
