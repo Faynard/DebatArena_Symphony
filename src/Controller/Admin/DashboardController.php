@@ -28,7 +28,13 @@ class DashboardController extends AbstractDashboardController
 
     public function index(): Response
     {
-        return $this->redirectToRoute('admin_report_index');
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('admin_user_index');
+        } else if ($this->isGranted('ROLE_MODERATOR')) {
+            return $this->redirectToRoute('admin_report_index');
+        } else {
+            return $this->redirectToRoute('app_debate_index');
+        }
     }
 
     public function configureDashboard(): Dashboard
