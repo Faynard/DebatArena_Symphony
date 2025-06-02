@@ -2,6 +2,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Sanction;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
@@ -14,7 +15,9 @@ class SanctionCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         return $actions
-            ->disable(Action::NEW); // 👈 ceci désactive le bouton "Créer Sanction"
+            ->disable(Action::NEW)
+            ->disable(Action::EDIT)
+            ->add(Crud::PAGE_INDEX, Action::DETAIL);
     }
 
     public static function getEntityFqcn(): string

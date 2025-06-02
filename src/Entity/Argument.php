@@ -58,6 +58,11 @@ class Argument
         $this->subArguments = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->text;
+    }
+
     #[ORM\PrePersist]
     public function prePersist(): void
     {
