@@ -35,6 +35,7 @@ advanced_search.no_results: 'No debates found.'
 admin.user.pseudo: "Username"
 admin.user.email: "Mail"
 admin.user.roles: "Roles"
+admin.user.export: "Export"
 roles.user: "User"
 roles.moderator: "Moderator"
 roles.admin: "Administrator"

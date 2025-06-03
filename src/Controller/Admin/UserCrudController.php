@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Repository\UserRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -63,7 +64,8 @@ class UserCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         $export = Action::new('export', $this->translator->trans('admin.user.export'))
-            ->linkToCrudAction('export');
+            ->linkToCrudAction('export')
+            ->createAsGlobalAction();
         
         return $actions
             ->remove(Crud::PAGE_INDEX, Action::NEW)
