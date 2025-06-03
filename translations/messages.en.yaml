@@ -72,6 +72,7 @@ debate.argument.report: "Report"
 debate.argument.edit: "Edit"
 debate.argument.votes: "votes"
 debate.argument.new: "New"
+debate.duplicate: "Duplicate"
 
 debate.create_title: "Create a debate"
 debate.name_label: "Debate name"
