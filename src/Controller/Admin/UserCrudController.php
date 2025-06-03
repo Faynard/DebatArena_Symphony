@@ -62,8 +62,12 @@ class UserCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
+        $export = Action::new('export', $this->translator->trans('admin.user.export'))
+            ->linkToCrudAction('export');
+        
         return $actions
-            ->remove(Crud::PAGE_INDEX, Action::NEW);
+            ->remove(Crud::PAGE_INDEX, Action::NEW)
+            ->add(Crud::PAGE_INDEX, $export);
     }
 
     private function getRoleLabel(string $role): string
@@ -79,5 +83,30 @@ class UserCrudController extends AbstractCrudController
     public function new(AdminContext $context): Response
     {
         return $this->redirectToRoute('admin_user_index');
+    }
+
+    public function export(AdminContext $context, UserRepository $userRepository): Response
+    {
+
+        $users = $userRepository->findAll();
+
+        $data = [];
+        foreach ($users as $user) {
+            $data[] = [
+                'id' => $user->getId(),
+                'email' => $user->getEmail(),
+                'pseudo' => $user->getPseudo(),
+                'createdDate' => $user->getCreatedDate()?->format('Y-m-d'),
+                'roles' => $user->getRoles(),
+                'isBanned' => $user->isBanned(),
+            ];
+        }
+
+        $jsonContent = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+
+        return new Response($jsonContent, 200, [
+            'Content-Type' => 'application/json',
+            'Content-Disposition' => 'attachment; filename="users_export.json"',
+        ]);
     }
 }
