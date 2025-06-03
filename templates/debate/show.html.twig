@@ -32,6 +32,9 @@
                 <button class="button" onclick="window.location.href='{{ path('app_debate_statistics', { id: debate.id }) }}'">
                     {{ 'debate.statistiques.show'|trans }}
                 </button>
+                <button class="button" onclick="window.location.href='{{ path('app_debate_duplicate', { id: debate.id }) }}'">
+                    {{ 'debate.duplicate'|trans }}
+                </button>
             </div>
         </div>
 

@@ -9,6 +9,7 @@ argument:
     return: "Retour"
     save: "Poster"
 debate:
+  duplicate: "Duplication"
   argument:
     respond: "Répondre"
     report: "Signaler"
@@ -62,6 +63,7 @@ advanced_search.no_results: 'Aucun débat trouvé.'
 admin.user.pseudo: "Pseudo"
 admin.user.email: "Email"
 admin.user.roles: "Rôles"
+admin.user.export: "Exporter"
 admin.dashboard.home: "Retour au site"
 admin.section.moderator: "Modération"
 admin.menu.report: "Signalements"
