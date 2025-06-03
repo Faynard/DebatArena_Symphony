@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Argument;
+use App\Entity\Camp;
 use App\Entity\Debate;
 use App\Entity\Votes;
 use App\Form\DebateType;
@@ -88,11 +89,11 @@ final class DebateController extends AbstractController
             $camp2Name = $form->get('camp2')->getData();
 
             // Créer les deux camps
-            $camp1 = new \App\Entity\Camp();
+            $camp1 = new Camp();
             $camp1->setNameCamp($camp1Name);
             $camp1->setDebate($debate);
 
-            $camp2 = new \App\Entity\Camp();
+            $camp2 = new Camp();
             $camp2->setNameCamp($camp2Name);
             $camp2->setDebate($debate);
 
@@ -112,6 +113,33 @@ final class DebateController extends AbstractController
         return $this->render('debate/new.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    #[IsGranted('ROLE_USER', message: 'Tu n\'es pas autorisé à accéder à cette page.')]
+    #[Route('/duplicate/{id}', name: 'app_debate_duplicate', methods: ['GET'])]
+    public function duplicate(Debate $debate, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $newDebate = new Debate();
+        $newDebate->setNameDebate($debate->getNameDebate());
+        $newDebate->setDescriptionDebate($debate->getDescriptionDebate());
+        $newDebate->setUserCreated($debate->getUserCreated());
+        $newDebate->setIsValid($debate->isValid());
+        $newDebate->setCreationDate(new \DateTimeImmutable());
+
+        foreach ($debate->getCamps() as $camp) {
+            $newCamp = new Camp();
+            $newCamp->setNameCamp($camp->getNameCamp());
+            $newCamp->setDebate($newDebate);
+            $newDebate->addCamp($newCamp);
+            $entityManager->persist($newCamp);
+        }
+
+        $entityManager->persist($newDebate);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'La duplication du débat a bien été prise en compte');
+
+        return $this->redirectToRoute('app_debate_show', ['id' => $newDebate->getId()]);
     }
 
     #[Route('/{id<\d+>}', name: 'app_debate_show', methods: ['GET'])]
