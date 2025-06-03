@@ -9,6 +9,7 @@ argument:
     return: "Retour"
     save: "Poster"
 debate:
+  duplicate: "Duplication"
   argument:
     respond: "Répondre"
     report: "Signaler"
